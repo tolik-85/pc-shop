@@ -144,14 +144,28 @@ const model = {
   },
 
   filters: {
-    filteredCategories: [],
-
     filterForCategories() {
+      let i = 0
       model.avalibleProducts.forEach(item => {
+        i++
+
         for (key in item.specs) {
-          model.filterModel[key] = {}
+          // console.log(key)
+          // console.log(item.specs[key])
+
+          if (!model.filterModel[key]) {
+            model.filterModel[key] = {}
+          }
+          model.filterModel[key][`q${i}`] = 'o'
+
+          // for (key2 in item.specs[key]) {
+          //   // model.filterModel[key][key2] = {}
+          //   console.log(key2)
+          //   console.log(item.specs[key][key2])
+          // }
         }
       })
+      console.log(model.filterModel)
     },
 
     filterForVideoCardBrand() {
@@ -181,8 +195,8 @@ const model = {
     },
 
     filterForCoolerBrands() {
-      const cooler = 'Кулер для процесора'
       let coolerBrands = []
+      const cooler = 'Кулер для процесора'
       const brand = 'Бренд'
       model.avalibleProducts.forEach(item => {
         if (item.specs[cooler]?.brand) {
@@ -194,8 +208,8 @@ const model = {
     },
 
     filterForCoolerSize() {
-      const cooler = 'Кулер для процесора'
       let coolerSize = []
+      const cooler = 'Кулер для процесора'
       const size = 'Размер'
       model.avalibleProducts.forEach(item => {
         if (item.specs[cooler]?.size) {
@@ -207,8 +221,8 @@ const model = {
     },
 
     filterForSsdBrands() {
-      const ssd = 'Накопитель SSD'
       let ssdBrands = []
+      const ssd = 'Накопитель SSD'
       const brand = 'Бренд'
       model.avalibleProducts.forEach(item => {
         if (item.specs[ssd]?.brand) {
@@ -220,8 +234,8 @@ const model = {
     },
 
     filterForSsdCapacity() {
-      const ssd = 'Накопитель SSD'
       let ssdCapacity = []
+      const ssd = 'Накопитель SSD'
       const capacity = 'Обьем'
       model.avalibleProducts.forEach(item => {
         if (item.specs[ssd].capacity) {
@@ -233,8 +247,8 @@ const model = {
     },
 
     filterForProcessorBrand() {
-      const processor = 'Процессор'
       let processorsBrands = []
+      const processor = 'Процессор'
       const brand = 'Бренд'
       model.avalibleProducts.forEach(item => {
         if (item.specs[processor]?.brand) {
@@ -246,8 +260,8 @@ const model = {
     },
 
     filterForProcessorFrequency() {
-      const processor = 'Процессор'
       let processorsFrequency = []
+      const processor = 'Процессор'
       const frequency = 'Частота'
       model.avalibleProducts.forEach(item => {
         if (item.specs[processor]?.frequency) {
@@ -259,8 +273,8 @@ const model = {
     },
 
     filterForMotherboardBrands() {
-      const motherBoard = 'Материнская плата'
       let motherboardBrands = []
+      const motherBoard = 'Материнская плата'
       const brand = 'Бренд'
       model.avalibleProducts.forEach(item => {
         if (item.specs[motherBoard]?.brand) {
@@ -272,8 +286,8 @@ const model = {
     },
 
     filterForMotherboarPurpose() {
-      const motherBoard = 'Материнская плата'
       let purposes = []
+      const motherBoard = 'Материнская плата'
       const purpose = 'Тип памяти'
       model.avalibleProducts.forEach(item => {
         if (item.specs[motherBoard]?.purpose) {
@@ -285,8 +299,8 @@ const model = {
     },
 
     filterForRamBrand() {
-      const ram = 'Оперативная память'
       let ramBrands = []
+      const ram = 'Оперативная память'
       const brand = 'Бренд'
       model.avalibleProducts.forEach(item => {
         if (item.specs[ram]?.brand) {
@@ -298,8 +312,8 @@ const model = {
     },
 
     filterForRamCapacity() {
-      const ram = 'Оперативная память'
       let ramCapacity = []
+      const ram = 'Оперативная память'
       const capacity = 'Обьем'
       model.avalibleProducts.forEach(item => {
         if (item.specs[ram]?.capacity) {
@@ -311,8 +325,8 @@ const model = {
     },
 
     filterForRamType() {
-      const ram = 'Оперативная память'
       let ramTypes = []
+      const ram = 'Оперативная память'
       const ramType = 'Тип памяти'
       model.avalibleProducts.forEach(item => {
         if (item.specs[ram]?.type) {
@@ -325,8 +339,8 @@ const model = {
     },
 
     filterForRamFrequency() {
-      const ram = 'Оперативная память'
       let ramFrequencys = []
+      const ram = 'Оперативная память'
       const ramFrequency = 'Частота'
       model.avalibleProducts.forEach(item => {
         if (item.specs[ram]?.frequency) {
@@ -338,8 +352,8 @@ const model = {
     },
 
     filterForPowerUnitBrands() {
-      const powerUnit = 'Блок питания'
       let powerUnitBrands = []
+      const powerUnit = 'Блок питания'
       const brand = 'Бренд'
       model.avalibleProducts.forEach(item => {
         if (item.specs[powerUnit]?.brand) {
@@ -351,8 +365,8 @@ const model = {
     },
 
     filterForPowerUnitPower() {
-      const powerUnit = 'Блок питания'
       let powerUnitsPowers = []
+      const powerUnit = 'Блок питания'
       const power = 'Мощность'
       model.avalibleProducts.forEach(item => {
         if (item.specs[powerUnit]?.power) {
@@ -364,8 +378,8 @@ const model = {
     },
 
     filterForCaseBrands() {
-      const carcass = 'Корпус'
       let carcasses = []
+      const carcass = 'Корпус'
       const brand = 'Бренд'
       model.avalibleProducts.forEach(item => {
         if (item.specs[carcass]?.brand) {
