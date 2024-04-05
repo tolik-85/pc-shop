@@ -145,24 +145,23 @@ const model = {
 
   filters: {
     filterForCategories() {
-      let i = 0
       model.avalibleProducts.forEach(item => {
-        i++
-
         for (key in item.specs) {
-          // console.log(key)
-          // console.log(item.specs[key])
-
           if (!model.filterModel[key]) {
             model.filterModel[key] = {}
           }
-          model.filterModel[key][`q${i}`] = 'o'
-
-          // for (key2 in item.specs[key]) {
-          //   // model.filterModel[key][key2] = {}
-          //   console.log(key2)
-          //   console.log(item.specs[key][key2])
-          // }
+          for (key2 in item.specs[key]) {
+            if (!model.filterModel[key][key2]) {
+              model.filterModel[key][key2] = []
+            }
+            for (key3 of item.specs[key][key2]) {
+              if (
+                !model.filterModel[key][key2].includes(item.specs[key][key2])
+              ) {
+                model.filterModel[key][key2].push(item.specs[key][key2])
+              }
+            }
+          }
         }
       })
       console.log(model.filterModel)
