@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', onLoaded)
 async function onLoaded() {
   await handleAvailibleProducts()
 
-  model.filters.filterForCategories()
+  model.filterForCategories()
   // model.filters.filterForVideoCardBrand()
   // model.filters.filterForVideoCardCapacity()
   // model.filters.filterForCoolerBrands()
