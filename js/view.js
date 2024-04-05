@@ -33,12 +33,67 @@ function renderContainerProducts(purpose, caption, price, image) {
 
 function generateFilterCategory(filterCategory) {
   const wrapProps = document.createElement('div')
-  wrapProps.classList.add('filter-category')
-
   const h3 = document.createElement('h3')
+  wrapProps.classList.add('filter-category')
   h3.innerHTML = `${filterCategory}`
-
   wrapProps.appendChild(h3)
+  return wrapProps
+}
+
+function generateFilterSubCategory(filterSubCategoty) {
+  const wrapSubcategory = document.createElement('div')
+  const h4 = document.createElement('h4')
+  wrapSubcategory.classList.add('filter-subcategoru')
+  h4.innerHTML = `${filterSubCategoty}`
+  wrapSubcategory.appendChild(h4)
+  return wrapSubcategory
+}
+
+function generateFilterGroupWrappers() {
+  const groupWrappers = document.createElement('div')
+  groupWrappers.classList.add('group-wrappers')
+  return groupWrappers
+}
+
+function generateFilterWrapCheckBox(brand) {
+  const wrap = document.createElement('div')
+  const wrapCheckBox = document.createElement('div')
+  const inputCheckbBox = document.createElement('input')
+
+  wrap.classList.add('wrap')
+  wrapCheckBox.classList.add('wrap-checkbox')
+  inputCheckbBox.setAttribute('type', 'checkbox')
+  inputCheckbBox.setAttribute('name', `${brand}`)
+  inputCheckbBox.setAttribute('id', `${brand}`)
+  inputCheckbBox.setAttribute('value', `${brand}_01`)
+  const labelForCheckbox = document.createElement('label')
+  labelForCheckbox.setAttribute('for', `${brand}`)
+  labelForCheckbox.innerHTML = `${brand}`
+
+  wrapCheckBox.appendChild(inputCheckbBox)
+  wrapCheckBox.appendChild(labelForCheckbox)
+
+  return wrapCheckBox
+}
+
+function renderFormSubmitBtn() {
+  const form = document.querySelector('.wrap-filter>form')
+  const submit = generateFormSubmitBtn()
+  form.appendChild(submit)
+}
+
+function generateFormSubmitBtn() {
+  const wrapProps = document.createElement('div')
+  const noClassDiv = document.createElement('div')
+  const inputSubmit = document.createElement('input')
+
+  wrapProps.classList.add('wrap-props')
+  inputSubmit.setAttribute('type', 'submit')
+  inputSubmit.setAttribute('value', 'Фильтровать')
+  inputSubmit.classList.add('btn')
+
+  noClassDiv.appendChild(inputSubmit)
+  wrapProps.appendChild(noClassDiv)
 
   return wrapProps
 }
@@ -104,61 +159,4 @@ function generateProduct(purpose, caption, price, image) {
   wrapProduct.appendChild(row)
 
   return wrapProduct
-}
-
-function generateFilterSubCategory(filterSubCategoty) {
-  const wrapSubcategory = document.createElement('div')
-  const wrapChBoxes = document.createElement('div')
-  const h4 = document.createElement('h4')
-
-  wrapChBoxes.classList.add('wrap-chbox')
-  wrapSubcategory.classList.add('filter-subcategoru')
-  h4.innerHTML = `${filterSubCategoty}`
-
-  wrapSubcategory.appendChild(h4)
-
-  return wrapSubcategory
-}
-
-function generateCheckBox(brand) {
-  const wrap = document.createElement('div')
-  const wrapCheckBox = document.createElement('div')
-  const inputCheckbBox = document.createElement('input')
-
-  wrap.classList.add('wrap')
-  wrapCheckBox.classList.add('wrap-checkbox')
-  inputCheckbBox.setAttribute('type', 'checkbox')
-  inputCheckbBox.setAttribute('name', `${brand}`)
-  inputCheckbBox.setAttribute('id', `${brand}`)
-  inputCheckbBox.setAttribute('value', `${brand}_01`)
-  const labelForCheckbox = document.createElement('label')
-  labelForCheckbox.setAttribute('for', `${brand}`)
-  labelForCheckbox.innerHTML = `${brand}`
-
-  wrapCheckBox.appendChild(inputCheckbBox)
-  wrapCheckBox.appendChild(labelForCheckbox)
-
-  return wrapCheckBox
-}
-
-function renderFormSubmitBtn() {
-  const form = document.querySelector('.wrap-filter>form')
-  const submit = generateFormSubmitBtn()
-  form.appendChild(submit)
-}
-
-function generateFormSubmitBtn() {
-  const wrapProps = document.createElement('div')
-  const noClassDiv = document.createElement('div')
-  const inputSubmit = document.createElement('input')
-
-  wrapProps.classList.add('wrap-props')
-  inputSubmit.setAttribute('type', 'submit')
-  inputSubmit.setAttribute('value', 'Фильтровать')
-  inputSubmit.classList.add('btn')
-
-  noClassDiv.appendChild(inputSubmit)
-  wrapProps.appendChild(noClassDiv)
-
-  return wrapProps
 }

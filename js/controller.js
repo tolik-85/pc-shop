@@ -18,10 +18,12 @@ function handleFilter() {
     form.appendChild(filterCategory)
     for (const name in model.filterModel[key]) {
       const filterSubCategory = generateFilterSubCategory(name)
+      const filterGroupWrappers = generateFilterGroupWrappers()
       filterCategory.appendChild(filterSubCategory)
+      filterSubCategory.appendChild(filterGroupWrappers)
       for (let value of model.filterModel[key][name]) {
-        const chBoxes = generateCheckBox(value)
-        filterSubCategory.appendChild(chBoxes)
+        const chBoxes = generateFilterWrapCheckBox(value)
+        filterGroupWrappers.appendChild(chBoxes)
       }
     }
   }
