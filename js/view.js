@@ -1,12 +1,17 @@
 const view = {
   async onLoaded() {
-    await controller.handleAvailibleProducts()
+    await controller.handleUpdateProducts()
     controller.handleFilter()
-    controller.renderWrapFilter()
   },
-  renderContainerProducts(purpose, caption, price, image) {
+  renderContainerProducts(purpose, caption, price, image, product) {
     const elContainerProducts = document.querySelector('.container-products')
-    const ElProduct = this.generateProduct(purpose, caption, price, image)
+    const ElProduct = this.generateProduct(
+      purpose,
+      caption,
+      price,
+      image,
+      product
+    )
     elContainerProducts.appendChild(ElProduct)
   },
 
@@ -53,7 +58,8 @@ const view = {
 
     return elWrapCheckBox
   },
-  generateProduct(purpose, caption, price, image) {
+  generateProduct(purpose, caption, price, image, product) {
+    const URL = 'https://web-app.click/photos/products/computers/'
     const wrapProduct = document.createElement('div')
     const wrapImg = document.createElement('div')
     const img = document.createElement('img')
@@ -114,6 +120,24 @@ const view = {
     wrapProduct.appendChild(row)
 
     return wrapProduct
+  },
+
+  renderWrapFilter(filter) {
+    const elWrapFilter = document.querySelector('.wrap-filter')
+    for (const key in filter) {
+      const elFilterCategory = view.generateFilterCategory(key)
+      elWrapFilter.appendChild(elFilterCategory)
+      for (const name in filter[key]) {
+        const elFilterSubCategory = view.generateFilterSubCategory(name)
+        const elFilterGroupWrappers = view.generateFilterGroupWrappers()
+        elFilterCategory.appendChild(elFilterSubCategory)
+        elFilterSubCategory.appendChild(elFilterGroupWrappers)
+        for (const value of filter[key][name]) {
+          const chBoxes = view.generateFilterWrapCheckBox(value)
+          elFilterGroupWrappers.appendChild(chBoxes)
+        }
+      }
+    }
   },
 }
 
