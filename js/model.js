@@ -1,6 +1,6 @@
 const model = {
   avalibleProducts: [],
-  filterModel: {},
+  filter: {},
 
   setAvalibleProducts(avalibleProducts) {
     this.avalibleProducts = avalibleProducts
@@ -14,16 +14,16 @@ const model = {
   filterForCategories() {
     model.avalibleProducts.forEach(item => {
       for (key in item.specs) {
-        if (!model.filterModel[key]) {
-          model.filterModel[key] = {}
+        if (!model.filter[key]) {
+          model.filter[key] = {}
         }
         for (key2 in item.specs[key]) {
-          if (!model.filterModel[key][key2]) {
-            model.filterModel[key][key2] = []
+          if (!model.filter[key][key2]) {
+            model.filter[key][key2] = []
           }
           for (key3 of item.specs[key][key2]) {
-            if (!model.filterModel[key][key2].includes(item.specs[key][key2])) {
-              model.filterModel[key][key2].push(item.specs[key][key2])
+            if (!model.filter[key][key2].includes(item.specs[key][key2])) {
+              model.filter[key][key2].push(item.specs[key][key2])
             }
           }
         }

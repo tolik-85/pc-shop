@@ -18,16 +18,16 @@ const controller = {
   },
 
   renderWrapFilter() {
-    for (const key in model.filterModel) {
+    for (const key in model.filter) {
       const elFilterCategory = view.generateFilterCategory(key)
       const elWrapFilter = document.querySelector('.wrap-filter')
       elWrapFilter.appendChild(elFilterCategory)
-      for (const name in model.filterModel[key]) {
+      for (const name in model.filter[key]) {
         const elFilterSubCategory = view.generateFilterSubCategory(name)
         const elFilterGroupWrappers = view.generateFilterGroupWrappers()
         elFilterCategory.appendChild(elFilterSubCategory)
         elFilterSubCategory.appendChild(elFilterGroupWrappers)
-        for (let value of model.filterModel[key][name]) {
+        for (let value of model.filter[key][name]) {
           const chBoxes = view.generateFilterWrapCheckBox(value)
           elFilterGroupWrappers.appendChild(chBoxes)
         }
