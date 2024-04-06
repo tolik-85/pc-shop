@@ -2,100 +2,60 @@ document.addEventListener('DOMContentLoaded', onLoaded)
 
 async function onLoaded() {
   await handleAvailibleProducts()
-
   model.filterForCategories()
-  // model.filters.filterForVideoCardBrand()
-  // model.filters.filterForVideoCardCapacity()
-  // model.filters.filterForCoolerBrands()
-  // model.filters.filterForCoolerSize()
-  // model.filters.filterForSsdBrands()
-  // model.filters.filterForSsdCapacity()
-  // model.filters.filterForProcessorBrand()
-  // model.filters.filterForProcessorFrequency()
-  // model.filters.filterForMotherboardBrands()
-  // model.filters.filterForMotherboarPurpose()
-  // model.filters.filterForRamBrand()
-  // model.filters.filterForRamCapacity()
-  // model.filters.filterForRamType()
-  // model.filters.filterForRamFrequency()
-  // model.filters.filterForPowerUnitBrands()
-  // model.filters.filterForPowerUnitPower()
-  // model.filters.filterForCaseBrands()
-  handleFilter()
+  renderWrapFilter()
 }
 
-const containerProducts = document.querySelector('.container-products')
+const elContainerProducts = document.querySelector('.container-products')
 
 function renderContainerProducts(purpose, caption, price, image) {
-  const product = generateProduct(purpose, caption, price, image)
-  containerProducts.appendChild(product)
+  const ElProduct = generateProduct(purpose, caption, price, image)
+  elContainerProducts.appendChild(ElProduct)
 }
 
 function generateFilterCategory(filterCategory) {
-  const wrapProps = document.createElement('div')
-  const h3 = document.createElement('h3')
-  wrapProps.classList.add('filter-category')
-  h3.innerHTML = `${filterCategory}`
-  wrapProps.appendChild(h3)
-  return wrapProps
+  const elWrapProps = document.createElement('div')
+  const elH3 = document.createElement('h3')
+  elWrapProps.classList.add('filter-category')
+  elH3.innerHTML = `${filterCategory}`
+  elWrapProps.appendChild(elH3)
+  return elWrapProps
 }
 
 function generateFilterSubCategory(filterSubCategoty) {
-  const wrapSubcategory = document.createElement('div')
-  const h4 = document.createElement('h4')
-  wrapSubcategory.classList.add('filter-subcategoru')
-  h4.innerHTML = `${filterSubCategoty}`
-  wrapSubcategory.appendChild(h4)
-  return wrapSubcategory
+  const elWrapSubcategory = document.createElement('div')
+  const elH4 = document.createElement('h4')
+  elWrapSubcategory.classList.add('filter-subcategoru')
+  elH4.innerHTML = `${filterSubCategoty}`
+  elWrapSubcategory.appendChild(elH4)
+  return elWrapSubcategory
 }
 
 function generateFilterGroupWrappers() {
-  const groupWrappers = document.createElement('div')
-  groupWrappers.classList.add('group-wrappers')
-  return groupWrappers
+  const elGroupWrappers = document.createElement('div')
+  elGroupWrappers.classList.add('group-wrappers')
+  return elGroupWrappers
 }
 
 function generateFilterWrapCheckBox(brand) {
-  const wrap = document.createElement('div')
-  const wrapCheckBox = document.createElement('div')
-  const inputCheckbBox = document.createElement('input')
+  const elWrap = document.createElement('div')
+  const elWrapCheckBox = document.createElement('div')
+  const elInputCheckbBox = document.createElement('input')
 
-  wrap.classList.add('wrap')
-  wrapCheckBox.classList.add('wrap-checkbox')
-  inputCheckbBox.setAttribute('type', 'checkbox')
-  inputCheckbBox.setAttribute('name', `${brand}`)
-  inputCheckbBox.setAttribute('id', `${brand}`)
-  inputCheckbBox.setAttribute('value', `${brand}_01`)
-  const labelForCheckbox = document.createElement('label')
-  labelForCheckbox.setAttribute('for', `${brand}`)
-  labelForCheckbox.innerHTML = `${brand}`
+  elWrap.classList.add('wrap')
+  elWrapCheckBox.classList.add('wrap-checkbox')
+  elInputCheckbBox.setAttribute('type', 'checkbox')
+  elInputCheckbBox.setAttribute('name', `${brand}`)
+  elInputCheckbBox.setAttribute('id', `${brand}`)
+  elInputCheckbBox.setAttribute('value', `${brand}_01`)
+  const elLabelForCheckbox = document.createElement('label')
+  elLabelForCheckbox.setAttribute('for', `${brand}`)
+  elLabelForCheckbox.innerHTML = `${brand}`
 
-  wrapCheckBox.appendChild(inputCheckbBox)
-  wrapCheckBox.appendChild(labelForCheckbox)
+  elWrapCheckBox.appendChild(elInputCheckbBox)
+  elWrapCheckBox.appendChild(elLabelForCheckbox)
 
-  return wrapCheckBox
-}
-
-function renderFormSubmitBtn() {
-  const form = document.querySelector('.wrap-filter>form')
-  const submit = generateFormSubmitBtn()
-  form.appendChild(submit)
-}
-
-function generateFormSubmitBtn() {
-  const wrapProps = document.createElement('div')
-  const noClassDiv = document.createElement('div')
-  const inputSubmit = document.createElement('input')
-
-  wrapProps.classList.add('wrap-props')
-  inputSubmit.setAttribute('type', 'submit')
-  inputSubmit.setAttribute('value', 'Фильтровать')
-  inputSubmit.classList.add('btn')
-
-  noClassDiv.appendChild(inputSubmit)
-  wrapProps.appendChild(noClassDiv)
-
-  return wrapProps
+  return elWrapCheckBox
 }
 
 function generateProduct(purpose, caption, price, image) {

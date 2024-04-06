@@ -1,5 +1,6 @@
 async function handleAvailibleProducts() {
-  await model.getAvalibleProducts()
+  const products = await model.getProducts()
+  model.setAvalibleProducts(products)
   model.avalibleProducts.forEach(el => {
     const URL = 'https://web-app.click/photos/products/computers/'
     const picture = el.photos.files[0]
@@ -11,11 +12,11 @@ async function handleAvailibleProducts() {
   })
 }
 
-function handleFilter() {
+function renderWrapFilter() {
   for (const key in model.filterModel) {
     const filterCategory = generateFilterCategory(key)
-    const form = document.querySelector('.wrap-filter>form')
-    form.appendChild(filterCategory)
+    const elWrapFilter = document.querySelector('.wrap-filter')
+    elWrapFilter.appendChild(filterCategory)
     for (const name in model.filterModel[key]) {
       const filterSubCategory = generateFilterSubCategory(name)
       const filterGroupWrappers = generateFilterGroupWrappers()
@@ -27,5 +28,4 @@ function handleFilter() {
       }
     }
   }
-  renderFormSubmitBtn()
 }
