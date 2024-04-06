@@ -38,7 +38,7 @@ const view = {
     return elGroupWrappers
   },
 
-  generateFilterWrapCheckBox(brand) {
+  generateFilterWrapCheckBox(brand, name) {
     const elWrap = document.createElement('div')
     const elWrapCheckBox = document.createElement('div')
     const elInputCheckbBox = document.createElement('input')
@@ -47,10 +47,10 @@ const view = {
     elWrapCheckBox.classList.add('wrap-checkbox')
     elInputCheckbBox.setAttribute('type', 'checkbox')
     elInputCheckbBox.setAttribute('name', `${brand}`)
-    elInputCheckbBox.setAttribute('id', `${brand}`)
+    elInputCheckbBox.setAttribute('id', `${brand}_${name}`)
     elInputCheckbBox.setAttribute('value', `${brand}_01`)
     const elLabelForCheckbox = document.createElement('label')
-    elLabelForCheckbox.setAttribute('for', `${brand}`)
+    elLabelForCheckbox.setAttribute('for', `${brand}_${name}`)
     elLabelForCheckbox.innerHTML = `${brand}`
 
     elWrapCheckBox.appendChild(elInputCheckbBox)
@@ -133,7 +133,7 @@ const view = {
         elFilterCategory.appendChild(elFilterSubCategory)
         elFilterSubCategory.appendChild(elFilterGroupWrappers)
         for (const value of filter[key][name]) {
-          const chBoxes = view.generateFilterWrapCheckBox(value)
+          const chBoxes = view.generateFilterWrapCheckBox(value, key)
           elFilterGroupWrappers.appendChild(chBoxes)
         }
       }
