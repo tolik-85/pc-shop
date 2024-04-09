@@ -25,13 +25,17 @@ const model = {
     this.makeFilter()
     this.filtrateProducts()
   },
+  async updateCourse() {
+    const course = await api.loadCourse()
+    console.log(course)
+  },
 
   filtrateProducts() {
-    console.log('hi')
+    // console.log('hi')
     this.filtrateProducts = this.products.slice(0, 1).filter(item => {
       for (key in item.specs) {
         for (key2 in item.specs[key]) {
-          console.log(`${key}__${key2}__${item.specs[key][key2]}`)
+          // console.log(`${key}__${key2}__${item.specs[key][key2]}`)
         }
       }
     })
