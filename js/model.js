@@ -15,6 +15,10 @@ const model = {
     return this.products
   },
 
+  getFiltratedProducts() {
+    return this.filtratedProducts
+  },
+
   getFilter() {
     return this.filter
   },
@@ -30,15 +34,16 @@ const model = {
     // console.log(course)
   },
 
-  filtrateProducts() {
+  filtrateProducts(i = 5) {
+    this.filtratedProducts = this.products.slice(0, i)
     // console.log('hi')
-    this.filtrateProducts = this.products.slice(0, 1).filter(item => {
-      for (key in item.specs) {
-        for (key2 in item.specs[key]) {
-          // console.log(`${key}__${key2}__${item.specs[key][key2]}`)
-        }
-      }
-    })
+    // .filter(item => {
+    //   for (key in item.specs) {
+    //     for (key2 in item.specs[key]) {
+    //       // console.log(`${key}__${key2}__${item.specs[key][key2]}`)
+    //     }
+    //   }
+    // })
   },
 
   makeFilter() {

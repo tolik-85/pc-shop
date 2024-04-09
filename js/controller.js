@@ -1,8 +1,13 @@
 const controller = {
-  async handleUpdateProducts() {
-    await model.updateProducts()
+  async handleUpdateProducts(isLoad = true) {
+    if (isLoad) {
+      await model.updateProducts()
+    } else {
+      model.filtrateProducts(2)
+    }
+    console.log(model.getFiltratedProducts())
 
-    model.getProducts().forEach(product => {
+    model.getFiltratedProducts().forEach(product => {
       view.renderContainerProducts(product)
     })
   },
@@ -11,6 +16,6 @@ const controller = {
     model.makeFilter()
     const filter = model.getFilter()
     view.renderWrapFilter(filter)
-    view.renderLabel()
+    // view.renderLabel()
   },
 }

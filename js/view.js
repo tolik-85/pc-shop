@@ -1,8 +1,21 @@
 const view = {
+  onFiltrateClick() {
+    controller.handleUpdateProducts(false)
+  },
+
   async onLoaded() {
     await controller.handleUpdateProducts()
     controller.handleFilter()
+    document.querySelector('#filtrate').onclick =
+      this.onFiltrateClick.bind(this)
   },
+
+  // ...
+  // browser.onclick = callback
+
+  // browser.onclick()
+  // ...
+
   renderContainerProducts(product) {
     const elContainerProducts = document.querySelector('.container-products')
     const ElProduct = generateProduct(product)
@@ -69,4 +82,4 @@ const view = {
   // },
 }
 
-document.addEventListener('DOMContentLoaded', view.onLoaded)
+document.addEventListener('DOMContentLoaded', view.onLoaded.bind(view))
