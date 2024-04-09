@@ -11,6 +11,6 @@ const controller = {
     model.makeFilter()
     const filter = model.getFilter()
     view.renderWrapFilter(filter)
-    // view.renderLabel()
+    view.renderLabel()
   },
 }

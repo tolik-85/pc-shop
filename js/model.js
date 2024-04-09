@@ -27,7 +27,7 @@ const model = {
   },
   async updateCourse() {
     const course = await api.loadCourse()
-    console.log(course)
+    // console.log(course)
   },
 
   filtrateProducts() {

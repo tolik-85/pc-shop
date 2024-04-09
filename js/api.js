@@ -12,20 +12,7 @@ const api = {
   },
 
   async loadCourse() {
-    const resp = await fetch(
-      `${API_URL_COURSE}`
-      // {
-      //   mode: 'no-cors',
-      //   method: 'post',
-      //   headers: {
-      //     'Content-Type': 'application/json',
-      //     'Access-Control-Allow-Origin': '*',
-      //   },
-      // }
-    )
-      .then(data => data.json)
-      .then(ans => console.log(ans))
-
-    // return await resp.json()
+    const resp = await fetch(`${API_URL_COURSE}`)
+    return await resp.json()
   },
 }

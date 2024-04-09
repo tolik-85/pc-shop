@@ -73,7 +73,7 @@ const view = {
     let ram = 'Оперативная память'
     let processor = 'Процессор'
 
-    console.log(Object.keys(product.specs[ssd]))
+    console.log(product.specs)
 
     const wrapProduct = document.createElement('div')
     const wrapImg = document.createElement('div')
@@ -126,11 +126,11 @@ const view = {
 
     wrapImg.appendChild(img)
     divForH3.appendChild(h3)
-    divForLabels.appendChild(laberForSsdCapacity)
-    divForLabels.appendChild(laberForSsd)
-    divForLabels.appendChild(laberForBrand)
-    divForLabels.appendChild(laberForGpu)
-    divForLabels.appendChild(laberForRam)
+    // divForLabels.appendChild(laberForSsdCapacity)
+    // divForLabels.appendChild(laberForSsd)
+    // divForLabels.appendChild(laberForBrand)
+    // divForLabels.appendChild(laberForGpu)
+    // divForLabels.appendChild(laberForRam)
     divForPrice.appendChild(parForPrice)
     divForCart.appendChild(cartBtn)
     divForFavorites.appendChild(favoritesBtn)
