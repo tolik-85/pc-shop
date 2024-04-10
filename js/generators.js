@@ -30,7 +30,7 @@ function generateFilterWrapCheckBox(value, name, key) {
   elWrap.classList.add('wrap')
   elWrapCheckBox.classList.add('wrap-checkbox')
   elInputCheckbBox.setAttribute('type', 'checkbox')
-  elInputCheckbBox.setAttribute('name', `${value}`)
+  elInputCheckbBox.setAttribute('name', `${key}_${name}`)
   elInputCheckbBox.setAttribute('id', `${key}_${name}_${value}`)
   elInputCheckbBox.setAttribute('value', `${value}`)
   const elLabelForCheckbox = document.createElement('label')
@@ -43,11 +43,11 @@ function generateFilterWrapCheckBox(value, name, key) {
   return elWrapCheckBox
 }
 
-function generateLabel(paramInner, paramFor) {
-  const elLabel = document.createElement('label')
-  elLabel.innerHTML = paramInner
-  elLabel.setAttribute('for', paramFor)
-  return elLabel
+function generateLabel(text, forLabel) {
+  const label = document.createElement('label')
+  label.innerHTML = `${text}`
+  label.setAttribute('for', `${forLabel}`)
+  return label
 }
 
 function generateProduct(product) {
@@ -55,85 +55,74 @@ function generateProduct(product) {
   const picture = product.photos.files[0]
   const purpose = product.purpose
   const caption = product.caption
-  const price = (product.price * 40).toFixed()
+  const price = (product.price * model.UsdCourse.rate).toFixed()
   const image = `${URL}${picture}`
 
-  let ssd = 'Накопитель SSD'
-  let motherBoard = 'Материнская плата'
-  let ram = 'Оперативная память'
-  let processor = 'Процессор'
+  const elWrapProduct = document.createElement('div')
+  const elWrapImg = document.createElement('div')
+  const elImg = document.createElement('img')
+  const elDivForH3 = document.createElement('div')
+  const elH3 = document.createElement('h3')
+  const elDivForLabels = document.createElement('div')
+  const elDivForPrice = document.createElement('div')
+  const elParForPrice = document.createElement('p')
+  const elRow = document.createElement('div')
+  const elDivForCart = document.createElement('div')
+  const elCartBtn = document.createElement('button')
+  const elDivForFavorites = document.createElement('div')
+  const elFavoritesBtn = document.createElement('button')
+  const elDivForCompare = document.createElement('div')
+  const elCompareBtn = document.createElement('button')
 
-  console.log(product.specs)
+  elDivForLabels.classList.add('for-label')
+  elWrapProduct.classList.add('wrap-product')
+  elWrapImg.classList.add('wrap-img')
+  elImg.setAttribute('src', `${image}`)
+  elImg.setAttribute('alt', 'product')
+  elH3.innerHTML = `${caption}`
 
-  const wrapProduct = document.createElement('div')
-  const wrapImg = document.createElement('div')
-  const img = document.createElement('img')
-  const divForH3 = document.createElement('div')
-  const h3 = document.createElement('h3')
-  const divForLabels = document.createElement('div')
-  const laberForBrand = document.createElement('label')
-  const laberForSsdCapacity = document.createElement('label')
-  const laberForRam = document.createElement('label')
-  const laberForGpu = document.createElement('label')
-  const laberForSsd = document.createElement('label')
-  const divForPrice = document.createElement('div')
-  const parForPrice = document.createElement('p')
-  const row = document.createElement('div')
-  const divForCart = document.createElement('div')
-  const cartBtn = document.createElement('button')
-  const divForFavorites = document.createElement('div')
-  const favoritesBtn = document.createElement('button')
-  const divForCompare = document.createElement('div')
-  const compareBtn = document.createElement('button')
+  elParForPrice.innerHTML = `<b>${price}</b> грн`
+  elRow.classList.add('row')
 
-  divForLabels.classList.add('for-label')
-  wrapProduct.classList.add('wrap-product')
-  wrapImg.classList.add('wrap-img')
-  img.setAttribute('src', `${image}`)
-  img.setAttribute('alt', 'product')
-  h3.innerHTML = `${caption}`
-  laberForSsdCapacity.setAttribute(
-    'for',
-    `${product.specs[ssd].capacity}_${ssd}`
-  )
-  laberForSsdCapacity.innerHTML = `${product.specs[ssd].capacity}`
-  laberForSsd.setAttribute('for', `${product.specs[ssd].brand}_${ssd}`)
-  laberForSsd.innerHTML = `${product.specs[ssd].brand}`
-  laberForBrand.setAttribute(
-    'for',
-    `${product.specs[motherBoard]?.brand}_${motherBoard}`
-  )
-  laberForBrand.innerHTML = `${product.specs[motherBoard]?.brand}`
-  laberForRam.setAttribute('for', `${product.specs[ram]?.frequency}_${ram}`)
-  laberForRam.innerHTML = `${product.specs[ram]?.frequency}`
-  laberForGpu.setAttribute(
-    'for',
-    `${product.specs[processor]?.brand}_${processor}`
-  )
-  laberForGpu.innerHTML = `${product.specs[processor]?.brand}`
-  parForPrice.innerHTML = `<b>${price}</b> грн`
-  row.classList.add('row')
+  let i = 0
+  let j = 0
+  for (const key in product.specs) {
+    i++
+    if (i >= 5) {
+      break
+    }
+    for (const name in product.specs[key]) {
+      j++
+      if (j >= 8) {
+        break
+      }
+      const label = generateLabel(
+        `${product.specs[key][name]}`,
+        `${key}_${name}_${product.specs[key][name]}`
+      )
+      elDivForLabels.appendChild(label)
+    }
+  }
 
-  wrapImg.appendChild(img)
-  divForH3.appendChild(h3)
-  // divForLabels.appendChild(laberForSsdCapacity)
-  // divForLabels.appendChild(laberForSsd)
-  // divForLabels.appendChild(laberForBrand)
-  // divForLabels.appendChild(laberForGpu)
-  // divForLabels.appendChild(laberForRam)
-  divForPrice.appendChild(parForPrice)
-  divForCart.appendChild(cartBtn)
-  divForFavorites.appendChild(favoritesBtn)
-  divForCompare.appendChild(compareBtn)
-  row.appendChild(divForCart)
-  row.appendChild(divForFavorites)
-  row.appendChild(divForCompare)
+  //как получить такой обьект
+  // const arr= [
+  //   {copt:"500gb", for:"6GB_brand_материнская плата"}
+  // ]
+  elWrapImg.appendChild(elImg)
+  elDivForH3.appendChild(elH3)
+  elDivForPrice.appendChild(elParForPrice)
+  elDivForCart.appendChild(elCartBtn)
+  elDivForFavorites.appendChild(elFavoritesBtn)
+  elDivForCompare.appendChild(elCompareBtn)
+  elRow.appendChild(elDivForCart)
+  elRow.appendChild(elDivForFavorites)
+  elRow.appendChild(elDivForCompare)
 
-  wrapProduct.appendChild(wrapImg)
-  wrapProduct.appendChild(divForH3)
-  wrapProduct.appendChild(divForLabels)
-  wrapProduct.appendChild(divForPrice)
-  wrapProduct.appendChild(row)
+  elWrapProduct.appendChild(elWrapImg)
+  elWrapProduct.appendChild(elDivForH3)
+  elWrapProduct.appendChild(elDivForLabels)
+  elWrapProduct.appendChild(elDivForPrice)
+  elWrapProduct.appendChild(elRow)
 
-  return wrapProduct
+  return elWrapProduct
 }

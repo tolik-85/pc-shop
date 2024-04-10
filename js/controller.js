@@ -5,7 +5,7 @@ const controller = {
     } else {
       model.filtrateProducts(2)
     }
-    console.log(model.getFiltratedProducts())
+    // console.log(model.getFiltratedProducts())
 
     model.getFiltratedProducts().forEach(product => {
       view.renderContainerProducts(product)

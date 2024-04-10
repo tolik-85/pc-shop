@@ -1,4 +1,7 @@
 const model = {
+  UsdCourse: {
+    rate: '',
+  },
   products: [],
   filtratedProducts: [],
   filter: {},
@@ -31,7 +34,16 @@ const model = {
   },
   async updateCourse() {
     const course = await api.loadCourse()
-    // console.log(course)
+    this.setUsdCouse(course)
+  },
+  setUsdCouse(course) {
+    course.forEach(item => {
+      for (key in item) {
+        if (item[key] === 840) {
+          this.UsdCourse.rate = item.rate
+        }
+      }
+    })
   },
 
   filtrateProducts(i = 5) {
@@ -58,6 +70,9 @@ const model = {
           }
           for (key3 of item.specs[key][key2]) {
             if (!this.filter[key][key2].includes(item.specs[key][key2])) {
+              if (item.specs[key][key2].includes('???')) {
+                item.specs[key][key2] = item.specs[key][key2].replace('???', '')
+              }
               this.filter[key][key2].push(item.specs[key][key2])
             }
           }
