@@ -9,16 +9,11 @@ const view = {
     controller.handleFilter()
     document.querySelector('#filtrate').onclick =
       this.onFiltrateClick.bind(this)
+    this.getCheckedCheckboxes()
   },
 
-  // ...
-  // browser.onclick = callback
-
-  // browser.onclick()
-  // ...
-
   renderContainerProducts(product) {
-    const elContainerProducts = document.querySelector('.container-products')
+    let elContainerProducts = document.querySelector('.container-products')
     const ElProduct = generateProduct(product)
     elContainerProducts.appendChild(ElProduct)
   },
@@ -40,6 +35,31 @@ const view = {
       }
     }
   },
+
+  getCheckedCheckboxes() {
+    const elCheckboxes = document.querySelectorAll('input[type="checkbox"]')
+    elCheckboxes.forEach(chBox => {
+      chBox.addEventListener('change', function () {
+        if (this.checked) {
+          const id = chBox.getAttribute('id')
+          model.checkedCheckBoxes.push(id)
+          console.log(model.checkedCheckBoxes)
+        } else {
+          const id = chBox.getAttribute('id')
+          const index = model.checkedCheckBoxes.indexOf(id)
+          model.checkedCheckBoxes.splice(index, 1)
+          console.log(model.checkedCheckBoxes)
+        }
+      })
+    })
+  },
+  // checkBoxChange() {
+  //   if (chBox.checked) {
+  //     console.log('Checkbox выбран')
+  //   } else {
+  //     console.log('Checkbox не выбран')
+  //   }
+  // },
 }
 
 document.addEventListener('DOMContentLoaded', view.onLoaded.bind(view))

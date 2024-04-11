@@ -9,6 +9,7 @@ const model = {
     'Накопитель SSD__brand__Kingston',
     'Накопитель SSD__brand__GoodRAM',
   ],
+  checkedCheckBoxes: [],
 
   setProducts(products) {
     this.products = products
