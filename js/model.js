@@ -14,7 +14,14 @@ const model = {
   setProducts(products) {
     this.products = products
   },
-
+  getProductsNames() {
+    const products = this.getProducts()
+    const productsNames = []
+    products.forEach(product => {
+      productsNames.push(product.caption)
+    })
+    return productsNames
+  },
   getProducts() {
     return this.products
   },

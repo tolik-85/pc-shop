@@ -9,7 +9,8 @@ const view = {
     controller.handleFilter()
     document.querySelector('#filtrate').onclick =
       this.onFiltrateClick.bind(this)
-    this.getCheckedCheckboxes()
+    this.addRemoveCheckedCheckboxes()
+    this.addEventListener()
   },
 
   renderContainerProducts(product) {
@@ -35,8 +36,20 @@ const view = {
       }
     }
   },
+  renderRangeWrap() {
+    const elPriceFromRange = document.querySelector('#priceFrom')
+    const elPriceToRange = document.querySelector('#priceTo')
+    const elSpanRangePriceFrom = document.querySelector('.price-from')
+    const elSpanRangePriceTo = document.querySelector('.price-to')
 
-  getCheckedCheckboxes() {
+    elSpanRangePriceFrom.innerHTML = elPriceFromRange.value
+    elSpanRangePriceTo.innerHTML = elPriceToRange.value
+  },
+  onChangeInputRange() {
+    view.renderRangeWrap()
+  },
+
+  addRemoveCheckedCheckboxes() {
     const elCheckboxes = document.querySelectorAll('input[type="checkbox"]')
     elCheckboxes.forEach(chBox => {
       chBox.addEventListener('change', function () {
@@ -53,13 +66,39 @@ const view = {
       })
     })
   },
-  // checkBoxChange() {
-  //   if (chBox.checked) {
-  //     console.log('Checkbox выбран')
-  //   } else {
-  //     console.log('Checkbox не выбран')
-  //   }
-  // },
+
+  getProductsFromSearchForm(word, product) {
+    return product.filter(prod => {
+      const regex = new RegExp(word, 'gi')
+      return prod.match(regex)
+    })
+  },
+
+  renderLeftOptions() {
+    // const searchInput = document.querySelector('.search')
+    const searchOptions = document.querySelector('.options')
+    const productsNames = model.getProductsNames()
+    const options = view.getProductsFromSearchForm(this.value, productsNames)
+
+    const result = options
+      .map(productName => {
+        return `<li><span>${productName}</span></li>`
+      })
+      .join('')
+    searchOptions.innerHTML = this.value ? result : null
+  },
+
+  addEventListener() {
+    const searchInput = document.querySelector('.search')
+    searchInput.addEventListener('change', this.renderLeftOptions)
+    searchInput.addEventListener('keyup', this.renderLeftOptions)
+
+    const elPriceFromRange = document.querySelector('#priceFrom')
+    const elPriceToRange = document.querySelector('#priceTo')
+
+    elPriceFromRange.addEventListener('input', this.onChangeInputRange)
+    elPriceToRange.addEventListener('input', this.onChangeInputRange)
+  },
 }
 
 document.addEventListener('DOMContentLoaded', view.onLoaded.bind(view))

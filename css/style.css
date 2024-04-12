@@ -11,7 +11,7 @@
 .row {
   font-size: 0;
   white-space: nowrap;
-  overflow: hidden;
+  /* overflow: hidden; */
 }
 .row > * {
   display: inline-block;
@@ -19,7 +19,7 @@
   font-size: 16px;
   white-space: normal;
   height: 100%;
-  overflow: hidden;
+  /* overflow: hidden; */
 }
 
 .pave {
@@ -373,4 +373,30 @@ a {
 }
 .wrap-checkbox > label {
   padding-left: 10px;
+}
+.options {
+  position: absolute;
+  background: lightgray;
+  top: 55px;
+  z-index: 40;
+  width: 100%;
+  overflow: visible;
+}
+.options > li {
+  list-style-type: none;
+  cursor: pointer;
+  /* position: relative;
+  z-index: 3;
+  top: 0;
+  overflow: visible; */
+}
+.options > li:hover {
+  background-color: orange;
+}
+.range-wrap {
+  margin: 5px;
+}
+.priceFromWrap,
+.priceToWrap {
+  padding: 6px;
 }
