@@ -23,6 +23,11 @@ const view = {
     elContainerProducts.appendChild(ElProduct)
   },
 
+  renderContainerProductsClear() {
+    let elContainerProducts = document.querySelector('.container-products')
+    elContainerProducts.innerHTML = ''
+  },
+
   renderWrapFilter(filter) {
     const elWrapFilter = document.querySelector('.wrap-filter')
     for (const key in filter) {

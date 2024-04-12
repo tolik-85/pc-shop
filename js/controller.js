@@ -1,5 +1,6 @@
 const controller = {
   async handleUpdateProducts(isLoad = true) {
+    console.log(isLoad)
     if (isLoad) {
       await model.updateProducts()
     } else {
@@ -7,6 +8,7 @@ const controller = {
     }
     // console.log(model.getFiltratedProducts())
 
+    view.renderContainerProductsClear()
     model.getFiltratedProducts().forEach(product => {
       view.renderContainerProducts(product)
     })

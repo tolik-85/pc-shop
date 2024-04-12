@@ -5,7 +5,7 @@ const model = {
   products: [],
   filtratedProducts: [],
   filter: {},
-  checkedFilters: [],
+  checkedFilters: ['Накопитель SSD__brand__GoodRAM'],
 
   addCheckedCheckboxes(checkedFilter) {
     this.checkedFilters.push(checkedFilter)
@@ -60,6 +60,7 @@ const model = {
   },
 
   filtrateProducts(i = 5) {
+    console.log(i)
     this.filtratedProducts = this.products.slice(0, i)
     // console.log('hi')
     // .filter(item => {
