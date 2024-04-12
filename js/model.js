@@ -60,8 +60,22 @@ const model = {
   },
 
   filtrateProducts(i = 5) {
-    console.log(i)
-    this.filtratedProducts = this.products.slice(0, i)
+    // this.filtratedProducts = this.products.slice(0, i)
+
+    // this.filtratedProducts = this.products.filter(product => {
+    //   return Math.random() - 0.5 > 0
+    // })
+
+    this.filtratedProducts = this.products.filter(product => {
+      console.log('====================')
+      console.log(this.checkedFilters)
+      console.log(product.specs)
+      console.log('====================')
+      return Math.random() - 0.5 > 0
+    })
+
+    console.log(this.filtratedProducts)
+
     // console.log('hi')
     // .filter(item => {
     //   for (key in item.specs) {
