@@ -18,4 +18,14 @@ const controller = {
     view.renderWrapFilter(filter)
     // view.renderLabel()
   },
+
+  handleFilterCheckbox(id, actionAdd) {
+    console.log(actionAdd)
+    if (actionAdd) {
+      model.addCheckedCheckboxes(id)
+    } else {
+      model.removeCheckedCheckboxes(id)
+    }
+    console.log(model.checkedFilters)
+  },
 }

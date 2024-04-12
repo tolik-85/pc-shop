@@ -5,11 +5,16 @@ const model = {
   products: [],
   filtratedProducts: [],
   filter: {},
-  checkedParams: [
-    'Накопитель SSD__brand__Kingston',
-    'Накопитель SSD__brand__GoodRAM',
-  ],
-  checkedCheckBoxes: [],
+  checkedFilters: [],
+
+  addCheckedCheckboxes(checkedFilter) {
+    this.checkedFilters.push(checkedFilter)
+  },
+
+  removeCheckedCheckboxes(checkedFilter) {
+    const index = this.checkedFilters.indexOf(checkedFilter)
+    this.checkedFilters.splice(index, 1)
+  },
 
   setProducts(products) {
     this.products = products

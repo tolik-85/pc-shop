@@ -1,3 +1,7 @@
+// render
+// generate
+// on
+
 const view = {
   onFiltrateClick() {
     controller.handleUpdateProducts(false)
@@ -9,8 +13,8 @@ const view = {
     controller.handleFilter()
     document.querySelector('#filtrate').onclick =
       this.onFiltrateClick.bind(this)
-    this.addRemoveCheckedCheckboxes()
     this.addEventListener()
+    this.renderFilterCheckboxes()
   },
 
   renderContainerProducts(product) {
@@ -49,22 +53,18 @@ const view = {
     view.renderRangeWrap()
   },
 
-  addRemoveCheckedCheckboxes() {
-    const elCheckboxes = document.querySelectorAll('input[type="checkbox"]')
+  renderFilterCheckboxes() {
+    const elCheckboxes = document.querySelectorAll(
+      '.wrap-filter [type="checkbox"]'
+    )
     elCheckboxes.forEach(chBox => {
-      chBox.addEventListener('change', function () {
-        if (this.checked) {
-          const id = chBox.getAttribute('id')
-          model.checkedCheckBoxes.push(id)
-          console.log(model.checkedCheckBoxes)
-        } else {
-          const id = chBox.getAttribute('id')
-          const index = model.checkedCheckBoxes.indexOf(id)
-          model.checkedCheckBoxes.splice(index, 1)
-          console.log(model.checkedCheckBoxes)
-        }
-      })
+      chBox.addEventListener('change', this.onChangeFilterCheckbox)
     })
+  },
+
+  onChangeFilterCheckbox(e) {
+    const id = e.target.getAttribute('id')
+    controller.handleFilterCheckbox(id, e.target.checked)
   },
 
   getProductsFromSearchForm(word, product) {
