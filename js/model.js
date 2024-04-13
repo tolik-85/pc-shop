@@ -6,7 +6,11 @@ const model = {
   filtratedProducts: [],
   filter: {},
   // checkedFilters: [],
-  checkedFilters: ['Накопитель SSD_brand_GoodRAM'],
+  checkedFilters: [
+    // 'Накопитель SSD_brand_Kingston',
+    // 'Материнская плата_brand_Asus',
+    // 'Оперативная память_capacity_16Gb',
+  ],
 
   addCheckedCheckboxes(checkedFilter) {
     this.checkedFilters.push(checkedFilter)
@@ -62,14 +66,26 @@ const model = {
 
   filtrateProducts(i = 5) {
     this.filtratedProducts = this.products.filter(product => {
-      let param = []
-      this.checkedFilters.forEach(el => {
-        param = el.split('_')
+      let count = 0
+
+      this.checkedFilters.forEach(cf => {
+        let param = cf.split('_')
+        console.log(param)
+        if (product.specs[param[0]]?.[param[1]] === param[2]) {
+          count += 1
+        }
       })
 
-      if (product.specs[param[0]][param[1]] === param[2]) {
-        return true
-      }
+      console.log(count)
+      console.log(this.checkedFilters.length === count)
+
+      return this.checkedFilters.length === count
+
+      // console.log(product.specs)
+      // console.log(param[0])
+      // console.log(product.specs[param[0]])
+      // console.log(product.specs[param[0]][param[1]])
+
       // this.checkedFilters.forEach(el => {
       //   param = el.split('_')
       //   for (key in product.specs) {
