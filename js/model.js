@@ -5,7 +5,8 @@ const model = {
   products: [],
   filtratedProducts: [],
   filter: {},
-  checkedFilters: ['Накопитель SSD__brand__GoodRAM'],
+  // checkedFilters: [],
+  checkedFilters: ['Накопитель SSD_brand_GoodRAM'],
 
   addCheckedCheckboxes(checkedFilter) {
     this.checkedFilters.push(checkedFilter)
@@ -60,23 +61,42 @@ const model = {
   },
 
   filtrateProducts(i = 5) {
-    // this.filtratedProducts = this.products.slice(0, i)
-
-    // this.filtratedProducts = this.products.filter(product => {
-    //   return Math.random() - 0.5 > 0
-    // })
-
     this.filtratedProducts = this.products.filter(product => {
-      console.log('====================')
-      console.log(this.checkedFilters)
-      console.log(product.specs)
-      console.log('====================')
-      return Math.random() - 0.5 > 0
+      let param = []
+      this.checkedFilters.forEach(el => {
+        param = el.split('_')
+      })
+
+      if (product.specs[param[0]][param[1]] === param[2]) {
+        return true
+      }
+      // this.checkedFilters.forEach(el => {
+      //   param = el.split('_')
+      //   for (key in product.specs) {
+      //     if (key === param[0]) {
+      //       // console.log(key === param[0])
+      //       for (key2 in product.specs[key]) {
+      //         // console.log(key2 === product.specs[key])
+      //         if (key2 === param[1]) {
+      //           for (key3 in product.specs[key][key2]) {
+      //             if (product.specs[key][key2] === param[2]) {
+      //               console.log(product.specs[key][key2] === param[2])
+      //               return true
+      //             }
+      //           }
+      //         }
+      //       }
+      //     }
+      //   }
+      // })
+      // console.log(product.specs[param[0]][param[1]])
+      // return product.specs[param[0]][param[1]] === param[2]
+      // return Math.random() - 0.5 > 0
+      // return true
     })
 
-    console.log(this.filtratedProducts)
+    // console.log(this.filtratedProducts)
 
-    // console.log('hi')
     // .filter(item => {
     //   for (key in item.specs) {
     //     for (key2 in item.specs[key]) {

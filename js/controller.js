@@ -1,6 +1,6 @@
 const controller = {
   async handleUpdateProducts(isLoad = true) {
-    console.log(isLoad)
+    // console.log(isLoad)
     if (isLoad) {
       await model.updateProducts()
     } else {
@@ -22,12 +22,12 @@ const controller = {
   },
 
   handleFilterCheckbox(id, actionAdd) {
-    console.log(actionAdd)
+    // console.log(actionAdd)
     if (actionAdd) {
       model.addCheckedCheckboxes(id)
     } else {
       model.removeCheckedCheckboxes(id)
     }
-    console.log(model.checkedFilters)
+    // console.log(model.checkedFilters)
   },
 }
