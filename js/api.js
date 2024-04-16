@@ -1,4 +1,5 @@
-const API_URL = 'http://35.225.111.193:8181/api/v3/products/computers'
+// const API_URL = 'http://35.225.111.193:8181/api/v3/products/computers'
+const API_URL = 'https://web-app.click/pc-shop/api/v0/products/'
 
 const API_URL_COURSE =
   'https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?json'

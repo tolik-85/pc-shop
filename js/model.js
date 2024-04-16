@@ -5,14 +5,10 @@ const model = {
   products: [],
   filtratedProducts: [],
   filter: {},
-  // checkedFilters: [],
-  checkedFilters: [
-    // 'Накопитель SSD_brand_Kingston',
-    // 'Материнская плата_brand_Asus',
-    // 'Оперативная память_capacity_16Gb',
-  ],
+  checkedFilters: [],
 
   addCheckedCheckboxes(checkedFilter) {
+    console.log(checkedFilter)
     this.checkedFilters.push(checkedFilter)
   },
 
@@ -43,7 +39,23 @@ const model = {
   getFilter() {
     return this.filter
   },
+  getMaxPriceUAH() {
+    const productsPrices = []
+    this.products.forEach(product => {
+      productsPrices.push(product.price)
+    })
+    let maxPriceUsd = Math.max.apply(null, productsPrices)
+    return (maxPriceUsd * model.UsdCourse.rate).toFixed()
+  },
+  getMinPriceUAH() {
+    const productsPrices = []
+    this.products.forEach(product => {
+      productsPrices.push(product.price)
+    })
+    let maxPriceUsd = Math.min.apply(null, productsPrices)
 
+    return (maxPriceUsd * model.UsdCourse.rate).toFixed()
+  },
   async updateProducts() {
     const products = await api.loadProducts()
     this.setProducts(products)
@@ -71,75 +83,24 @@ const model = {
       this.checkedFilters.forEach(cf => {
         let param = cf.split('_')
         console.log(param)
-        if (product.specs[param[0]]?.[param[1]] === param[2]) {
+        if (product.attributes[param[0]] === param[1]) {
           count += 1
         }
       })
 
-      console.log(count)
-      console.log(this.checkedFilters.length === count)
-
       return this.checkedFilters.length === count
-
-      // console.log(product.specs)
-      // console.log(param[0])
-      // console.log(product.specs[param[0]])
-      // console.log(product.specs[param[0]][param[1]])
-
-      // this.checkedFilters.forEach(el => {
-      //   param = el.split('_')
-      //   for (key in product.specs) {
-      //     if (key === param[0]) {
-      //       // console.log(key === param[0])
-      //       for (key2 in product.specs[key]) {
-      //         // console.log(key2 === product.specs[key])
-      //         if (key2 === param[1]) {
-      //           for (key3 in product.specs[key][key2]) {
-      //             if (product.specs[key][key2] === param[2]) {
-      //               console.log(product.specs[key][key2] === param[2])
-      //               return true
-      //             }
-      //           }
-      //         }
-      //       }
-      //     }
-      //   }
-      // })
-      // console.log(product.specs[param[0]][param[1]])
-      // return product.specs[param[0]][param[1]] === param[2]
-      // return Math.random() - 0.5 > 0
-      // return true
     })
-
-    // console.log(this.filtratedProducts)
-
-    // .filter(item => {
-    //   for (key in item.specs) {
-    //     for (key2 in item.specs[key]) {
-    //       // console.log(`${key}__${key2}__${item.specs[key][key2]}`)
-    //     }
-    //   }
-    // })
   },
 
   makeFilter() {
     this.products.forEach(item => {
-      for (key in item.specs) {
+      for (key in item.attributes) {
         if (!this.filter[key]) {
-          this.filter[key] = {}
+          model.filter[key] = []
         }
-        for (key2 in item.specs[key]) {
-          if (!this.filter[key][key2]) {
-            this.filter[key][key2] = []
-          }
-          for (key3 of item.specs[key][key2]) {
-            if (!this.filter[key][key2].includes(item.specs[key][key2])) {
-              if (item.specs[key][key2].includes('???')) {
-                item.specs[key][key2] = item.specs[key][key2].replace('???', '')
-              }
-              this.filter[key][key2].push(item.specs[key][key2])
-            }
-          }
+        for (key2 in item.attributes[key]) {
+          if (!this.filter[key].includes(item.attributes[key]))
+            this.filter[key].push(item.attributes[key])
         }
       }
     })

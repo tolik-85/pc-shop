@@ -22,7 +22,7 @@ function generateFilterGroupWrappers() {
   return elGroupWrappers
 }
 
-function generateFilterWrapCheckBox(value, name, key) {
+function generateFilterWrapCheckBox(value, name) {
   const elWrap = document.createElement('div')
   const elWrapCheckBox = document.createElement('div')
   const elInputCheckbBox = document.createElement('input')
@@ -30,11 +30,11 @@ function generateFilterWrapCheckBox(value, name, key) {
   elWrap.classList.add('wrap')
   elWrapCheckBox.classList.add('wrap-checkbox')
   elInputCheckbBox.setAttribute('type', 'checkbox')
-  elInputCheckbBox.setAttribute('name', `${key}_${name}`)
-  elInputCheckbBox.setAttribute('id', `${key}_${name}_${value}`)
-  elInputCheckbBox.setAttribute('value', `${value}`)
+  elInputCheckbBox.setAttribute('name', `${value}_${name}`)
+  elInputCheckbBox.setAttribute('id', `${name}_${value}`)
+  elInputCheckbBox.setAttribute('value', `${name}`)
   const elLabelForCheckbox = document.createElement('label')
-  elLabelForCheckbox.setAttribute('for', `${key}_${name}_${value}`)
+  elLabelForCheckbox.setAttribute('for', `${name}_${value}`)
   elLabelForCheckbox.innerHTML = `${value}`
 
   elWrapCheckBox.appendChild(elInputCheckbBox)
@@ -51,9 +51,9 @@ function generateLabel(text, forLabel) {
 }
 
 function generateProduct(product) {
-  const URL = 'http://35.225.111.193:8181/img/products/'
-  const picture = product.photos.files[0]
-  const purpose = product.purpose
+  const URL = 'https://web-app.click/pc-shop/photos/products/computers/'
+  const picture = product.photos[0]
+  // const purpose = product.purpose
   const caption = product.caption
   const price = (product.price * model.UsdCourse.rate).toFixed()
   const image = `${URL}${picture}`
@@ -85,23 +85,17 @@ function generateProduct(product) {
   elRow.classList.add('row')
 
   let i = 0
-  let j = 0
-  for (const key in product.specs) {
+
+  for (const key in product.attributes) {
     i++
-    if (i >= 5) {
+    if (i >= 10) {
       break
     }
-    for (const name in product.specs[key]) {
-      j++
-      if (j >= 8) {
-        break
-      }
-      const label = generateLabel(
-        `${product.specs[key][name]}`,
-        `${key}_${name}_${product.specs[key][name]}`
-      )
-      elDivForLabels.appendChild(label)
-    }
+    const label = generateLabel(
+      `${product.attributes[key]}`,
+      `${key}_${product.attributes[key]}`
+    )
+    elDivForLabels.appendChild(label)
   }
 
   //как получить такой обьект
