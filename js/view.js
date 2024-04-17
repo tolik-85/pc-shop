@@ -58,48 +58,24 @@ const view = {
     const minPrice = model.getMinPriceUAH()
 
     elPriceFromRange.min = minPrice
+    elPriceFromRange.max = maxPrice
+    elPriceToRange.min = minPrice
     elPriceToRange.max = maxPrice
-
-    // elPriceFromRange.value = elPriceFromRange.value <= elPriceToRange.value
-    // elPriceToRange.value = elPriceToRange.value >= elPriceFromRange.value
-
-    // if (elPriceFromRange.value === elPriceToRange.value) {
-    //   console.log('hello')
-    //   elPriceToRange.value = elPriceFromRange.value
-    // }
-    elPriceFromRange.max = elPriceToRange.value
-    elPriceToRange.min = elPriceFromRange.value
 
     elSpanRangePriceFrom.innerHTML = elPriceFromRange.value
     elSpanRangePriceTo.innerHTML = elPriceToRange.value
-
-    // if (elPriceFromRange.value >= maxPrice - elPriceToRange.value) {
-    //   elPriceFromRange.value = elPriceToRange.value
-    // }
-    // if (elPriceFromRange.value === elPriceToRange.value) {
-    //   elPriceFromRange.value = elPriceToRange.value
-    // }
-    // elPriceFromRange.max = maxPrice - elPriceToRange.value
-    // elPriceToRange.min = elPriceFromRange.value
-    // elPriceFromRange.max = elPriceToRange.value
-    // elPriceToRange.min = elPriceFromRange.value
   },
   onChangeInputRange(e) {
     view.renderRangeWrap()
-  },
-  onChangeInputRangeFrom(e) {
-    // console.log(e.target.value)
     const elPriceFromRange = document.querySelector('#priceFrom')
     const elPriceToRange = document.querySelector('#priceTo')
-    // if (elPriceFromRange.value === elPriceToRange.value) {
-    //   elPriceFromRange.max = elPriceToRange.max
-    //   elPriceToRange.value = e.target.value
-    // }
-  },
-  onChangeInputRangeFromTo(e) {
-    // console.log(e.target.value)
-    const elPriceFromRange = document.querySelector('#priceFrom')
-    const elPriceToRange = document.querySelector('#priceTo')
+
+    if (+e.target.value > +elPriceToRange.value) {
+      elPriceToRange.value = +e.target.value
+    }
+    if (+e.target.value < +elPriceFromRange.value) {
+      elPriceFromRange.value = +e.target.value
+    }
   },
 
   renderFilterCheckboxes() {
@@ -146,9 +122,7 @@ const view = {
     const elPriceToRange = document.querySelector('#priceTo')
 
     elPriceFromRange.addEventListener('input', this.onChangeInputRange)
-    elPriceFromRange.addEventListener('input', this.onChangeInputRangeFrom)
     elPriceToRange.addEventListener('input', this.onChangeInputRange)
-    elPriceToRange.addEventListener('input', this.onChangeInputRangeFromTo)
   },
 }
 

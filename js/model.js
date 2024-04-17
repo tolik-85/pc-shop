@@ -56,6 +56,14 @@ const model = {
 
     return (maxPriceUsd * model.UsdCourse.rate).toFixed()
   },
+  getPriceFilterFrom() {
+    const priceFrom = document.querySelector('#priceFrom')
+    return priceFrom.value
+  },
+  getPriceFilterTo() {
+    const priceTo = document.querySelector('#priceTo')
+    return priceTo.value
+  },
   async updateProducts() {
     const products = await api.loadProducts()
     this.setProducts(products)
@@ -75,14 +83,23 @@ const model = {
       }
     })
   },
+  filtrateProductsByPrice() {
+    this.filtratedProducts = this.products.filter(product => {
+      const priceFrom = this.getPriceFilterFrom()
+      const priceTo = this.getPriceFilterTo()
+      const price = (product.price * model.UsdCourse.rate).toFixed()
 
+      if (priceFrom > price && priceTo > price) {
+        return product
+      }
+    })
+  },
   filtrateProducts(i = 5) {
     this.filtratedProducts = this.products.filter(product => {
       let count = 0
 
       this.checkedFilters.forEach(cf => {
         let param = cf.split('_')
-        console.log(param)
         if (product.attributes[param[0]] === param[1]) {
           count += 1
         }
