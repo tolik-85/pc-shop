@@ -84,13 +84,13 @@ const model = {
     })
   },
   filtrateProductsByPrice() {
-    this.filtratedProducts = this.products.filter(product => {
+    this.filtratedProducts = this.filtratedProducts.filter(product => {
       const priceFrom = this.getPriceFilterFrom()
       const priceTo = this.getPriceFilterTo()
       const price = (product.price * model.UsdCourse.rate).toFixed()
 
-      if (priceFrom > price && priceTo > price) {
-        return product
+      if (priceFrom > price && price < priceTo) {
+        return true
       }
     })
   },

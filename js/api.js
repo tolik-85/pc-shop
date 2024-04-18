@@ -9,7 +9,8 @@ const API_URL_COURSE =
 const api = {
   async loadProducts() {
     const resp = await fetch(`${API_URL}`)
-    return await resp.json()
+
+    return (await resp.json()).payload
   },
 
   async loadCourse() {

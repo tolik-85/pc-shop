@@ -30,5 +30,9 @@ const controller = {
   },
   handlerElSelect(elSelectValue) {
     model.sortProducts(elSelectValue)
+    view.renderContainerProductsClear()
+    model.getFiltratedProducts().forEach(product => {
+      view.renderContainerProducts(product)
+    })
   },
 }
