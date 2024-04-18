@@ -28,4 +28,7 @@ const controller = {
     }
     // console.log(model.checkedFilters)
   },
+  handlerElSelect(elSelectValue) {
+    model.sortProducts(elSelectValue)
+  },
 }

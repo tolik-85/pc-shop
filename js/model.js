@@ -122,4 +122,38 @@ const model = {
       }
     })
   },
+  sortProducts(elSelectValue) {
+    if (elSelectValue === 'От А до Я') {
+      console.log('От А до Я')
+      this.filtratedProducts.sort((a, b) => {
+        if (a.caption < b.caption) {
+          return -1
+        }
+        if (a.caption > b.caption) {
+          return 1
+        }
+        return 0
+      })
+    }
+    if (elSelectValue === 'От Я до А') {
+      console.log('От Я до А')
+      this.filtratedProducts.sort((a, b) => {
+        if (a.caption < b.caption) {
+          return 1
+        }
+        if (a.caption > b.caption) {
+          return -1
+        }
+        return 0
+      })
+    }
+    if (elSelectValue === 'Цена по возростанию') {
+      console.log('Цена по возростанию')
+      this.filtratedProducts.sort((a, b) => a.price - b.price)
+    }
+    if (elSelectValue === 'Цена по убыванию') {
+      console.log('Цена по убыванию')
+      this.filtratedProducts.sort((a, b) => b.price - a.price)
+    }
+  },
 }

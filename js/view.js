@@ -15,8 +15,17 @@ const view = {
       this.onFiltrateClick.bind(this)
     this.addEventListener()
     this.renderFilterCheckboxes()
+    this.renderSortSelect()
   },
-
+  renderSortSelect() {
+    const elSelect = document.querySelector('#select-products')
+    elSelect.addEventListener('change', this.onChangeSelectHandler)
+  },
+  onChangeSelectHandler(e) {
+    const elSelect = document.querySelector('#select-products')
+    elSelectValue = elSelect.value
+    controller.handlerElSelect(elSelectValue)
+  },
   renderContainerProducts(product) {
     let elContainerProducts = document.querySelector('.container-products')
     const ElProduct = generateProduct(product)
@@ -43,12 +52,7 @@ const view = {
       })
     }
   },
-  // checkValForFromRange() {
-  //   if (elPriceFromRange.value === elPriceToRange.value) {
-  //     return elPriceToRange.value
-  //   }
-  // },
-  // },
+
   renderRangeWrap() {
     const elPriceFromRange = document.querySelector('#priceFrom')
     const elPriceToRange = document.querySelector('#priceTo')
