@@ -12,7 +12,13 @@ const controller = {
       view.renderContainerProducts(product)
     })
   },
-
+  onClickPaginationHandler(pagNum) {
+    let productsPagin = model.pagination(pagNum)
+    view.renderContainerProductsClear()
+    productsPagin.forEach(product => {
+      view.renderContainerProducts(product)
+    })
+  },
   handleFilter() {
     model.makeFilter()
     const filter = model.getFilter()

@@ -412,3 +412,6 @@ a {
   padding: 15px;
   padding-right: 68px;
 }
+.paginator > span {
+  cursor: pointer;
+}

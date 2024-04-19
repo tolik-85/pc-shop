@@ -16,6 +16,21 @@ const view = {
     this.addEventListener()
     this.renderFilterCheckboxes()
     this.renderSortSelect()
+    this.paginationListener()
+    this.startPagination()
+  },
+  startPagination() {
+    const startNum = 1
+    controller.onClickPaginationHandler(startNum)
+  },
+  paginationListener() {
+    const pagination = document.querySelector('.paginator')
+    pagination.addEventListener('click', view.onClickPagination)
+  },
+  onClickPagination(e) {
+    let pagNum = e.target.innerHTML
+    pagNum = parseInt(pagNum.replace(/[^\d]/g, ''))
+    controller.onClickPaginationHandler(pagNum)
   },
   renderSortSelect() {
     const elSelect = document.querySelector('#select-products')

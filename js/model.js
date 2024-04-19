@@ -83,6 +83,15 @@ const model = {
       }
     })
   },
+  pagination(pageNum) {
+    let paginationProducts = this.filtratedProducts
+    let numPerPage = 7
+    let startIdx = pageNum * numPerPage
+    let endIdx = startIdx + numPerPage
+
+    paginationProducts = this.getProducts().slice(startIdx, endIdx)
+    return paginationProducts
+  },
   filtrateProductsByPrice() {
     this.filtratedProducts = this.filtratedProducts.filter(product => {
       const priceFrom = this.getPriceFilterFrom()
