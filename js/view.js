@@ -17,7 +17,8 @@ const view = {
     this.renderFilterCheckboxes()
     this.renderSortSelect()
     this.paginationListener()
-    this.startPagination()
+    this.renderRangeWrap()
+    // this.startPagination()
   },
   startPagination() {
     const startNum = 1
@@ -80,6 +81,8 @@ const view = {
     elPriceFromRange.max = maxPrice
     elPriceToRange.min = minPrice
     elPriceToRange.max = maxPrice
+    // elPriceToRange.value = maxPrice
+    // elPriceFromRange.value = minPrice
 
     elSpanRangePriceFrom.innerHTML = elPriceFromRange.value
     elSpanRangePriceTo.innerHTML = elPriceToRange.value
@@ -118,19 +121,19 @@ const view = {
     })
   },
 
-  renderLeftOptions() {
-    // const searchInput = document.querySelector('.search')
-    const searchOptions = document.querySelector('.options')
-    const productsNames = model.getProductsNames()
-    const options = view.getProductsFromSearchForm(this.value, productsNames)
+  // renderLeftOptions() {
+  //   // const searchInput = document.querySelector('.search')
+  //   const searchOptions = document.querySelector('.options')
+  //   const productsNames = model.getProductsNames()
+  //   const options = view.getProductsFromSearchForm(this.value, productsNames)
 
-    const result = options
-      .map(productName => {
-        return `<li><span>${productName}</span></li>`
-      })
-      .join('')
-    searchOptions.innerHTML = this.value ? result : null
-  },
+  //   const result = options
+  //     .map(productName => {
+  //       return `<li><span>${productName}</span></li>`
+  //     })
+  //     .join('')
+  //   searchOptions.innerHTML = this.value ? result : null
+  // },
 
   addEventListener() {
     const searchInput = document.querySelector('.search')

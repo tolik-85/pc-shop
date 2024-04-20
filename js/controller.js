@@ -23,6 +23,7 @@ const controller = {
     model.makeFilter()
     const filter = model.getFilter()
     view.renderWrapFilter(filter)
+    model.updateCourse()
   },
 
   handleFilterCheckbox(id, actionAdd) {

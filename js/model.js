@@ -8,7 +8,6 @@ const model = {
   checkedFilters: [],
 
   addCheckedCheckboxes(checkedFilter) {
-    console.log(checkedFilter)
     this.checkedFilters.push(checkedFilter)
   },
 
@@ -45,6 +44,7 @@ const model = {
       productsPrices.push(product.price)
     })
     let maxPriceUsd = Math.max.apply(null, productsPrices)
+    // return maxPriceUsd
     return (maxPriceUsd * model.UsdCourse.rate).toFixed()
   },
   getMinPriceUAH() {
@@ -54,6 +54,7 @@ const model = {
     })
     let maxPriceUsd = Math.min.apply(null, productsPrices)
 
+    // return maxPriceUsd
     return (maxPriceUsd * model.UsdCourse.rate).toFixed()
   },
   getPriceFilterFrom() {
@@ -89,18 +90,23 @@ const model = {
     let startIdx = pageNum * numPerPage
     let endIdx = startIdx + numPerPage
 
-    paginationProducts = this.getProducts().slice(startIdx, endIdx)
+    paginationProducts = paginationProducts.slice(startIdx, endIdx)
     return paginationProducts
   },
   filtrateProductsByPrice() {
     this.filtratedProducts = this.filtratedProducts.filter(product => {
-      const priceFrom = this.getPriceFilterFrom()
-      const priceTo = this.getPriceFilterTo()
-      const price = (product.price * model.UsdCourse.rate).toFixed()
+      let priceFrom = this.getPriceFilterFrom()
+      let priceTo = this.getPriceFilterTo()
+      const course = model.UsdCourse.rate
+      priceFrom = (priceFrom / course).toFixed()
+      priceTo = (priceTo / course).toFixed()
+      // const price = (product.price * model.UsdCourse.rate).toFixed()
+      const price = product.price
 
-      if (priceFrom > price && price < priceTo) {
+      if (priceFrom <= price && price <= priceTo) {
         return true
       }
+      // return priceFrom <= price && price <= priceTo
     })
   },
   filtrateProducts(i = 5) {
@@ -109,6 +115,7 @@ const model = {
 
       this.checkedFilters.forEach(cf => {
         let param = cf.split('_')
+        // console.log(param)
         if (product.attributes[param[0]] === param[1]) {
           count += 1
         }
