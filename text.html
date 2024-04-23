@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script src="js/api.js"></script>
+    <script src="js/model.js"></script>
+    <script>
+      ;(async function (arguments) {
+        console.log('products', model.products.length)
+        console.log('searchedProducts', model.searchedProducts.length)
+        console.log('filtratedProducts', model.filtratedProducts.length)
+
+        await model.updateProducts()
+
+        console.log('products', model.products.length)
+
+        model.searchProducts('гейм')
+
+        console.log('searchedProducts', model.searchedProducts.length)
+
+        console.log('filtratedProducts', model.filtratedProducts.length)
+
+        model.checkedFilters = ['Тип ОЗУ_DDR4']
+
+        model.filtrateProducts()
+
+        console.log('filtratedProducts', model.filtratedProducts.length)
+      })()
+    </script>
+  </body>
+</html>
+splice reverse sort
