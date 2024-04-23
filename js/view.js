@@ -17,7 +17,23 @@ const view = {
     this.renderFilterCheckboxes()
     this.renderSortSelect()
     this.paginationListener()
-    this.startPagination()
+    this.renderRangeWrap()
+    // this.startPagination()
+    this.searchFilter()
+  },
+  renderElWrapCheckboxClear() {
+    let elWrapCheckbox = document.querySelector('.wrap-checkboxes')
+    elWrapCheckbox.innerHTML = ''
+  },
+  searchFilter() {
+    const searchBtn = document.querySelector('.search-submit')
+    searchBtn.addEventListener('click', this.onSearchSubmitClick)
+  },
+  onSearchSubmitClick(e) {
+    e.preventDefault()
+    const searchInput = document.querySelector('.search')
+    controller.searchHandler(searchInput.value)
+    searchInput.value = ''
   },
   startPagination() {
     const startNum = 1
@@ -53,17 +69,17 @@ const view = {
   },
 
   renderWrapFilter(filter) {
-    const elWrapFilter = document.querySelector('.wrap-filter')
+    const elWrapCheckboxes = document.querySelector('.wrap-checkboxes')
     for (const key in filter) {
       if (key) {
         const elFilterCategory = generateFilterCategory(key)
-        elWrapFilter.appendChild(elFilterCategory)
+        elWrapCheckboxes.appendChild(elFilterCategory)
       }
       const elFilterGroupWrappers = generateFilterGroupWrappers()
       filter[key].forEach(el => {
         const chBoxes = generateFilterWrapCheckBox(el, key)
         elFilterGroupWrappers.appendChild(chBoxes)
-        elWrapFilter.appendChild(elFilterGroupWrappers)
+        elWrapCheckboxes.appendChild(elFilterGroupWrappers)
       })
     }
   },
@@ -80,6 +96,8 @@ const view = {
     elPriceFromRange.max = maxPrice
     elPriceToRange.min = minPrice
     elPriceToRange.max = maxPrice
+    // elPriceToRange.value = maxPrice
+    // elPriceFromRange.value = minPrice
 
     elSpanRangePriceFrom.innerHTML = elPriceFromRange.value
     elSpanRangePriceTo.innerHTML = elPriceToRange.value
@@ -99,7 +117,7 @@ const view = {
 
   renderFilterCheckboxes() {
     const elCheckboxes = document.querySelectorAll(
-      '.wrap-filter [type="checkbox"]'
+      '.wrap-checkboxes [type="checkbox"]'
     )
     elCheckboxes.forEach(chBox => {
       chBox.addEventListener('change', this.onChangeFilterCheckbox)
@@ -108,6 +126,7 @@ const view = {
 
   onChangeFilterCheckbox(e) {
     const id = e.target.getAttribute('id')
+    console.log(id)
     controller.handleFilterCheckbox(id, e.target.checked)
   },
 
@@ -118,19 +137,19 @@ const view = {
     })
   },
 
-  renderLeftOptions() {
-    // const searchInput = document.querySelector('.search')
-    const searchOptions = document.querySelector('.options')
-    const productsNames = model.getProductsNames()
-    const options = view.getProductsFromSearchForm(this.value, productsNames)
+  // renderLeftOptions() {
+  //   // const searchInput = document.querySelector('.search')
+  //   const searchOptions = document.querySelector('.options')
+  //   const productsNames = model.getProductsNames()
+  //   const options = view.getProductsFromSearchForm(this.value, productsNames)
 
-    const result = options
-      .map(productName => {
-        return `<li><span>${productName}</span></li>`
-      })
-      .join('')
-    searchOptions.innerHTML = this.value ? result : null
-  },
+  //   const result = options
+  //     .map(productName => {
+  //       return `<li><span>${productName}</span></li>`
+  //     })
+  //     .join('')
+  //   searchOptions.innerHTML = this.value ? result : null
+  // },
 
   addEventListener() {
     const searchInput = document.querySelector('.search')

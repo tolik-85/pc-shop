@@ -6,11 +6,19 @@ const controller = {
       model.filtrateProducts()
       model.filtrateProductsByPrice()
     }
-
-    view.renderContainerProductsClear()
-    model.getFiltratedProducts().forEach(product => {
-      view.renderContainerProducts(product)
-    })
+    if (model.pricedProducts.length > 0) {
+      view.renderContainerProductsClear()
+      model.getPricedProducts().forEach(product => {
+        view.renderContainerProducts(product)
+        this.handlePricedFilter()
+        view.renderFilterCheckboxes()
+      })
+    } else {
+      view.renderContainerProductsClear()
+      model.getFiltratedProducts().forEach(product => {
+        view.renderContainerProducts(product)
+      })
+    }
   },
   onClickPaginationHandler(pagNum) {
     let productsPagin = model.pagination(pagNum)
@@ -19,9 +27,26 @@ const controller = {
       view.renderContainerProducts(product)
     })
   },
+
   handleFilter() {
     model.makeFilter()
     const filter = model.getFilter()
+    model.updateCourse()
+    view.renderWrapFilter(filter)
+  },
+
+  handleSearchFilter() {
+    model.makeFilterForSeachProducts()
+    const filter = model.getSearchedFilter()
+    // model.updateCourse()
+    view.renderElWrapCheckboxClear()
+    view.renderWrapFilter(filter)
+  },
+  handlePricedFilter() {
+    model.makeFilterForPricedProducts()
+    const filter = model.getPricedFilter()
+    // model.updateCourse()
+    view.renderElWrapCheckboxClear()
     view.renderWrapFilter(filter)
   },
 
@@ -32,7 +57,7 @@ const controller = {
     } else {
       model.removeCheckedCheckboxes(id)
     }
-    // console.log(model.checkedFilters)
+    console.log(model.checkedFilters)
   },
   handlerElSelect(elSelectValue) {
     model.sortProducts(elSelectValue)
@@ -40,5 +65,14 @@ const controller = {
     model.getFiltratedProducts().forEach(product => {
       view.renderContainerProducts(product)
     })
+  },
+  searchHandler(searchedData) {
+    model.filtrateProductsBySearch(searchedData)
+    view.renderContainerProductsClear()
+    model.getSearchedProducts().forEach(product => {
+      view.renderContainerProducts(product)
+    })
+    this.handleSearchFilter()
+    view.renderFilterCheckboxes()
   },
 }

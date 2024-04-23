@@ -88,7 +88,7 @@ function generateProduct(product) {
 
   for (const key in product.attributes) {
     i++
-    if (i >= 10) {
+    if (i >= 8) {
       break
     }
     const label = generateLabel(
@@ -119,4 +119,11 @@ function generateProduct(product) {
   elWrapProduct.appendChild(elRow)
 
   return elWrapProduct
+}
+
+function generatePaginaionPage(pageNum) {
+  const elPageSpan = document.createElement('span')
+  elPageSpan.innerHTML = ` [ ${pageNum} ] `
+
+  return elPageSpan
 }
