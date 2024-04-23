@@ -91,8 +91,7 @@ const model = {
   async updateProducts() {
     const products = await api.loadProducts()
     this.setProducts(products)
-    this.makeFilter()
-    this.filtrateProducts()
+    // this.makeFilter()
   },
 
   async updateCourse() {
@@ -110,12 +109,11 @@ const model = {
     })
   },
 
-  filtrateProductsBySearch(searchedData) {
-    this.searchedProducts = this.filtratedProducts
-    this.searchedProducts = this.searchedProducts.filter(product => {
+  searchProducts(query) {
+    this.searchedProducts = this.products.filter(product => {
       const productName = product.caption.toLowerCase()
-      searchedData = searchedData.toLowerCase()
-      if (productName.includes(searchedData)) {
+      query = query.toLowerCase()
+      if (productName.includes(query)) {
         return true
       }
     })
@@ -166,7 +164,7 @@ const model = {
     })
   },
 
-  filtrateProducts(i = 5) {
+  filtrateProducts() {
     let filtratedArr = this.products
     if (this.searchedProducts.length > 0) {
       filtratedArr = this.searchedProducts

@@ -66,8 +66,8 @@ const controller = {
       view.renderContainerProducts(product)
     })
   },
-  searchHandler(searchedData) {
-    model.filtrateProductsBySearch(searchedData)
+  searchHandler(query) {
+    model.searchProducts(query)
     view.renderContainerProductsClear()
     model.getSearchedProducts().forEach(product => {
       view.renderContainerProducts(product)
