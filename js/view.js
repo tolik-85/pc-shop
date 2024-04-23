@@ -19,6 +19,21 @@ const view = {
     this.paginationListener()
     this.renderRangeWrap()
     // this.startPagination()
+    this.searchFilter()
+  },
+  renderElWrapCheckboxClear() {
+    let elWrapCheckbox = document.querySelector('.wrap-checkboxes')
+    elWrapCheckbox.innerHTML = ''
+  },
+  searchFilter() {
+    const searchBtn = document.querySelector('.search-submit')
+    searchBtn.addEventListener('click', this.onSearchSubmitClick)
+  },
+  onSearchSubmitClick(e) {
+    e.preventDefault()
+    const searchInput = document.querySelector('.search')
+    controller.searchHandler(searchInput.value)
+    searchInput.value = ''
   },
   startPagination() {
     const startNum = 1
@@ -54,17 +69,17 @@ const view = {
   },
 
   renderWrapFilter(filter) {
-    const elWrapFilter = document.querySelector('.wrap-filter')
+    const elWrapCheckboxes = document.querySelector('.wrap-checkboxes')
     for (const key in filter) {
       if (key) {
         const elFilterCategory = generateFilterCategory(key)
-        elWrapFilter.appendChild(elFilterCategory)
+        elWrapCheckboxes.appendChild(elFilterCategory)
       }
       const elFilterGroupWrappers = generateFilterGroupWrappers()
       filter[key].forEach(el => {
         const chBoxes = generateFilterWrapCheckBox(el, key)
         elFilterGroupWrappers.appendChild(chBoxes)
-        elWrapFilter.appendChild(elFilterGroupWrappers)
+        elWrapCheckboxes.appendChild(elFilterGroupWrappers)
       })
     }
   },
@@ -102,7 +117,7 @@ const view = {
 
   renderFilterCheckboxes() {
     const elCheckboxes = document.querySelectorAll(
-      '.wrap-filter [type="checkbox"]'
+      '.wrap-checkboxes [type="checkbox"]'
     )
     elCheckboxes.forEach(chBox => {
       chBox.addEventListener('change', this.onChangeFilterCheckbox)
@@ -111,6 +126,7 @@ const view = {
 
   onChangeFilterCheckbox(e) {
     const id = e.target.getAttribute('id')
+    console.log(id)
     controller.handleFilterCheckbox(id, e.target.checked)
   },
 

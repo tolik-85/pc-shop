@@ -3,8 +3,13 @@ const model = {
     rate: '',
   },
   products: [],
+  searchedProducts: [],
   filtratedProducts: [],
+  pricedProducts: [],
+  paginatedProducts: [],
   filter: {},
+  searchedFilter: {},
+  pricedFilter: {},
   checkedFilters: [],
 
   addCheckedCheckboxes(checkedFilter) {
@@ -27,6 +32,7 @@ const model = {
     })
     return productsNames
   },
+
   getProducts() {
     return this.products
   },
@@ -34,10 +40,23 @@ const model = {
   getFiltratedProducts() {
     return this.filtratedProducts
   },
+  getSearchedProducts() {
+    return this.searchedProducts
+  },
+  getPricedProducts() {
+    return this.pricedProducts
+  },
 
   getFilter() {
     return this.filter
   },
+  getSearchedFilter() {
+    return this.searchedFilter
+  },
+  getPricedFilter() {
+    return this.pricedFilter
+  },
+
   getMaxPriceUAH() {
     const productsPrices = []
     this.products.forEach(product => {
@@ -47,6 +66,7 @@ const model = {
     // return maxPriceUsd
     return (maxPriceUsd * model.UsdCourse.rate).toFixed()
   },
+
   getMinPriceUAH() {
     const productsPrices = []
     this.products.forEach(product => {
@@ -57,24 +77,29 @@ const model = {
     // return maxPriceUsd
     return (maxPriceUsd * model.UsdCourse.rate).toFixed()
   },
+
   getPriceFilterFrom() {
     const priceFrom = document.querySelector('#priceFrom')
     return priceFrom.value
   },
+
   getPriceFilterTo() {
     const priceTo = document.querySelector('#priceTo')
     return priceTo.value
   },
+
   async updateProducts() {
     const products = await api.loadProducts()
     this.setProducts(products)
     this.makeFilter()
     this.filtrateProducts()
   },
+
   async updateCourse() {
     const course = await api.loadCourse()
     this.setUsdCouse(course)
   },
+
   setUsdCouse(course) {
     course.forEach(item => {
       for (key in item) {
@@ -84,23 +109,54 @@ const model = {
       }
     })
   },
+
+  filtrateProductsBySearch(searchedData) {
+    this.searchedProducts = this.filtratedProducts
+    this.searchedProducts = this.searchedProducts.filter(product => {
+      const productName = product.caption.toLowerCase()
+      searchedData = searchedData.toLowerCase()
+      if (productName.includes(searchedData)) {
+        return true
+      }
+    })
+  },
+
   pagination(pageNum) {
-    let paginationProducts = this.filtratedProducts
+    this.paginatedProducts = this.filtratedProducts
+
+    if (this.searchedProducts.length > 0 && this.pricedProducts.length === 0) {
+      paginatedProducts = this.searchedProducts
+    }
+    if (this.pricedProducts.length > 0 && this.searchedProducts.length === 0) {
+      this.paginatedProducts = this.pricedProducts
+    }
+    if (this.pricedProducts.length > 0 && this.searchedProducts.length > 0) {
+      if (this.pricedProducts.length > this.searchedProducts.length) {
+        this.paginatedProducts = this.searchedProducts
+      } else {
+        this.paginatedProducts = pricedProducts
+      }
+    }
+
     let numPerPage = 7
     let startIdx = pageNum * numPerPage
     let endIdx = startIdx + numPerPage
 
-    paginationProducts = paginationProducts.slice(startIdx, endIdx)
-    return paginationProducts
+    this.paginatedProducts = this.paginatedProducts.slice(startIdx, endIdx)
+    return this.paginatedProducts
   },
+
   filtrateProductsByPrice() {
-    this.filtratedProducts = this.filtratedProducts.filter(product => {
+    let filtratedArr = this.filtratedProducts
+    if (this.searchedProducts.length > 0) {
+      filtratedArr = this.searchedProducts
+    }
+    this.pricedProducts = filtratedArr.filter(product => {
       let priceFrom = this.getPriceFilterFrom()
       let priceTo = this.getPriceFilterTo()
       const course = model.UsdCourse.rate
       priceFrom = (priceFrom / course).toFixed()
       priceTo = (priceTo / course).toFixed()
-      // const price = (product.price * model.UsdCourse.rate).toFixed()
       const price = product.price
 
       if (priceFrom <= price && price <= priceTo) {
@@ -109,8 +165,13 @@ const model = {
       // return priceFrom <= price && price <= priceTo
     })
   },
+
   filtrateProducts(i = 5) {
-    this.filtratedProducts = this.products.filter(product => {
+    let filtratedArr = this.products
+    if (this.searchedProducts.length > 0) {
+      filtratedArr = this.searchedProducts
+    }
+    this.filtratedProducts = filtratedArr.filter(product => {
       let count = 0
 
       this.checkedFilters.forEach(cf => {
@@ -120,7 +181,6 @@ const model = {
           count += 1
         }
       })
-
       return this.checkedFilters.length === count
     })
   },
@@ -138,6 +198,34 @@ const model = {
       }
     })
   },
+
+  makeFilterForSeachProducts() {
+    this.searchedProducts.forEach(item => {
+      for (key in item.attributes) {
+        if (!this.searchedFilter[key]) {
+          model.searchedFilter[key] = []
+        }
+        for (key2 in item.attributes[key]) {
+          if (!this.searchedFilter[key].includes(item.attributes[key]))
+            this.searchedFilter[key].push(item.attributes[key])
+        }
+      }
+    })
+  },
+  makeFilterForPricedProducts() {
+    this.pricedProducts.forEach(item => {
+      for (key in item.attributes) {
+        if (!this.pricedFilter[key]) {
+          model.pricedFilter[key] = []
+        }
+        for (key2 in item.attributes[key]) {
+          if (!this.pricedFilter[key].includes(item.attributes[key]))
+            this.pricedFilter[key].push(item.attributes[key])
+        }
+      }
+    })
+  },
+
   sortProducts(elSelectValue) {
     if (elSelectValue === 'От А до Я') {
       console.log('От А до Я')
@@ -173,3 +261,5 @@ const model = {
     }
   },
 }
+// console.log(model.filtratedProducts)
+// console.log(model.products)

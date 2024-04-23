@@ -120,3 +120,10 @@ function generateProduct(product) {
 
   return elWrapProduct
 }
+
+function generatePaginaionPage(pageNum) {
+  const elPageSpan = document.createElement('span')
+  elPageSpan.innerHTML = ` [ ${pageNum} ] `
+
+  return elPageSpan
+}
