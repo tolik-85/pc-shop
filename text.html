@@ -10,25 +10,26 @@
     <script src="js/model.js"></script>
     <script>
       ;(async function (arguments) {
-        console.log('products', model.products.length)
-        console.log('searchedProducts', model.searchedProducts.length)
-        console.log('filtratedProducts', model.filtratedProducts.length)
-
         await model.updateProducts()
+        await model.updateCourse()
+        await model.equalizeAllProductArr()
+        // model.checkedFilters = []
+        console.log('filtratedStartArr', model.filtratedStartArr.length)
 
-        console.log('products', model.products.length)
+        // model.filtrateProducts()
+        console.log('filtratedStartArr', model.filtratedStartArr.length)
+        // model.filtrateProductsByPrice(5000, 20000)
+        console.log('filtratedStartArr', model.filtratedStartArr.length)
+        // model.searchProducts('офис')
+        // console.log('filtratedStartArr', model.filtratedStartArr.length)
 
-        model.searchProducts('гейм')
-
-        console.log('searchedProducts', model.searchedProducts.length)
-
-        console.log('filtratedProducts', model.filtratedProducts.length)
-
-        model.checkedFilters = ['Тип ОЗУ_DDR4']
-
-        model.filtrateProducts()
-
-        console.log('filtratedProducts', model.filtratedProducts.length)
+        model.pagination(0)
+        // console.log('products', model.products.length)
+        // console.log('filtratedStartArr', model.filtratedStartArr.length)
+        // console.log('searchedProducts', model.searchedProducts.length)
+        // console.log('filtratedProducts', model.filtratedProducts.length)
+        // console.log('PricedProducts', model.pricedProducts.length)
+        console.log('paginatedProducts', model.paginatedProducts.length)
       })()
     </script>
   </body>

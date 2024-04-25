@@ -15,7 +15,7 @@ const view = {
       this.onFiltrateClick.bind(this)
     this.addEventListener()
     this.renderFilterCheckboxes()
-    this.renderSortSelect()
+    // this.renderSortSelect()
     this.paginationListener()
     this.renderRangeWrap()
     // this.startPagination()
@@ -35,10 +35,10 @@ const view = {
     controller.searchHandler(searchInput.value)
     searchInput.value = ''
   },
-  startPagination() {
-    const startNum = 1
-    controller.onClickPaginationHandler(startNum)
-  },
+  // startPagination() {
+  //   const startNum = 1
+  //   controller.onClickPaginationHandler(startNum)
+  // },
   paginationListener() {
     const pagination = document.querySelector('.paginator')
     pagination.addEventListener('click', view.onClickPagination)
@@ -46,6 +46,7 @@ const view = {
   onClickPagination(e) {
     let pagNum = e.target.innerHTML
     pagNum = parseInt(pagNum.replace(/[^\d]/g, ''))
+    console.log(pagNum)
     controller.onClickPaginationHandler(pagNum)
   },
   renderSortSelect() {
@@ -126,7 +127,6 @@ const view = {
 
   onChangeFilterCheckbox(e) {
     const id = e.target.getAttribute('id')
-    console.log(id)
     controller.handleFilterCheckbox(id, e.target.checked)
   },
 

@@ -2,42 +2,70 @@ const controller = {
   async handleUpdateProducts(isLoad = true) {
     if (isLoad) {
       await model.updateProducts()
+      model.pagination(0).forEach(product => {
+        view.renderContainerProducts(product)
+      })
+      this.renderPagination()
+      // model.pagination(0)
     } else {
       model.filtrateProducts()
-      model.filtrateProductsByPrice()
-    }
-    if (model.pricedProducts.length > 0) {
+      this.handlePriceFilter()
       view.renderContainerProductsClear()
-      model.getPricedProducts().forEach(product => {
+      model.pagination(0).forEach(product => {
         view.renderContainerProducts(product)
-        this.handlePricedFilter()
+        this.handleFilter()
         view.renderFilterCheckboxes()
-      })
-    } else {
-      view.renderContainerProductsClear()
-      model.getFiltratedProducts().forEach(product => {
-        view.renderContainerProducts(product)
+        this.rednerPaginationClear()
+        this.renderPagination()
       })
     }
   },
-  onClickPaginationHandler(pagNum) {
-    let productsPagin = model.pagination(pagNum)
+  rednerPaginationClear() {
+    const paginator = document.querySelector('.paginator')
+    paginator.innerHTML = ''
+  },
+  renderPagination() {
+    const paginator = document.querySelector('.paginator')
+    let itemsCount = model.filtratedStartArr.length
+    let itemsPerPage = 7
+    let pagesCount = itemsCount / itemsPerPage
+    // let currentPage = pagNum
+    for (let i = 0; i < pagesCount; i++) {
+      let page = generatePaginaionPage(i)
+      paginator.appendChild(page)
+    }
+  },
+  onClickPaginationHandler(pageNum) {
+    model.pagination(pageNum)
     view.renderContainerProductsClear()
-    productsPagin.forEach(product => {
+    model.pagination(pageNum).forEach(product => {
       view.renderContainerProducts(product)
+      // this.renderPagination()
     })
   },
-
+  handlePriceFilter() {
+    const priceFrom = document.querySelector('#priceFrom').value
+    const priceTo = document.querySelector('#priceTo').value
+    model.filtrateProductsByPrice(priceFrom, priceTo)
+  },
   handleFilter() {
-    model.makeFilter()
+    model.filter = {}
+    model.makeFilterForFiltratedStartArr()
     const filter = model.getFilter()
     model.updateCourse()
+    view.renderElWrapCheckboxClear()
     view.renderWrapFilter(filter)
   },
+  // handleFilter() {
+  //   model.makeFilter()
+  //   const filter = model.getFilter()
+  //   model.updateCourse()
+  //   view.renderWrapFilter(filter)
+  // },
 
   handleSearchFilter() {
-    model.makeFilterForSeachProducts()
-    const filter = model.getSearchedFilter()
+    // model.makeFilterForSeachProducts()
+    // const filter = model.getSearchedFilter()
     // model.updateCourse()
     view.renderElWrapCheckboxClear()
     view.renderWrapFilter(filter)
@@ -69,10 +97,10 @@ const controller = {
   searchHandler(query) {
     model.searchProducts(query)
     view.renderContainerProductsClear()
-    model.getSearchedProducts().forEach(product => {
+    model.getFiltratedStartArr().forEach(product => {
       view.renderContainerProducts(product)
+      this.handleFilter()
+      view.renderFilterCheckboxes()
     })
-    this.handleSearchFilter()
-    view.renderFilterCheckboxes()
   },
 }
