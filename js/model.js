@@ -1,20 +1,23 @@
 const model = {
-  UsdCourse: {
+  usdCourse: {
     rate: '',
   },
   products: [],
-  filtratedStartArr: [],
+  // filtratedStartArr: [],
   searchedProducts: [],
   filtratedProducts: [],
   pricedProducts: [],
+  sortedProducts: [],
   paginatedProducts: [],
   filter: {},
-  // searchedFilter: {},
+  searchedFilter: {},
   // pricedFilter: {},
   checkedFilters: [],
+  searchQuery: '',
 
   equalizeAllProductArr() {
-    this.filtratedStartArr = this.products
+    this.searchedProducts = this.products
+    // this.filtratedStartArr = this.products
     // this.searchedProducts = this.filtratedStartArr
     // this.filtratedProducts = this.searchedProducts
     // this.pricedProducts = this.filtratedProducts
@@ -74,7 +77,7 @@ const model = {
     })
     let maxPriceUsd = Math.max.apply(null, productsPrices)
     // return maxPriceUsd
-    return (maxPriceUsd * model.UsdCourse.rate).toFixed()
+    return (maxPriceUsd * model.usdCourse.rate).toFixed()
   },
 
   getMinPriceUAH() {
@@ -85,7 +88,28 @@ const model = {
     let maxPriceUsd = Math.min.apply(null, productsPrices)
 
     // return maxPriceUsd
-    return (maxPriceUsd * model.UsdCourse.rate).toFixed()
+    return (maxPriceUsd * model.usdCourse.rate).toFixed()
+  },
+
+  getMaxPriceSearchedProductsUAH() {
+    const productsPrices = []
+    this.searchedProducts.forEach(product => {
+      productsPrices.push(product.price)
+    })
+    let maxPriceUsd = Math.max.apply(null, productsPrices)
+    // return maxPriceUsd
+    return (maxPriceUsd * model.usdCourse.rate).toFixed()
+  },
+
+  getMinPriceSearchedProductsUAH() {
+    const productsPrices = []
+    this.searchedProducts.forEach(product => {
+      productsPrices.push(product.price)
+    })
+    let maxPriceUsd = Math.min.apply(null, productsPrices)
+
+    // return maxPriceUsd
+    return (maxPriceUsd * model.usdCourse.rate).toFixed()
   },
 
   // getPriceFilterFrom() {
@@ -102,7 +126,16 @@ const model = {
     const products = await api.loadProducts()
     await model.updateCourse()
     this.setProducts(products)
-    model.equalizeAllProductArr()
+    model.searchProducts('')
+    model.filtrateProducts()
+    model.filtrateProductsByPrice(0, 20000000)
+    model.sortedProducts = model.pricedProducts
+    model.pagination(0)
+    console.log('searchedProducts', this.searchedProducts.length)
+    console.log('filtratedProducts', this.filtratedProducts.length)
+    console.log('pricedProducts', this.pricedProducts.length)
+    console.log('sortedProducts', this.sortedProducts.length)
+    console.log('paginatedProducts', this.paginatedProducts.length)
   },
 
   async updateCourse() {
@@ -116,24 +149,24 @@ const model = {
     course.forEach(item => {
       for (key in item) {
         if (item[key] === 840) {
-          this.UsdCourse.rate = item.rate
+          this.usdCourse.rate = item.rate
         }
       }
     })
   },
 
-  searchProducts(query) {
-    this.filtratedStartArr = this.filtratedStartArr.filter(product => {
+  searchProducts() {
+    this.searchedProducts = this.products.filter(product => {
       const productName = product.caption.toLowerCase()
-      query = query.toLowerCase()
-      if (productName.includes(query)) {
+      this.searchQuery = this.searchQuery.toLowerCase()
+      if (productName.includes(this.searchQuery)) {
         return true
       }
     })
   },
 
   pagination(pageNum) {
-    this.paginatedProducts = this.filtratedStartArr
+    this.paginatedProducts = this.sortedProducts
 
     let numPerPage = 7
     let startIdx = pageNum * numPerPage
@@ -144,31 +177,14 @@ const model = {
   },
 
   filtrateProductsByPrice(priceFrom, priceTo) {
-    // let filtratedArr = this.filtratedProducts
-    // if (this.searchedProducts.length > 0) {
-    //   filtratedArr = this.searchedProducts
-    // }
-    const course = model.UsdCourse.rate
+    const course = model.usdCourse.rate
     priceFrom = (priceFrom / course).toFixed()
     priceTo = (priceTo / course).toFixed()
-    this.filtratedStartArr = this.filtratedStartArr.filter(product => {
-      // let priceFrom = this.getPriceFilterFrom()
-      // let priceTo = this.getPriceFilterTo()
-
-      // console.log('priceFrom', priceFrom)
-      // console.log('priceTo', priceTo)
-
+    this.pricedProducts = this.filtratedProducts.filter(product => {
       const price = product.price
-
-      // console.log('course', model.UsdCourse.rate)
-      // console.log('priceFrom', priceFrom)
-      // console.log('priceTo', priceTo)
-      // console.log('price', price)
-
       if (priceFrom <= price && price <= priceTo) {
         return true
       }
-      // return priceFrom <= price && price <= priceTo
     })
   },
 
@@ -177,7 +193,7 @@ const model = {
     // if (this.searchedProducts.length > 0) {
     //   filtratedArr = this.searchedProducts
     // }
-    this.filtratedStartArr = this.filtratedStartArr.filter(product => {
+    this.filtratedProducts = this.searchedProducts.filter(product => {
       let count = 0
 
       this.checkedFilters.forEach(cf => {
@@ -266,6 +282,11 @@ const model = {
       this.paginatedProducts.sort((a, b) => b.price - a.price)
     }
   },
+  log() {
+    console.log('products ', model.products.lenght)
+    console.log('searchedProducts', model.searchedProducts.lenght)
+    console.log('pricedProducts', model.pricedProducts.lenght)
+    console.log('sortedProducts', model.sortedProducts.lenght)
+    console.log('paginatedProducts', model.paginatedProducts.lenght)
+  },
 }
-// console.log(model.filtratedProducts)
-// console.log(model.products)

@@ -55,7 +55,7 @@ function generateProduct(product) {
   const picture = product.photos[0]
   // const purpose = product.purpose
   const caption = product.caption
-  const price = (product.price * model.UsdCourse.rate).toFixed()
+  const price = (product.price * model.usdCourse.rate).toFixed()
   const image = `${URL}${picture}`
 
   const elWrapProduct = document.createElement('div')

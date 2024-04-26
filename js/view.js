@@ -20,6 +20,7 @@ const view = {
     this.renderRangeWrap()
     // this.startPagination()
     this.searchFilter()
+    this.renderRangeWrap()
   },
   renderElWrapCheckboxClear() {
     let elWrapCheckbox = document.querySelector('.wrap-checkboxes')
@@ -33,7 +34,6 @@ const view = {
     e.preventDefault()
     const searchInput = document.querySelector('.search')
     controller.searchHandler(searchInput.value)
-    searchInput.value = ''
   },
   // startPagination() {
   //   const startNum = 1
@@ -84,7 +84,21 @@ const view = {
       })
     }
   },
+  renderRangeWrapOnSearch(maxPrice, minPrice) {
+    const elPriceFromRange = document.querySelector('#priceFrom')
+    const elPriceToRange = document.querySelector('#priceTo')
+    const elSpanRangePriceFrom = document.querySelector('.price-from')
+    const elSpanRangePriceTo = document.querySelector('.price-to')
+    elPriceFromRange.min = minPrice
+    elPriceFromRange.max = maxPrice
+    elPriceFromRange.value = minPrice
+    elSpanRangePriceFrom.innerHTML = minPrice
 
+    elPriceToRange.min = minPrice
+    elPriceToRange.max = maxPrice
+    elPriceToRange.value = maxPrice
+    elSpanRangePriceTo.innerHTML = maxPrice
+  },
   renderRangeWrap() {
     const elPriceFromRange = document.querySelector('#priceFrom')
     const elPriceToRange = document.querySelector('#priceTo')
@@ -97,16 +111,20 @@ const view = {
     elPriceFromRange.max = maxPrice
     elPriceToRange.min = minPrice
     elPriceToRange.max = maxPrice
-    // elPriceToRange.value = maxPrice
-    // elPriceFromRange.value = minPrice
+    elPriceToRange.value = maxPrice
+    elPriceFromRange.value = minPrice
 
     elSpanRangePriceFrom.innerHTML = elPriceFromRange.value
     elSpanRangePriceTo.innerHTML = elPriceToRange.value
   },
   onChangeInputRange(e) {
-    view.renderRangeWrap()
     const elPriceFromRange = document.querySelector('#priceFrom')
     const elPriceToRange = document.querySelector('#priceTo')
+
+    const elSpanRangePriceFrom = document.querySelector('.price-from')
+    const elSpanRangePriceTo = document.querySelector('.price-to')
+    elSpanRangePriceFrom.innerHTML = elPriceFromRange.value
+    elSpanRangePriceTo.innerHTML = elPriceToRange.value
 
     if (+e.target.value > +elPriceToRange.value) {
       elPriceToRange.value = +e.target.value
