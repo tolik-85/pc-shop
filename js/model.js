@@ -15,14 +15,14 @@ const model = {
   checkedFilters: [],
   searchQuery: '',
 
-  equalizeAllProductArr() {
-    this.searchedProducts = this.products
-    // this.filtratedStartArr = this.products
-    // this.searchedProducts = this.filtratedStartArr
-    // this.filtratedProducts = this.searchedProducts
-    // this.pricedProducts = this.filtratedProducts
-    // this.paginatedProducts = this.pricedProducts
-  },
+  // equalizeAllProductArr() {
+  //   this.searchedProducts = this.products
+  //   this.filtratedStartArr = this.products
+  //   this.searchedProducts = this.filtratedStartArr
+  //   this.filtratedProducts = this.searchedProducts
+  //   this.pricedProducts = this.filtratedProducts
+  //   this.paginatedProducts = this.pricedProducts
+  // },
   addCheckedCheckboxes(checkedFilter) {
     this.checkedFilters.push(checkedFilter)
   },
@@ -131,11 +131,11 @@ const model = {
     model.filtrateProductsByPrice(0, 20000000)
     model.sortedProducts = model.pricedProducts
     model.pagination(0)
-    console.log('searchedProducts', this.searchedProducts.length)
-    console.log('filtratedProducts', this.filtratedProducts.length)
-    console.log('pricedProducts', this.pricedProducts.length)
-    console.log('sortedProducts', this.sortedProducts.length)
-    console.log('paginatedProducts', this.paginatedProducts.length)
+    // console.log('searchedProducts', this.searchedProducts.length)
+    // console.log('filtratedProducts', this.filtratedProducts.length)
+    // console.log('pricedProducts', this.pricedProducts.length)
+    // console.log('sortedProducts', this.sortedProducts.length)
+    // console.log('paginatedProducts', this.paginatedProducts.length)
   },
 
   async updateCourse() {
@@ -167,7 +167,6 @@ const model = {
 
   pagination(pageNum) {
     this.paginatedProducts = this.sortedProducts
-
     let numPerPage = 7
     let startIdx = pageNum * numPerPage
     let endIdx = startIdx + numPerPage
@@ -189,16 +188,10 @@ const model = {
   },
 
   filtrateProducts() {
-    // let filtratedArr = this.products
-    // if (this.searchedProducts.length > 0) {
-    //   filtratedArr = this.searchedProducts
-    // }
     this.filtratedProducts = this.searchedProducts.filter(product => {
       let count = 0
-
       this.checkedFilters.forEach(cf => {
         let param = cf.split('_')
-        // console.log(param)
         if (product.attributes[param[0]] === param[1]) {
           count += 1
         }
@@ -250,8 +243,8 @@ const model = {
 
   sortProducts(elSelectValue) {
     if (elSelectValue === 'От А до Я') {
-      console.log('От А до Я')
-      this.paginatedProducts.sort((a, b) => {
+      // console.log(elSelectValue)
+      this.sortedProducts.sort((a, b) => {
         if (a.caption < b.caption) {
           return -1
         }
@@ -262,8 +255,8 @@ const model = {
       })
     }
     if (elSelectValue === 'От Я до А') {
-      console.log('От Я до А')
-      this.paginatedProducts.sort((a, b) => {
+      // console.log(elSelectValue)
+      this.sortedProducts.sort((a, b) => {
         if (a.caption < b.caption) {
           return 1
         }
@@ -274,19 +267,12 @@ const model = {
       })
     }
     if (elSelectValue === 'Цена по возростанию') {
-      console.log('Цена по возростанию')
-      this.paginatedProducts.sort((a, b) => a.price - b.price)
+      // console.log(elSelectValue)
+      this.sortedProducts.sort((a, b) => a.price - b.price)
     }
     if (elSelectValue === 'Цена по убыванию') {
-      console.log('Цена по убыванию')
-      this.paginatedProducts.sort((a, b) => b.price - a.price)
+      // console.log(elSelectValue)
+      this.sortedProducts.sort((a, b) => b.price - a.price)
     }
-  },
-  log() {
-    console.log('products ', model.products.lenght)
-    console.log('searchedProducts', model.searchedProducts.lenght)
-    console.log('pricedProducts', model.pricedProducts.lenght)
-    console.log('sortedProducts', model.sortedProducts.lenght)
-    console.log('paginatedProducts', model.paginatedProducts.lenght)
   },
 }

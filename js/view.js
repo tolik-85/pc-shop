@@ -15,10 +15,9 @@ const view = {
       this.onFiltrateClick.bind(this)
     this.addEventListener()
     this.renderFilterCheckboxes()
-    // this.renderSortSelect()
+    this.renderSortSelect()
     this.paginationListener()
     this.renderRangeWrap()
-    // this.startPagination()
     this.searchFilter()
     this.renderRangeWrap()
   },
@@ -56,6 +55,7 @@ const view = {
   onChangeSelectHandler(e) {
     const elSelect = document.querySelector('#select-products')
     elSelectValue = elSelect.value
+    console.log(elSelectValue)
     controller.handlerElSelect(elSelectValue)
   },
   renderContainerProducts(product) {

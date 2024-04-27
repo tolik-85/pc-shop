@@ -8,21 +8,21 @@ const controller = {
       })
       this.renderPagination()
     } else {
-      console.log('hello')
       model.filtrateProducts()
       this.handlePriceFilter()
       view.renderContainerProductsClear()
+      model.sortedProducts = model.pricedProducts
       model.pagination(0).forEach(product => {
         view.renderContainerProducts(product)
-        model.sortedProducts = model.pricedProducts
-        this.rednerPaginationClear()
-        this.renderPagination()
-        console.log('searchedProducts', model.searchedProducts.length)
-        console.log('filtratedProducts', model.filtratedProducts.length)
-        console.log('pricedProducts', model.pricedProducts.length)
-        console.log('sortedProducts', model.sortedProducts.length)
-        console.log('paginatedProducts', model.paginatedProducts.length)
       })
+      this.rednerPaginationClear()
+      this.renderPagination()
+      view.renderSortSelect()
+      console.log('searchedProducts', model.searchedProducts.length)
+      console.log('filtratedProducts', model.filtratedProducts.length)
+      console.log('pricedProducts', model.pricedProducts.length)
+      console.log('sortedProducts', model.sortedProducts.length)
+      console.log('paginatedProducts', model.paginatedProducts.length)
     }
   },
   rednerPaginationClear() {
@@ -45,20 +45,17 @@ const controller = {
     view.renderContainerProductsClear()
     model.pagination(pageNum).forEach(product => {
       view.renderContainerProducts(product)
-      // this.renderPagination()
     })
   },
   handlePriceFilter() {
     const priceFrom = document.querySelector('#priceFrom').value
     const priceTo = document.querySelector('#priceTo').value
-    console.log()
     model.filtrateProductsByPrice(priceFrom, priceTo)
   },
   handleFilter() {
     model.filter = {}
     model.makeFilter()
     const filter = model.getFilter()
-    model.updateCourse()
     view.renderElWrapCheckboxClear()
     view.renderWrapFilter(filter)
   },
@@ -66,20 +63,17 @@ const controller = {
   handleSearchFilter() {
     model.makeFilterForSeachProducts()
     const filter = model.getSearchedFilter()
-    // model.updateCourse()
     view.renderElWrapCheckboxClear()
     view.renderWrapFilter(filter)
   },
-  handlePricedFilter() {
-    model.makeFilterForPricedProducts()
-    const filter = model.getPricedFilter()
-    // model.updateCourse()
-    view.renderElWrapCheckboxClear()
-    view.renderWrapFilter(filter)
-  },
+  // handlePricedFilter() {
+  //   model.makeFilterForPricedProducts()
+  //   const filter = model.getPricedFilter()
+  //   view.renderElWrapCheckboxClear()
+  //   view.renderWrapFilter(filter)
+  // },
 
   handleFilterCheckbox(id, actionAdd) {
-    // console.log(actionAdd)
     if (actionAdd) {
       model.addCheckedCheckboxes(id)
     } else {
@@ -88,9 +82,11 @@ const controller = {
     console.log(model.checkedFilters)
   },
   handlerElSelect(elSelectValue) {
+    // console.log(elSelectValue)
     model.sortProducts(elSelectValue)
+    console.log(model.sortedProducts)
     view.renderContainerProductsClear()
-    model.getFiltratedProducts().forEach(product => {
+    model.pagination(0).forEach(product => {
       view.renderContainerProducts(product)
     })
   },
@@ -108,5 +104,14 @@ const controller = {
     const maxPrice = model.getMaxPriceSearchedProductsUAH()
     const minPrice = model.getMinPriceSearchedProductsUAH()
     view.renderRangeWrapOnSearch(maxPrice, minPrice)
+    this.rednerPaginationClear()
+    this.renderPagination()
+    view.renderFilterCheckboxes()
+    view.renderSortSelect()
+    // console.log('searchedProducts', model.searchedProducts.length)
+    // console.log('filtratedProducts', model.filtratedProducts.length)
+    // console.log('pricedProducts', model.pricedProducts.length)
+    // console.log('sortedProducts', model.sortedProducts.length)
+    // console.log('paginatedProducts', model.paginatedProducts.length)
   },
 }
