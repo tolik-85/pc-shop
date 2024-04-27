@@ -3,7 +3,6 @@ const model = {
     rate: '',
   },
   products: [],
-  // filtratedStartArr: [],
   searchedProducts: [],
   filtratedProducts: [],
   pricedProducts: [],
@@ -11,18 +10,17 @@ const model = {
   paginatedProducts: [],
   filter: {},
   searchedFilter: {},
-  // pricedFilter: {},
   checkedFilters: [],
   searchQuery: '',
 
   // equalizeAllProductArr() {
   //   this.searchedProducts = this.products
-  //   this.filtratedStartArr = this.products
-  //   this.searchedProducts = this.filtratedStartArr
-  //   this.filtratedProducts = this.searchedProducts
+  //   this.filtratedStartArr = this.searchedProducts
   //   this.pricedProducts = this.filtratedProducts
-  //   this.paginatedProducts = this.pricedProducts
+  //   this.sortedProducts = this.pricedProducts
+  //   this.paginatedProducts = this.sortedProducts
   // },
+
   addCheckedCheckboxes(checkedFilter) {
     this.checkedFilters.push(checkedFilter)
   },
@@ -47,14 +45,11 @@ const model = {
   getProducts() {
     return this.products
   },
-  getFiltratedStartArr() {
-    return this.filtratedStartArr
+  getSearchedProducts() {
+    return this.searchedProducts
   },
   getFiltratedProducts() {
     return this.filtratedProducts
-  },
-  getSearchedProducts() {
-    return this.searchedProducts
   },
   getPricedProducts() {
     return this.pricedProducts
@@ -124,25 +119,18 @@ const model = {
 
   async updateProducts() {
     const products = await api.loadProducts()
-    await model.updateCourse()
+
     this.setProducts(products)
     model.searchProducts('')
     model.filtrateProducts()
     model.filtrateProductsByPrice(0, 20000000)
     model.sortedProducts = model.pricedProducts
     model.pagination(0)
-    // console.log('searchedProducts', this.searchedProducts.length)
-    // console.log('filtratedProducts', this.filtratedProducts.length)
-    // console.log('pricedProducts', this.pricedProducts.length)
-    // console.log('sortedProducts', this.sortedProducts.length)
-    // console.log('paginatedProducts', this.paginatedProducts.length)
   },
 
   async updateCourse() {
     const course = await api.loadCourse()
     this.setUsdCouse(course)
-    // this.searchProducts('')
-    // this.filtrateProducts()
   },
 
   setUsdCouse(course) {
@@ -163,6 +151,7 @@ const model = {
         return true
       }
     })
+    // makeFilter()
   },
 
   pagination(pageNum) {
@@ -243,7 +232,6 @@ const model = {
 
   sortProducts(elSelectValue) {
     if (elSelectValue === 'От А до Я') {
-      // console.log(elSelectValue)
       this.sortedProducts.sort((a, b) => {
         if (a.caption < b.caption) {
           return -1
@@ -255,7 +243,6 @@ const model = {
       })
     }
     if (elSelectValue === 'От Я до А') {
-      // console.log(elSelectValue)
       this.sortedProducts.sort((a, b) => {
         if (a.caption < b.caption) {
           return 1
@@ -267,11 +254,9 @@ const model = {
       })
     }
     if (elSelectValue === 'Цена по возростанию') {
-      // console.log(elSelectValue)
       this.sortedProducts.sort((a, b) => a.price - b.price)
     }
     if (elSelectValue === 'Цена по убыванию') {
-      // console.log(elSelectValue)
       this.sortedProducts.sort((a, b) => b.price - a.price)
     }
   },

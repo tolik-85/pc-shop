@@ -1,7 +1,13 @@
 const controller = {
   async handleUpdateProducts(isLoad = true) {
     if (isLoad) {
-      await model.updateProducts()
+      console.time()
+      // await model.updateCourse()
+      // await model.updateProducts()
+
+      await Promise.all([model.updateCourse(), model.updateProducts()])
+
+      console.timeEnd()
       model.pagination(0).forEach(product => {
         view.renderContainerProducts(product)
         console.log('hello')

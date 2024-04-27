@@ -14,6 +14,7 @@ const api = {
   },
 
   async loadCourse() {
+    console.log('loadCourse')
     const resp = await fetch(`${API_URL_COURSE}`)
     return await resp.json()
   },

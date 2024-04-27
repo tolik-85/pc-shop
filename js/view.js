@@ -8,7 +8,6 @@ const view = {
   },
 
   async onLoaded() {
-    await model.updateCourse()
     await controller.handleUpdateProducts()
     controller.handleFilter()
     document.querySelector('#filtrate').onclick =
