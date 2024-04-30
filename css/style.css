@@ -415,3 +415,6 @@ a {
 .paginator > span {
   cursor: pointer;
 }
+/* div > h3 {
+  margin: -3px;
+} */

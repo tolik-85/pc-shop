@@ -1,16 +1,16 @@
 const controller = {
   async handleUpdateProducts(isLoad = true) {
     if (isLoad) {
-      console.time()
+      // console.time()
       // await model.updateCourse()
       // await model.updateProducts()
 
       await Promise.all([model.updateCourse(), model.updateProducts()])
 
-      console.timeEnd()
+      // console.timeEnd()
       model.pagination(0).forEach(product => {
         view.renderContainerProducts(product)
-        console.log('hello')
+        // console.log('hello')
       })
       this.renderPagination()
     } else {
@@ -24,11 +24,11 @@ const controller = {
       this.rednerPaginationClear()
       this.renderPagination()
       view.renderSortSelect()
-      console.log('searchedProducts', model.searchedProducts.length)
-      console.log('filtratedProducts', model.filtratedProducts.length)
-      console.log('pricedProducts', model.pricedProducts.length)
-      console.log('sortedProducts', model.sortedProducts.length)
-      console.log('paginatedProducts', model.paginatedProducts.length)
+      // console.log('searchedProducts', model.searchedProducts.length)
+      // console.log('filtratedProducts', model.filtratedProducts.length)
+      // console.log('pricedProducts', model.pricedProducts.length)
+      // console.log('sortedProducts', model.sortedProducts.length)
+      // console.log('paginatedProducts', model.paginatedProducts.length)
     }
   },
   rednerPaginationClear() {
@@ -85,7 +85,7 @@ const controller = {
     } else {
       model.removeCheckedCheckboxes(id)
     }
-    console.log(model.checkedFilters)
+    // console.log(model.checkedFilters)
   },
   handlerElSelect(elSelectValue) {
     // console.log(elSelectValue)

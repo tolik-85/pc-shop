@@ -33,10 +33,7 @@ const view = {
     const searchInput = document.querySelector('.search')
     controller.searchHandler(searchInput.value)
   },
-  // startPagination() {
-  //   const startNum = 1
-  //   controller.onClickPaginationHandler(startNum)
-  // },
+
   paginationListener() {
     const pagination = document.querySelector('.paginator')
     pagination.addEventListener('click', view.onClickPagination)

@@ -182,9 +182,14 @@ const model = {
       this.checkedFilters.forEach(cf => {
         let param = cf.split('_')
         if (product.attributes[param[0]] === param[1]) {
+          // console.log([param[0]])
+          // console.log(param[1])
           count += 1
+          // console.log(count)
+          // return true
         }
       })
+      // console.log(this.checkedFilters.length)
       return this.checkedFilters.length === count
     })
   },
