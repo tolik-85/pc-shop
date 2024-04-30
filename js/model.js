@@ -22,6 +22,10 @@ const model = {
   // },
 
   addCheckedCheckboxes(checkedFilter) {
+    const imagineCheckedFilters = {
+      'Тип ОЗУ': ['8Gb', '16Gb'],
+      Процессор: ['AMD'],
+    }
     this.checkedFilters.push(checkedFilter)
   },
 
@@ -179,18 +183,22 @@ const model = {
   filtrateProducts() {
     this.filtratedProducts = this.searchedProducts.filter(product => {
       let count = 0
+
       this.checkedFilters.forEach(cf => {
         let param = cf.split('_')
+
+        console.log(this.checkedFilters)
         if (product.attributes[param[0]] === param[1]) {
-          // console.log([param[0]])
-          // console.log(param[1])
           count += 1
-          // console.log(count)
-          // return true
         }
       })
+      console.log(count)
+      console.log(this.checkedFilters.length)
       // console.log(this.checkedFilters.length)
-      return this.checkedFilters.length === count
+      const attrsType = [
+        ...new Set(this.checkedFilters.map(item => item.split('_')[0])),
+      ]
+      return attrsType.length === count
     })
   },
 
