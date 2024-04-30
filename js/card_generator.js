@@ -86,22 +86,25 @@ const cardGenerator = {
     cardDescriptionRight.setAttribute('class', 'card-description__right')
     cardDescriptionContent.classList.add('card-description__content')
     cardDescriptionContent.classList.add('card-description__content--active')
-    const keys = Object.keys(product.attributes)
-    console.log(keys)
 
-    for (let i = 0; keys.length > i; i++) {
-      cardDescriptionParagraph.innerHTML = `${keys[i]}:  ${
-        product.attributes[keys[i]]
-      }`
-    }
+    // const keys = Object.keys(product.attributes)
+
+    // console.log(product.attributes.length)
+    // for (let i = 0; keys.length > i; i++) {
+    //   cardDescriptionParagraph.innerHTML = `${keys[i]}:  ${
+    //     product.attributes[keys[i]]
+    //   }`
+    // }
 
     // keys.forEach(key => {
     //   cardDescriptionParagraph.textContent =
     //    `${key} : ${product.attributes[key]}`
     // })
-    //  for (key in product.attributes) {
-    //    cardDescriptionParagraph.textContent = `${key} : ${product.attributes[key]}`
-    //  }
+
+    for (const key in product.attributes) {
+      cardDescriptionParagraph.textContent += `${key} : ${product.attributes[key]}`
+      cardDescriptionContent.appendChild(cardDescriptionParagraph)
+    }
 
     // cardDescriptionParagraph.textContent = `${Object.keys(
     //   product.attributes
