@@ -85,7 +85,7 @@ const controller = {
     } else {
       model.removeCheckedCheckboxes(id)
     }
-    // console.log(model.checkedFilters)
+    console.log(model.checkedFilters)
   },
   handlerElSelect(elSelectValue) {
     // console.log(elSelectValue)

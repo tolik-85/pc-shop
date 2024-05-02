@@ -2741,7 +2741,7 @@ ul {
   opacity: 1;
 }
 .card-description__right {
-  padding-top: 21px;
+  padding-top: 5px;
   padding-right: 120px;
   padding-left: 125px;
   width: 84%;
@@ -2789,10 +2789,10 @@ ul {
 }
 .card-description__content p {
   margin-top: 0;
-  margin-bottom: 30px;
+  /* margin-bottom: 30px; */
   font-weight: 500;
   font-size: 13px;
-  line-height: 26px;
+  line-height: 18px;
 }
 .card-description__content--active {
   display: block;

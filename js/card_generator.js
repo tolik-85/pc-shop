@@ -1,10 +1,13 @@
 const cardGenerator = {
+  // const URL :'https://web-app.click/pc-shop/photos/products/computers/',
+
   generateProductCard(product) {
     // console.log(product)
     const URL = 'https://web-app.click/pc-shop/photos/products/computers/'
-    const picture = product.photos[0]
-    const image = `${URL}${picture}`
+    const pictureImg = product.photos[0]
+    const image = `${URL}${pictureImg}`
     const price = (product.price * cardModel.usdCourse.rate).toFixed()
+    // console.log(product.photos.length)
 
     const section = document.createElement('section')
     const cardContent = document.createElement('div')
@@ -34,12 +37,14 @@ const cardGenerator = {
     const cardDescriptionLink = document.createElement('a')
     const cardDescriptionRight = document.createElement('div')
     const cardDescriptionItem = document.createElement('li')
-    const cardDescriptionParagraph = document.createElement('p')
-    const cardDescriptionParagraph2 = document.createElement('p')
+    // const cardDescriptionParagraph = document.createElement('p')
+    // const cardDescriptionParagraph2 = document.createElement('p')
+    const leftArrow = document.createElement('a')
+    const rightArrow = document.createElement('a')
 
     section.setAttribute('class', 'card')
     infoPriceCurrent.textContent = `${price} грн`
-    cardTopLeft.setAttribute('class', 'card-top__left')
+    cardTopLeft.classList.add('card-top__left', 'container-slider')
     cardInfoPrice.setAttribute('class', 'card-info__price')
     cardTop.setAttribute('class', 'card-top')
     cardInfoTitle.setAttribute('class', 'card-info__title')
@@ -53,7 +58,7 @@ const cardGenerator = {
     cardTopRight.setAttribute('class', 'card-top__right')
     infoPriceCurrent.setAttribute('class', 'info-price__current')
     containerNarrow.setAttribute('class', 'container-narrow')
-    cardSliderMain.setAttribute('class', 'card-slider__main')
+    cardSliderMain.classList.add('card-slider__main', 'image')
     cardInfoDescr.setAttribute('class', 'card-info__descr')
     img.setAttribute('src', `${image}`)
     toCartBtn.classList.add('card-info__btn--tocart')
@@ -84,39 +89,33 @@ const cardGenerator = {
     cardDescriptionLink.setAttribute('class', 'card-description__link')
     cardDescriptionLink.textContent = 'Description'
     cardDescriptionRight.setAttribute('class', 'card-description__right')
-    cardDescriptionContent.classList.add('card-description__content')
-    cardDescriptionContent.classList.add('card-description__content--active')
-
-    // const keys = Object.keys(product.attributes)
-
-    // console.log(product.attributes.length)
-    // for (let i = 0; keys.length > i; i++) {
-    //   cardDescriptionParagraph.innerHTML = `${keys[i]}:  ${
-    //     product.attributes[keys[i]]
-    //   }`
-    // }
-
-    // keys.forEach(key => {
-    //   cardDescriptionParagraph.textContent =
-    //    `${key} : ${product.attributes[key]}`
-    // })
+    leftArrow.classList.add('prev')
+    leftArrow.innerHTML = '<'
+    rightArrow.classList.add('next')
+    rightArrow.innerHTML = '>'
+    // cardDescriptionContent.classList.add('card-description__content')
+    // cardDescriptionContent.classList.add('card-description__content--active')
 
     for (const key in product.attributes) {
-      cardDescriptionParagraph.textContent += `${key} : ${product.attributes[key]}`
-      cardDescriptionContent.appendChild(cardDescriptionParagraph)
+      const cardDescriptionContent = this.generateParagraph(
+        key,
+        product.attributes[key]
+      )
+      cardDescriptionRight.appendChild(cardDescriptionContent)
     }
 
-    // cardDescriptionParagraph.textContent = `${Object.keys(
-    //   product.attributes
-    // )} : ${Object.values(product.attributes)}`
+    for (let i = 0; i < product.photos.length; i++) {
+      const img = product.photos[i]
+      const image = URL + img
+      const cardSliderMain = document.createElement('div')
+      cardSliderMain.classList.add('card-slider__main', 'image')
+      const picture = document.createElement('img')
+      picture.setAttribute('src', `${image}`)
+      cardSliderMain.appendChild(picture)
+      // cardSlider.appendChild(cardSliderMain)
+      cardTopLeft.appendChild(cardSliderMain)
+    }
 
-    // cardDescriptionParagraph.textContent = `${Object.entries(
-    //   product.attributes
-    // )}`
-
-    cardDescriptionContent.appendChild(cardDescriptionParagraph)
-    cardDescriptionContent.appendChild(cardDescriptionParagraph2)
-    cardDescriptionRight.appendChild(cardDescriptionContent)
     cardDescriptionItem.appendChild(cardDescriptionLink)
     cardDescriptionNavigation.appendChild(cardDescriptionItem)
     cardDescriptionLeft.appendChild(cardDescriptionNavigation)
@@ -125,9 +124,9 @@ const cardGenerator = {
     containerNarrow2.appendChild(cardDescription)
     cardBottomContent.appendChild(containerNarrow2)
     cardContentBottom.appendChild(cardBottomContent)
-    // cardContenTop.appendChild(cardBottomContent)
+
     cardInfoPrice.appendChild(infoPriceCurrent)
-    // cardInfo.appendChild(cardInfoProp)
+
     cardInfo.appendChild(cardInfoTitle)
     cardInfo.appendChild(cardInfoPrice)
     cardInfo.appendChild(cardInfoDescr)
@@ -136,7 +135,8 @@ const cardGenerator = {
     cardTopRight.appendChild(cardInfo)
     cardSliderMain.appendChild(img)
     cardSlider.appendChild(cardSliderMain)
-    cardTopLeft.appendChild(cardSlider)
+    cardTopLeft.appendChild(leftArrow)
+    cardTopLeft.appendChild(rightArrow)
     containerNarrow.appendChild(cardTopLeft)
     containerNarrow.appendChild(cardTopRight)
     cardTop.appendChild(containerNarrow)
@@ -145,6 +145,32 @@ const cardGenerator = {
     cardContent.appendChild(cardContentBottom)
     section.appendChild(cardContent)
 
+    leftArrow.addEventListener('click', card_view.showPrevImg)
+    rightArrow.addEventListener('click', card_view.shoNextImg)
+
     return section
+  },
+  generateParagraph(key, value) {
+    const cardDescriptionParagraph = document.createElement('p')
+    const cardDescriptionContent = document.createElement('div')
+
+    cardDescriptionParagraph.textContent += `${key} : ${value}`
+    cardDescriptionContent.classList.add('card-description__content')
+    cardDescriptionContent.classList.add('card-description__content--active')
+    cardDescriptionContent.appendChild(cardDescriptionParagraph)
+
+    return cardDescriptionContent
+  },
+  generateProductImages(product, URL) {
+    product.photos.forEach(img => {
+      const image = URL + img
+      const cardSliderMain = document.createElement('div')
+      cardSliderMain.classList.add('card-slider__main', 'image')
+      const picture = document.createElement('img')
+      picture.setAttribute('src', `${image}`)
+      cardSliderMain.appendChild(picture)
+      console.log(cardSliderMain)
+      return cardSliderMain
+    })
   },
 }
