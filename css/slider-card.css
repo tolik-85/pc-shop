@@ -1,106 +1,152 @@
-body {
-  overflow-y: hidden;
+* {
+  box-sizing: border-box;
 }
 
-.container-slider {
-  width: 70%;
-  margin: auto;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  height: 100vh;
+input[name='name'] {
+  display: none;
+}
+
+label {
+  display: inline-block;
+  /* width: 100%;
+  height: 100%; */
+  position: relative;
+  top: 0;
+  right: -100%;
+  /* transform: rotate(90deg);
+  transition: all 1s ease; */
+  opacity: 0;
+  width: 0;
+}
+
+.radio-wrap {
+  /* border: 1px solid; */
+  /* width: 600px; */
+  height: 300px;
+  margin: 0 auto;
+  position: relative;
+  overflow: hidden;
+}
+
+.wrap {
+  border: none;
+  /* border-bottom: 1px solid; */
   position: relative;
 }
 
-.image {
-  display: block;
+img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
-/* Next & previous buttons */
-#prev {
+[type='radio'] {
   position: absolute;
-  top: 43%;
-  left: 0;
-  cursor: pointer;
-  padding: 16px;
-  color: white;
-  font-weight: bold;
-  font-size: 1rem;
-  transition: 0.6s ease;
-  border-radius: 0 3px 3px 0;
-  user-select: none;
+  z-index: 2;
 }
 
-#next {
-  position: absolute;
-  top: 43%;
+#name0:checked ~ div > label:nth-child(2) {
   right: 0;
-  cursor: pointer;
-  padding: 16px;
-  color: #fff;
-  font-weight: bold;
-  font-size: 1rem;
-  transition: 0.6s ease;
-  border-radius: 0 3px 3px 0;
-  user-select: none;
+  transform: rotate(0deg);
+  opacity: 1;
+  width: 100%;
+}
+#name1:checked ~ div > label:nth-child(3) {
+  right: 0;
+  transform: rotate(0deg);
+  opacity: 1;
+  width: 100%;
 }
 
-#prev:hover,
-#next:hover {
-  background: rgba(0, 0, 0, 0.5);
+#name2:checked ~ div > label:nth-child(4) {
+  right: 0;
+  transform: rotate(0deg);
+  opacity: 1;
+  width: 100%;
 }
 
-.dots {
-  text-align: center;
-  margin-top: 2%;
+#name3:checked ~ div > label:nth-child(5) {
+  right: 0;
+  transform: rotate(0deg);
+  opacity: 1;
+  width: 100%;
 }
 
-.dot {
-  display: inline-block;
-  height: 15px;
-  width: 15px;
-  margin: 0 2px;
-  background-color: #bbb;
-  border-radius: 50%;
-  /* transition from one do to the next */
-  transition: background-color 0.6s ease;
+#name4:checked ~ div > label:nth-child(6) {
+  right: 0;
+  transform: rotate(0deg);
+  opacity: 1;
+  width: 100%;
 }
 
-/* We create this class with JavaScript. It makes the current dot darker gray */
-.active {
-  background-color: #717171;
+#name5:checked ~ div > label:nth-child(7) {
+  right: 0;
+  transform: rotate(0deg);
+  opacity: 1;
+  width: 100%;
 }
 
-/* create fade animation when switching between images */
-.fade {
-  /* Animation support for different browsers */
-  -webkit-animation-name: fade;
-  -webkit-animation-duration: 1.5s;
-  animation-name: fade;
-  animation-duration: 1.5s;
+#name6:checked ~ div > label:nth-child(8) {
+  right: 0;
+  transform: rotate(0deg);
+  opacity: 1;
+  width: 100%;
 }
 
-@-webkit-keyframes fade {
-  from {
-    opacity: 0.4;
-  }
-  to {
-    opacity: 1;
-  }
+#name7:checked ~ div > label:nth-child(9) {
+  right: 0;
+  transform: rotate(0deg);
+  opacity: 1;
+  width: 100%;
 }
 
-@keyframes fade {
-  from {
-    opacity: 0.4;
-  }
-  to {
-    opacity: 1;
-  }
+#name8:checked ~ div > label:nth-child(1) {
+  right: 0;
+  transform: rotate(0deg);
+  opacity: 1;
+  width: 100%;
 }
 
-@media (max-width: 768px) {
-  .container {
-    width: 100%;
-  }
+#name0 {
+  top: 520px;
+  left: 7.5%;
+}
+#name1 {
+  top: 520px;
+  left: 12.5%;
+}
+
+#name2 {
+  top: 520px;
+  left: 17.5%;
+}
+
+#name3 {
+  top: 520px;
+  left: 22.5%;
+}
+
+#name4 {
+  top: 520px;
+  left: 27.5%;
+}
+
+#name5 {
+  top: 520px;
+  left: 32.5%;
+}
+
+#name6 {
+  top: 520px;
+  left: 37.5%;
+}
+
+#name7 {
+  top: 520px;
+  left: 42.5%;
+}
+
+#name8 {
+  top: 520px;
+  left: 47.5%;
 }

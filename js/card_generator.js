@@ -6,6 +6,7 @@ const cardGenerator = {
     const URL = 'https://web-app.click/pc-shop/photos/products/computers/'
     const pictureImg = product.photos[0]
     const image = `${URL}${pictureImg}`
+
     const price = (product.price * cardModel.usdCourse.rate).toFixed()
     // console.log(product.photos.length)
 
@@ -18,7 +19,7 @@ const cardGenerator = {
     const cardSlider = document.createElement('div')
     const cardTopRight = document.createElement('div')
     const cardSliderMain = document.createElement('div')
-    const img = document.createElement('img')
+    // const img = document.createElement('img')
     const cardInfo = document.createElement('div')
     const cardInfoProp = document.createElement('span')
     const cardInfoPrice = document.createElement('div')
@@ -37,10 +38,11 @@ const cardGenerator = {
     const cardDescriptionLink = document.createElement('a')
     const cardDescriptionRight = document.createElement('div')
     const cardDescriptionItem = document.createElement('li')
-    // const cardDescriptionParagraph = document.createElement('p')
-    // const cardDescriptionParagraph2 = document.createElement('p')
+    const cardDescriptionParagraph = document.createElement('p')
+    const cardDescriptionParagraph2 = document.createElement('p')
     const leftArrow = document.createElement('a')
     const rightArrow = document.createElement('a')
+    const radioWrap = document.createElement('div')
 
     section.setAttribute('class', 'card')
     infoPriceCurrent.textContent = `${price} грн`
@@ -58,9 +60,9 @@ const cardGenerator = {
     cardTopRight.setAttribute('class', 'card-top__right')
     infoPriceCurrent.setAttribute('class', 'info-price__current')
     containerNarrow.setAttribute('class', 'container-narrow')
-    cardSliderMain.classList.add('card-slider__main', 'image')
+    // cardSliderMain.classList.add('card-slider__main', 'image')
     cardInfoDescr.setAttribute('class', 'card-info__descr')
-    img.setAttribute('src', `${image}`)
+    // img.setAttribute('src', `${image}`)
     toCartBtn.classList.add('card-info__btn--tocart')
     toCartBtn.classList.add('btn-reset')
     toCartBtn.classList.add('card-info__btn')
@@ -89,12 +91,13 @@ const cardGenerator = {
     cardDescriptionLink.setAttribute('class', 'card-description__link')
     cardDescriptionLink.textContent = 'Description'
     cardDescriptionRight.setAttribute('class', 'card-description__right')
-    leftArrow.classList.add('prev')
-    leftArrow.innerHTML = '<'
-    rightArrow.classList.add('next')
-    rightArrow.innerHTML = '>'
-    // cardDescriptionContent.classList.add('card-description__content')
-    // cardDescriptionContent.classList.add('card-description__content--active')
+    // leftArrow.classList.add('prev')
+    // leftArrow.innerHTML = '<'
+    // rightArrow.classList.add('next')
+    // rightArrow.innerHTML = '>'
+    cardDescriptionContent.classList.add('card-description__content')
+    cardDescriptionContent.classList.add('card-description__content--active')
+    radioWrap.classList.add('radio-wrap')
 
     for (const key in product.attributes) {
       const cardDescriptionContent = this.generateParagraph(
@@ -103,18 +106,30 @@ const cardGenerator = {
       )
       cardDescriptionRight.appendChild(cardDescriptionContent)
     }
+    for (let i = 0; i < product.photos.length; i++) {
+      const radio = document.createElement('input')
+      radio.setAttribute('type', 'radio')
+      radio.setAttribute('id', `name${i}`)
+      radio.setAttribute('name', 'name')
+      // radioWrap.appendChild(radio)
+      cardTopLeft.appendChild(radio)
+    }
+    // cardTopLeft.appendChild(radioWrap)
 
+    const labelWrap = document.createElement('div')
     for (let i = 0; i < product.photos.length; i++) {
       const img = product.photos[i]
       const image = URL + img
-      const cardSliderMain = document.createElement('div')
-      cardSliderMain.classList.add('card-slider__main', 'image')
+      // const labelWrap = document.createElement('div')
+      const cardSliderMain = document.createElement('label')
+      cardSliderMain.setAttribute('for', `name${i}`)
+
       const picture = document.createElement('img')
       picture.setAttribute('src', `${image}`)
       cardSliderMain.appendChild(picture)
-      // cardSlider.appendChild(cardSliderMain)
-      cardTopLeft.appendChild(cardSliderMain)
+      labelWrap.appendChild(cardSliderMain)
     }
+    cardTopLeft.appendChild(labelWrap)
 
     cardDescriptionItem.appendChild(cardDescriptionLink)
     cardDescriptionNavigation.appendChild(cardDescriptionItem)
@@ -133,10 +148,10 @@ const cardGenerator = {
     cardInfo.appendChild(toCartBtn)
     cardInfo.appendChild(toWishlistBtn)
     cardTopRight.appendChild(cardInfo)
-    cardSliderMain.appendChild(img)
+    // cardSliderMain.appendChild(img)
     cardSlider.appendChild(cardSliderMain)
-    cardTopLeft.appendChild(leftArrow)
-    cardTopLeft.appendChild(rightArrow)
+    // cardTopLeft.appendChild(cardSlider)
+    // cardTopLeft.appendChild(rightArrow)
     containerNarrow.appendChild(cardTopLeft)
     containerNarrow.appendChild(cardTopRight)
     cardTop.appendChild(containerNarrow)
@@ -145,8 +160,10 @@ const cardGenerator = {
     cardContent.appendChild(cardContentBottom)
     section.appendChild(cardContent)
 
-    leftArrow.addEventListener('click', card_view.showPrevImg)
-    rightArrow.addEventListener('click', card_view.shoNextImg)
+    // leftArrow.addEventListener('click', card_view.showPrevImg)
+    // rightArrow.addEventListener('click', card_view.shoNextImg)
+
+    // radio0.setAttribute('checked', 'true')
 
     return section
   },
