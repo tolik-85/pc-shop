@@ -18,7 +18,10 @@ label {
   opacity: 0;
   width: 0;
 }
-
+.container-slider {
+  padding: 20px;
+  overflow: hidden;
+}
 .radio-wrap {
   /* border: 1px solid; */
   /* width: 600px; */
@@ -33,9 +36,14 @@ label {
   /* border-bottom: 1px solid; */
   position: relative;
 }
+label > img {
+  max-width: 80%;
+}
 
 img {
   width: 100%;
+  max-width: 100%;
+  max-height: 100%;
   height: 100%;
   object-fit: cover;
 }
@@ -86,26 +94,26 @@ img {
   width: 100%;
 }
 
-#name6:checked ~ div > label:nth-child(8) {
+#name6:checked ~ div > label:nth-child(1) {
   right: 0;
   transform: rotate(0deg);
   opacity: 1;
   width: 100%;
 }
 
-#name7:checked ~ div > label:nth-child(9) {
+/* #name7:checked ~ div > label:nth-child(1) {
   right: 0;
   transform: rotate(0deg);
   opacity: 1;
   width: 100%;
-}
+} */
 
-#name8:checked ~ div > label:nth-child(1) {
+/* #name8:checked ~ div > label:nth-child(1) {
   right: 0;
   transform: rotate(0deg);
   opacity: 1;
   width: 100%;
-}
+} */
 
 #name0 {
   top: 520px;
@@ -141,12 +149,12 @@ img {
   left: 37.5%;
 }
 
-#name7 {
+/* #name7 {
   top: 520px;
   left: 42.5%;
-}
+} */
 
-#name8 {
+/* #name8 {
   top: 520px;
   left: 47.5%;
-}
+} */

@@ -51,6 +51,7 @@ function generateLabel(text, forLabel) {
 }
 
 function generateProduct(product) {
+  // console.log(product)
   const URL = 'https://web-app.click/pc-shop/photos/products/computers/'
   const picture = product.photos[0]
   // const purpose = product.purpose
@@ -58,6 +59,9 @@ function generateProduct(product) {
   const price = (product.price * model.usdCourse.rate).toFixed()
   const image = `${URL}${picture}`
 
+  const productLink = document.createElement('a')
+  const id = document.createElement('div')
+  const idSpan = document.createElement('span')
   const elWrapProduct = document.createElement('div')
   const elWrapImg = document.createElement('div')
   const elImg = document.createElement('img')
@@ -74,13 +78,19 @@ function generateProduct(product) {
   const elDivForCompare = document.createElement('div')
   const elCompareBtn = document.createElement('button')
 
+  productLink.setAttribute(
+    'href',
+    'file:///C:/Users/tolia/Desktop/frontend_lessons/Try_2/shop_computers/card.html'
+  )
+  idSpan.innerHTML = product.id
+  id.classList.add('id')
   elDivForLabels.classList.add('for-label')
   elWrapProduct.classList.add('wrap-product')
   elWrapImg.classList.add('wrap-img')
   elImg.setAttribute('src', `${image}`)
   elImg.setAttribute('alt', 'product')
   elH3.innerHTML = `${caption}`
-
+  elDivForPrice.classList.add('price')
   elParForPrice.innerHTML = `<b>${price}</b> грн`
   elRow.classList.add('row')
 
@@ -102,7 +112,10 @@ function generateProduct(product) {
   // const arr= [
   //   {copt:"500gb", for:"6GB_brand_материнская плата"}
   // ]
-  elWrapImg.appendChild(elImg)
+
+  id.appendChild(idSpan)
+  productLink.appendChild(elImg)
+  elWrapImg.appendChild(productLink)
   elDivForH3.appendChild(elH3)
   elDivForPrice.appendChild(elParForPrice)
   elDivForCart.appendChild(elCartBtn)
@@ -112,11 +125,14 @@ function generateProduct(product) {
   elRow.appendChild(elDivForFavorites)
   elRow.appendChild(elDivForCompare)
 
+  elWrapProduct.appendChild(id)
   elWrapProduct.appendChild(elWrapImg)
   elWrapProduct.appendChild(elDivForH3)
   elWrapProduct.appendChild(elDivForLabels)
   elWrapProduct.appendChild(elDivForPrice)
   elWrapProduct.appendChild(elRow)
+
+  // productLink.appendChild(elWrapProduct)
 
   return elWrapProduct
 }

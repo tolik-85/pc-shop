@@ -197,11 +197,21 @@ a {
 .container-products {
   padding: 5px;
 }
-
+a {
+  cursor: pointer;
+}
+.id {
+  display: none;
+}
+.price {
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-end;
+}
 .wrap-product {
   /* position: relative; */
   cursor: default;
-  width: 250px;
+  width: 260px;
   height: 400px;
   border-radius: 25px;
   padding: 5px;
@@ -231,12 +241,13 @@ a {
   padding: 5px;
 }
 .wrap-product > div:nth-child(2) {
-  height: 10%;
+  height: 50%;
   text-align: center;
   padding: 5px;
 }
 .wrap-product > div:nth-child(3) {
-  height: 20%;
+  height: 10%;
+  margin: 0 auto;
   /* text-wrap: balance; */
   /* border: 1px solid #000; */
 }

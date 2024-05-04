@@ -24,13 +24,14 @@ const controller = {
       this.rednerPaginationClear()
       this.renderPagination()
       view.renderSortSelect()
-      // console.log('searchedProducts', model.searchedProducts.length)
-      // console.log('filtratedProducts', model.filtratedProducts.length)
-      // console.log('pricedProducts', model.pricedProducts.length)
-      // console.log('sortedProducts', model.sortedProducts.length)
-      // console.log('paginatedProducts', model.paginatedProducts.length)
+
     }
   },
+  async goToProductPageHandler(id) {
+    // await card_controller.handleUpdateProduct(id)
+    await card_view.onLoadedCard(id)
+  },
+
   rednerPaginationClear() {
     const paginator = document.querySelector('.paginator')
     paginator.innerHTML = ''
@@ -40,9 +41,9 @@ const controller = {
     let itemsCount = model.pricedProducts.length
     let itemsPerPage = 7
     let pagesCount = itemsCount / itemsPerPage
-    // let currentPage = pagNum
-    for (let i = 0; i < pagesCount; i++) {
+    for (let i = 1; i < pagesCount; i++) {
       let page = generatePaginaionPage(i)
+      // console.log(page)
       paginator.appendChild(page)
     }
   },
@@ -72,12 +73,6 @@ const controller = {
     view.renderElWrapCheckboxClear()
     view.renderWrapFilter(filter)
   },
-  // handlePricedFilter() {
-  //   model.makeFilterForPricedProducts()
-  //   const filter = model.getPricedFilter()
-  //   view.renderElWrapCheckboxClear()
-  //   view.renderWrapFilter(filter)
-  // },
 
   handleFilterCheckbox(id, actionAdd) {
     if (actionAdd) {
@@ -90,7 +85,7 @@ const controller = {
   handlerElSelect(elSelectValue) {
     // console.log(elSelectValue)
     model.sortProducts(elSelectValue)
-    console.log(model.sortedProducts)
+    // console.log(model.sortedProducts)
     view.renderContainerProductsClear()
     model.pagination(0).forEach(product => {
       view.renderContainerProducts(product)

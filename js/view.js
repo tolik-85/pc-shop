@@ -19,6 +19,13 @@ const view = {
     this.renderRangeWrap()
     this.searchFilter()
     this.renderRangeWrap()
+    this.goToProductPageClick()
+  },
+  goToProductPageClick() {
+    const elsProducts = document.querySelectorAll('.wrap-img>a>img')
+    elsProducts.forEach(el => {
+      el.addEventListener('click', this.onClickGoToProductPage)
+    })
   },
   renderElWrapCheckboxClear() {
     let elWrapCheckbox = document.querySelector('.wrap-checkboxes')
@@ -27,6 +34,12 @@ const view = {
   searchFilter() {
     const searchBtn = document.querySelector('.search-submit')
     searchBtn.addEventListener('click', this.onSearchSubmitClick)
+  },
+  onClickGoToProductPage(e) {
+    e.preventDefault
+    const wrapProduct = e.target.parentNode.parentNode.parentNode
+    const id = wrapProduct.querySelector('.id>span').innerHTML
+    controller.goToProductPageHandler(id)
   },
   onSearchSubmitClick(e) {
     e.preventDefault()
@@ -41,7 +54,7 @@ const view = {
   onClickPagination(e) {
     let pagNum = e.target.innerHTML
     pagNum = parseInt(pagNum.replace(/[^\d]/g, ''))
-    console.log(pagNum)
+    // console.log(pagNum)
     controller.onClickPaginationHandler(pagNum)
   },
   renderSortSelect() {

@@ -6,6 +6,7 @@ const cardModel = {
 
   async updateProduct(id) {
     const product = await card_api.loadProduct(id)
+    console.log(product)
     this.setProduct(product)
   },
   getProduct() {

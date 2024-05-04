@@ -2,7 +2,7 @@ const cardGenerator = {
   // const URL :'https://web-app.click/pc-shop/photos/products/computers/',
 
   generateProductCard(product) {
-    // console.log(product)
+    console.log(product)
     const URL = 'https://web-app.click/pc-shop/photos/products/computers/'
     const pictureImg = product.photos[0]
     const image = `${URL}${pictureImg}`

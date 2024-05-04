@@ -192,8 +192,8 @@ const model = {
           count += 1
         }
       })
-      console.log(count)
-      console.log(this.checkedFilters.length)
+      // console.log(count)
+      // console.log(this.checkedFilters.length)
       // console.log(this.checkedFilters.length)
       const attrsType = [
         ...new Set(this.checkedFilters.map(item => item.split('_')[0])),
