@@ -24,12 +24,11 @@ const controller = {
       this.rednerPaginationClear()
       this.renderPagination()
       view.renderSortSelect()
-
     }
   },
-  async goToProductPageHandler(id) {
+  async goToProductPageHandler() {
     // await card_controller.handleUpdateProduct(id)
-    await card_view.onLoadedCard(id)
+    await card_view.onLoadedCard()
   },
 
   rednerPaginationClear() {

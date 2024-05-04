@@ -1,7 +1,9 @@
 const card_view = {
   index: 0,
 
-  async onLoadedCard(id) {
+  async onLoadedCard() {
+    new URLSearchParams(location.search)
+    console.log(search.get('id'))
     await card_controller.handleUpdateProduct(id)
     card_controller.handleRenderProduct()
     this.setFirstRadioCheckked()
@@ -20,7 +22,7 @@ const card_view = {
     elMain.appendChild(productCard)
   },
 }
-// document.addEventListener(
-//   'DOMContentLoaded',
-//   card_view.onLoadedCard.bind(card_view)
-// )
+document.addEventListener(
+  'DOMContentLoaded',
+  card_view.onLoadedCard.bind(card_view)
+)

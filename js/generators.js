@@ -51,7 +51,7 @@ function generateLabel(text, forLabel) {
 }
 
 function generateProduct(product) {
-  // console.log(product)
+  console.log(product.id)
   const URL = 'https://web-app.click/pc-shop/photos/products/computers/'
   const picture = product.photos[0]
   // const purpose = product.purpose
@@ -78,10 +78,7 @@ function generateProduct(product) {
   const elDivForCompare = document.createElement('div')
   const elCompareBtn = document.createElement('button')
 
-  productLink.setAttribute(
-    'href',
-    'file:///C:/Users/tolia/Desktop/frontend_lessons/Try_2/shop_computers/card.html'
-  )
+  productLink.setAttribute('href', `card.html?id=${product.id}`)
   idSpan.innerHTML = product.id
   id.classList.add('id')
   elDivForLabels.classList.add('for-label')
