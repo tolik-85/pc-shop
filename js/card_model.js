@@ -1,19 +1,34 @@
 const cardModel = {
   product: '',
+  simularProductsId: [],
+  simularProducts: [],
   usdCourse: {
     rate: '',
   },
 
   async updateProduct(id) {
     const product = await card_api.loadProduct(id)
-    console.log(product)
     this.setProduct(product)
+  },
+  async updateSimularProductsId(id) {
+    this.simularProductsId = await card_api.loadSimilarProducts(id)
+  },
+  updateSimularProducts() {
+    this.simularProductsId.forEach(async prod => {
+      let product = await card_api.loadProduct(prod.relatedProductId)
+    })
   },
   getProduct() {
     return this.product
   },
   setProduct(product) {
     this.product = product
+  },
+  setSimularProducts(product) {
+    this.simularProducts.shift(product)
+  },
+  getSimularProducts() {
+    return this.simularProducts
   },
   async updateCourse() {
     const course = await card_api.loadCourse()

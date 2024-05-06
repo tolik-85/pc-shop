@@ -8,4 +8,13 @@ const card_controller = {
     cardGenerator.generateProductCard(product)
     card_view.renderMain(product)
   },
+  async handleSimularProducts(id) {
+    await cardModel.updateSimularProductsId(id)
+  },
+  renderSimularProductsSection() {
+    cardModel.simularProductsId.forEach(async prod => {
+      let product = await card_api.loadProduct(prod.relatedProductId)
+      card_view.renderSimularProducts(product)
+    })
+  },
 }

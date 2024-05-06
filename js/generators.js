@@ -51,7 +51,7 @@ function generateLabel(text, forLabel) {
 }
 
 function generateProduct(product) {
-  console.log(product.id)
+  // console.log(product.id)
   const URL = 'https://web-app.click/pc-shop/photos/products/computers/'
   const picture = product.photos[0]
   // const purpose = product.purpose

@@ -1,14 +1,11 @@
 const cardGenerator = {
-  // const URL :'https://web-app.click/pc-shop/photos/products/computers/',
-
   generateProductCard(product) {
-    console.log(product)
+    // console.log(product)
     const URL = 'https://web-app.click/pc-shop/photos/products/computers/'
     const pictureImg = product.photos[0]
-    const image = `${URL}${pictureImg}`
+    // const image = `${URL}${pictureImg}`
 
     const price = (product.price * cardModel.usdCourse.rate).toFixed()
-    // console.log(product.photos.length)
 
     const section = document.createElement('section')
     const cardContent = document.createElement('div')
@@ -19,7 +16,7 @@ const cardGenerator = {
     const cardSlider = document.createElement('div')
     const cardTopRight = document.createElement('div')
     const cardSliderMain = document.createElement('div')
-    // const img = document.createElement('img')
+
     const cardInfo = document.createElement('div')
     const cardInfoProp = document.createElement('span')
     const cardInfoPrice = document.createElement('div')
@@ -91,10 +88,6 @@ const cardGenerator = {
     cardDescriptionLink.setAttribute('class', 'card-description__link')
     cardDescriptionLink.textContent = 'Description'
     cardDescriptionRight.setAttribute('class', 'card-description__right')
-    // leftArrow.classList.add('prev')
-    // leftArrow.innerHTML = '<'
-    // rightArrow.classList.add('next')
-    // rightArrow.innerHTML = '>'
     cardDescriptionContent.classList.add('card-description__content')
     cardDescriptionContent.classList.add('card-description__content--active')
     radioWrap.classList.add('radio-wrap')
@@ -111,16 +104,14 @@ const cardGenerator = {
       radio.setAttribute('type', 'radio')
       radio.setAttribute('id', `name${i}`)
       radio.setAttribute('name', 'name')
-      // radioWrap.appendChild(radio)
       cardTopLeft.appendChild(radio)
     }
-    // cardTopLeft.appendChild(radioWrap)
 
     const labelWrap = document.createElement('div')
+
     for (let i = 0; i < product.photos.length; i++) {
       const img = product.photos[i]
       const image = URL + img
-      // const labelWrap = document.createElement('div')
       const cardSliderMain = document.createElement('label')
       cardSliderMain.setAttribute('for', `name${i}`)
 
@@ -186,8 +177,54 @@ const cardGenerator = {
       const picture = document.createElement('img')
       picture.setAttribute('src', `${image}`)
       cardSliderMain.appendChild(picture)
-      console.log(cardSliderMain)
+      // console.log(cardSliderMain)
       return cardSliderMain
     })
+  },
+  generateSectionSimularProducts() {
+    const section = document.createElement('section')
+    const h3Wrap = document.createElement('div')
+    const h3 = document.createElement('h3')
+    const semProductsWrap = document.createElement('div')
+    semProductsWrap.classList.add('simular_products-wrap')
+    h3.innerHTML = 'Похожие товары'
+    section.classList.add('simular-products')
+    h3Wrap.appendChild(h3)
+    section.appendChild(h3Wrap)
+    section.appendChild(semProductsWrap)
+    return section
+  },
+  generateSimularProduct(product) {
+    const URL = 'https://web-app.click/pc-shop/photos/products/computers/'
+    const img = product.photos[0]
+    const image = URL + img
+    const price = (product.price * cardModel.usdCourse.rate).toFixed()
+
+    const elWrapProduct = document.createElement('div')
+    const elWrapImg = document.createElement('div')
+    const elLink = document.createElement('a')
+    const elImg = document.createElement('img')
+    const elDivForPrice = document.createElement('div')
+    const elParForPrice = document.createElement('p')
+    const elDivDesc = document.createElement('div')
+    const elH4 = document.createElement('h4')
+    elH4.innerHTML = `${product.caption}`
+
+    elWrapProduct.classList.add('wrap-simular-product')
+    elWrapImg.classList.add('simular_prod_img-wrap')
+    elLink.setAttribute('href', `card.html?id=${product.id}`)
+    elImg.setAttribute('src', `${image}`)
+    elDivForPrice.classList.add('simular_prod-price')
+    elParForPrice.innerHTML = `<b>${price}</b> грн`
+    elDivDesc.classList.add('h4-wrap')
+    elDivDesc.appendChild(elH4)
+    elDivForPrice.appendChild(elParForPrice)
+    elLink.appendChild(elImg)
+    elWrapImg.appendChild(elLink)
+    elWrapProduct.appendChild(elWrapImg)
+    elWrapProduct.appendChild(elDivDesc)
+    elWrapProduct.appendChild(elDivForPrice)
+
+    return elWrapProduct
   },
 }

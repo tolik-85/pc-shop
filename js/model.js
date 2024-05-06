@@ -13,14 +13,6 @@ const model = {
   checkedFilters: [],
   searchQuery: '',
 
-  // equalizeAllProductArr() {
-  //   this.searchedProducts = this.products
-  //   this.filtratedStartArr = this.searchedProducts
-  //   this.pricedProducts = this.filtratedProducts
-  //   this.sortedProducts = this.pricedProducts
-  //   this.paginatedProducts = this.sortedProducts
-  // },
-
   addCheckedCheckboxes(checkedFilter) {
     const imagineCheckedFilters = {
       'Тип ОЗУ': ['8Gb', '16Gb'],
