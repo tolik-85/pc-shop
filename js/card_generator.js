@@ -1,30 +1,18 @@
 const cardGenerator = {
   generateProductCard(product) {
-    // console.log(product)
     const URL = 'https://web-app.click/pc-shop/photos/products/computers/'
-    const pictureImg = product.photos[0]
-    // const image = `${URL}${pictureImg}`
+    // const pictureImg = product.photos[0]
 
-    const price = (product.price * cardModel.usdCourse.rate).toFixed()
+    // const price = (product.price * cardModel.usdCourse.rate).toFixed()
 
     const section = document.createElement('section')
     const cardContent = document.createElement('div')
     const cardContenTop = document.createElement('div')
     const cardTop = document.createElement('div')
     const containerNarrow = document.createElement('div')
-    const cardTopLeft = document.createElement('div')
-    const cardSlider = document.createElement('div')
-    const cardTopRight = document.createElement('div')
-    const cardSliderMain = document.createElement('div')
 
-    const cardInfo = document.createElement('div')
     const cardInfoProp = document.createElement('span')
-    const cardInfoPrice = document.createElement('div')
-    const cardInfoTitle = document.createElement('h3')
-    const toCartBtn = document.createElement('button')
-    const toWishlistBtn = document.createElement('button')
-    const infoPriceCurrent = document.createElement('div')
-    const cardInfoDescr = document.createElement('p')
+
     const cardContentBottom = document.createElement('div')
     const cardBottomContent = document.createElement('div')
     const cardDescription = document.createElement('div')
@@ -35,46 +23,25 @@ const cardGenerator = {
     const cardDescriptionLink = document.createElement('a')
     const cardDescriptionRight = document.createElement('div')
     const cardDescriptionItem = document.createElement('li')
-    const cardDescriptionParagraph = document.createElement('p')
-    const cardDescriptionParagraph2 = document.createElement('p')
-    const leftArrow = document.createElement('a')
-    const rightArrow = document.createElement('a')
-    const radioWrap = document.createElement('div')
 
     section.setAttribute('class', 'card')
-    infoPriceCurrent.textContent = `${price} грн`
-    cardTopLeft.classList.add('card-top__left', 'container-slider')
-    cardInfoPrice.setAttribute('class', 'card-info__price')
+
     cardTop.setAttribute('class', 'card-top')
-    cardInfoTitle.setAttribute('class', 'card-info__title')
+
     cardContenTop.setAttribute('class', 'card-content__top')
-    cardInfo.setAttribute('class', 'card-info')
-    cardInfoTitle.textContent = `${product.caption}`
+
     cardInfoProp.classList.add('product-prop')
     cardInfoProp.innerHTML = 'Best Seller'
     cardInfoProp.classList.add('card-info__prop')
     cardContent.setAttribute('class', 'card-content')
-    cardTopRight.setAttribute('class', 'card-top__right')
-    infoPriceCurrent.setAttribute('class', 'info-price__current')
+
     containerNarrow.setAttribute('class', 'container-narrow')
-    // cardSliderMain.classList.add('card-slider__main', 'image')
-    cardInfoDescr.setAttribute('class', 'card-info__descr')
-    // img.setAttribute('src', `${image}`)
-    toCartBtn.classList.add('card-info__btn--tocart')
-    toCartBtn.classList.add('btn-reset')
-    toCartBtn.classList.add('card-info__btn')
-    toCartBtn.textContent = 'Добавить в корзину'
-    cardSlider.setAttribute('class', 'card-slider')
-    toWishlistBtn.classList.add('btn-reset')
-    toWishlistBtn.classList.add('card-info__btn')
-    toWishlistBtn.classList.add('card-info__btn--towishlist')
-    toWishlistBtn.textContent = 'Добавить в избранное'
+
     cardDescriptionNavigation.setAttribute(
       'class',
       'card-description__navigation'
     )
-    cardInfoPrice.setAttribute('class', 'info-price')
-    cardInfoDescr.textContent = `${product.description}`
+
     cardContentBottom.setAttribute('class', 'card-content__bottom')
     cardInfoProp.setAttribute('class', 'best')
     containerNarrow.setAttribute('class', 'container')
@@ -90,7 +57,6 @@ const cardGenerator = {
     cardDescriptionRight.setAttribute('class', 'card-description__right')
     cardDescriptionContent.classList.add('card-description__content')
     cardDescriptionContent.classList.add('card-description__content--active')
-    radioWrap.classList.add('radio-wrap')
 
     for (const key in product.attributes) {
       const cardDescriptionContent = this.generateParagraph(
@@ -99,8 +65,87 @@ const cardGenerator = {
       )
       cardDescriptionRight.appendChild(cardDescriptionContent)
     }
+
+    const cardTopLeft = this.generateCardTopLeft(product)
+    const cardTopRight = this.generateCardTopRight(product)
+
+    cardDescriptionItem.appendChild(cardDescriptionLink)
+    cardDescriptionNavigation.appendChild(cardDescriptionItem)
+    cardDescriptionLeft.appendChild(cardDescriptionNavigation)
+    cardDescription.appendChild(cardDescriptionLeft)
+    cardDescription.appendChild(cardDescriptionRight)
+    containerNarrow2.appendChild(cardDescription)
+    cardBottomContent.appendChild(containerNarrow2)
+    cardContentBottom.appendChild(cardBottomContent)
+
+    containerNarrow.appendChild(cardTopLeft)
+    containerNarrow.appendChild(cardTopRight)
+    cardTop.appendChild(containerNarrow)
+    cardContenTop.appendChild(cardTop)
+    cardContent.appendChild(cardContenTop)
+    cardContent.appendChild(cardContentBottom)
+    section.appendChild(cardContent)
+
+    return section
+  },
+  generateCardTopRight(product) {
+    const price = (product.price * cardModel.usdCourse.rate).toFixed()
+    const cardInfo = document.createElement('div')
+    const cardTopRight = document.createElement('div')
+    const cardInfoTitle = document.createElement('h3')
+    const infoPriceCurrent = document.createElement('div')
+    const cardInfoPrice = document.createElement('div')
+    const cardInfoDescr = document.createElement('p')
+    const toCartBtn = document.createElement('button')
+    const toWishlistBtn = document.createElement('button')
+
+    cardInfo.setAttribute('class', 'card-info')
+    cardTopRight.setAttribute('class', 'card-top__right')
+    cardInfoTitle.setAttribute('class', 'card-info__title')
+    cardInfoTitle.textContent = `${product.caption}`
+    infoPriceCurrent.textContent = `${price} грн`
+    infoPriceCurrent.setAttribute('class', 'info-price__current')
+    cardInfoPrice.setAttribute('class', 'card-info__price')
+    cardInfoPrice.setAttribute('class', 'info-price')
+    cardInfoDescr.setAttribute('class', 'card-info__descr')
+    cardInfoDescr.textContent = `${product.description}`
+    toCartBtn.classList.add('card-info__btn--tocart')
+    toCartBtn.classList.add('btn-reset')
+    toCartBtn.classList.add('card-info__btn')
+    toCartBtn.textContent = 'Добавить в корзину'
+    toWishlistBtn.classList.add('btn-reset')
+    toWishlistBtn.classList.add('card-info__btn')
+    toWishlistBtn.classList.add('card-info__btn--towishlist')
+    toWishlistBtn.textContent = 'Добавить в избранное'
+
+    cardInfoPrice.appendChild(infoPriceCurrent)
+    // cardInfoPrice.appendChild(infoPriceCurrent)
+    // cardInfoPrice.appendChild(infoPriceCurrent)
+    cardInfo.appendChild(cardInfoTitle)
+    cardInfo.appendChild(cardInfoPrice)
+    cardInfo.appendChild(cardInfoDescr)
+    cardInfo.appendChild(toCartBtn)
+    cardInfo.appendChild(toWishlistBtn)
+
+    cardTopRight.appendChild(cardInfo)
+
+    return cardTopRight
+  },
+
+  generateCardTopLeft(product) {
+    const URL = 'https://web-app.click/pc-shop/photos/products/computers/'
+    // const pictureImg = product.photos[0]
+
+    const cardTopLeft = document.createElement('div')
+    cardTopLeft.classList.add('card-top__left', 'container-slider')
+    const radioWrap = document.createElement('div')
+    radioWrap.classList.add('radio-wrap')
+
     for (let i = 0; i < product.photos.length; i++) {
       const radio = document.createElement('input')
+      if (i === 0) {
+        radio.setAttribute('checked', '')
+      }
       radio.setAttribute('type', 'radio')
       radio.setAttribute('id', `name${i}`)
       radio.setAttribute('name', 'name')
@@ -122,42 +167,9 @@ const cardGenerator = {
     }
     cardTopLeft.appendChild(labelWrap)
 
-    cardDescriptionItem.appendChild(cardDescriptionLink)
-    cardDescriptionNavigation.appendChild(cardDescriptionItem)
-    cardDescriptionLeft.appendChild(cardDescriptionNavigation)
-    cardDescription.appendChild(cardDescriptionLeft)
-    cardDescription.appendChild(cardDescriptionRight)
-    containerNarrow2.appendChild(cardDescription)
-    cardBottomContent.appendChild(containerNarrow2)
-    cardContentBottom.appendChild(cardBottomContent)
-
-    cardInfoPrice.appendChild(infoPriceCurrent)
-
-    cardInfo.appendChild(cardInfoTitle)
-    cardInfo.appendChild(cardInfoPrice)
-    cardInfo.appendChild(cardInfoDescr)
-    cardInfo.appendChild(toCartBtn)
-    cardInfo.appendChild(toWishlistBtn)
-    cardTopRight.appendChild(cardInfo)
-    // cardSliderMain.appendChild(img)
-    cardSlider.appendChild(cardSliderMain)
-    // cardTopLeft.appendChild(cardSlider)
-    // cardTopLeft.appendChild(rightArrow)
-    containerNarrow.appendChild(cardTopLeft)
-    containerNarrow.appendChild(cardTopRight)
-    cardTop.appendChild(containerNarrow)
-    cardContenTop.appendChild(cardTop)
-    cardContent.appendChild(cardContenTop)
-    cardContent.appendChild(cardContentBottom)
-    section.appendChild(cardContent)
-
-    // leftArrow.addEventListener('click', card_view.showPrevImg)
-    // rightArrow.addEventListener('click', card_view.shoNextImg)
-
-    // radio0.setAttribute('checked', 'true')
-
-    return section
+    return cardTopLeft
   },
+
   generateParagraph(key, value) {
     const cardDescriptionParagraph = document.createElement('p')
     const cardDescriptionContent = document.createElement('div')
@@ -169,6 +181,7 @@ const cardGenerator = {
 
     return cardDescriptionContent
   },
+
   generateProductImages(product, URL) {
     product.photos.forEach(img => {
       const image = URL + img
@@ -181,6 +194,7 @@ const cardGenerator = {
       return cardSliderMain
     })
   },
+
   generateSectionSimularProducts() {
     const section = document.createElement('section')
     const h3Wrap = document.createElement('div')
@@ -194,6 +208,7 @@ const cardGenerator = {
     section.appendChild(semProductsWrap)
     return section
   },
+
   generateSimularProduct(product) {
     const URL = 'https://web-app.click/pc-shop/photos/products/computers/'
     const img = product.photos[0]

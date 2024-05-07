@@ -8,15 +8,15 @@ const card_view = {
     await card_controller.handleUpdateProduct(id)
     await card_controller.handleSimularProducts(id)
     card_controller.handleRenderProduct()
-    this.setFirstRadioCheckked()
+    // this.setFirstRadioCheckked()
     card_controller.renderSimularProductsSection()
   },
-  setFirstRadioCheckked() {
-    const radio0 = document.querySelector('#name0')
-    // radio0.setAttribute('checked', 'true')
-    radio0.checked = true
-    // console.log(radio0)
-  },
+  // setFirstRadioCheckked() {
+  //   const radio0 = document.querySelector('#name0')
+  //   // radio0.setAttribute('checked', 'true')
+  //   radio0.checked = true
+  //   // console.log(radio0)
+  // },
   renderMain(product) {
     const elMain = document.querySelector('main')
     const productCard = cardGenerator.generateProductCard(product)
