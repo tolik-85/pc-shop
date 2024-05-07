@@ -1,9 +1,6 @@
 const cardGenerator = {
   generateProductCard(product) {
     const URL = 'https://web-app.click/pc-shop/photos/products/computers/'
-    // const pictureImg = product.photos[0]
-
-    // const price = (product.price * cardModel.usdCourse.rate).toFixed()
 
     const section = document.createElement('section')
     const cardContent = document.createElement('div')
@@ -119,8 +116,6 @@ const cardGenerator = {
     toWishlistBtn.textContent = 'Добавить в избранное'
 
     cardInfoPrice.appendChild(infoPriceCurrent)
-    // cardInfoPrice.appendChild(infoPriceCurrent)
-    // cardInfoPrice.appendChild(infoPriceCurrent)
     cardInfo.appendChild(cardInfoTitle)
     cardInfo.appendChild(cardInfoPrice)
     cardInfo.appendChild(cardInfoDescr)
