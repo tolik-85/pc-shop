@@ -16,6 +16,7 @@ const cardModel = {
   updateSimularProducts() {
     this.simularProductsId.forEach(async prod => {
       let product = await card_api.loadProduct(prod.relatedProductId)
+      this.simularProducts.push(product)
     })
   },
   getProduct() {
