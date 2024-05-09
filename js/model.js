@@ -129,14 +129,17 @@ const model = {
     this.setUsdCouse(course)
   },
 
+  // setUsdCouse(course) {
+  //   course.forEach(item => {
+  //     for (key in item) {
+  //       if (item[key] === 840) {
+  //         this.usdCourse.rate = item.rate
+  //       }
+  //     }
+  //   })
+  // },
   setUsdCouse(course) {
-    course.forEach(item => {
-      for (key in item) {
-        if (item[key] === 840) {
-          this.usdCourse.rate = item.rate
-        }
-      }
-    })
+    this.usdCourse.rate = course
   },
 
   searchProducts() {
