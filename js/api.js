@@ -13,30 +13,22 @@ const api = {
     return json.payload
   },
 
-  async loadCourse() {
-    const resp = await fetch(`${API_URL_COURSE}`)
-    const json = await resp.json()
-    const currency = json.find(o => o.cc === 'USD').rate
-    return currency
-  },
-}
-
-const card_api = {
   async loadProduct(id) {
     const resp = await fetch(`${API_URL_PRODUCTS + id}`)
     const json = await resp.json()
     return json.payload
   },
 
-  // async loadCourse() {
-  //   const resp = await fetch(`${API_URL_COURSE}`)
-  //   return await resp.json()
-  // },
-
   async loadSimilarProducts(id) {
     let ID = `${id}`
     const resp = await fetch(`${API_URL_PRODUCTS + ID + '/similar/'}`)
-
     return (await resp.json()).payload
+  },
+
+  async loadCourse() {
+    const resp = await fetch(`${API_URL_COURSE}`)
+    const json = await resp.json()
+    const currency = json.find(o => o.cc === 'USD').rate
+    return currency
   },
 }

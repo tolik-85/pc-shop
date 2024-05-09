@@ -1,16 +1,9 @@
 const controller = {
   async handleUpdateProducts(isLoad = true) {
     if (isLoad) {
-      // console.time()
-      // await model.updateCourse()
-      // await model.updateProducts()
-
       await Promise.all([model.updateCourse(), model.updateProducts()])
-
-      // console.timeEnd()
       model.pagination(0).forEach(product => {
         view.renderContainerProducts(product)
-        // console.log('hello')
       })
       this.renderPagination()
     } else {
@@ -25,10 +18,6 @@ const controller = {
       this.renderPagination()
       view.renderSortSelect()
     }
-  },
-  async goToProductPageHandler() {
-    // await card_controller.handleUpdateProduct(id)
-    await card_view.onLoadedCard()
   },
 
   rednerPaginationClear() {
@@ -113,5 +102,27 @@ const controller = {
     // console.log('pricedProducts', model.pricedProducts.length)
     // console.log('sortedProducts', model.sortedProducts.length)
     // console.log('paginatedProducts', model.paginatedProducts.length)
+  },
+
+  async handleUpdateProduct(id) {
+    await cardModel.updateProduct(id)
+    await cardModel.updateCourse()
+  },
+
+  handleRenderProduct() {
+    const product = cardModel.getProduct()
+    cardGenerator.generateProductCard(product)
+    view.renderMain(product)
+  },
+
+  async handleSimularProducts(id) {
+    await cardModel.updateSimularProductsId(id)
+  },
+
+  renderSimularProductsSection() {
+    cardModel.simularProductsId.forEach(async prod => {
+      let product = await api.loadProduct(prod.relatedProductId)
+      view.renderSimularProducts(product)
+    })
   },
 }

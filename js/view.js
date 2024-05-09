@@ -7,7 +7,7 @@ const view = {
     controller.handleUpdateProducts(false)
   },
 
-  async onLoaded() {
+  async onLoadCatalog() {
     await controller.handleUpdateProducts()
     controller.handleFilter()
     document.querySelector('#filtrate').onclick =
@@ -164,20 +164,6 @@ const view = {
     })
   },
 
-  // renderLeftOptions() {
-  //   // const searchInput = document.querySelector('.search')
-  //   const searchOptions = document.querySelector('.options')
-  //   const productsNames = model.getProductsNames()
-  //   const options = view.getProductsFromSearchForm(this.value, productsNames)
-
-  //   const result = options
-  //     .map(productName => {
-  //       return `<li><span>${productName}</span></li>`
-  //     })
-  //     .join('')
-  //   searchOptions.innerHTML = this.value ? result : null
-  // },
-
   addEventListener() {
     const searchInput = document.querySelector('.search')
     searchInput.addEventListener('change', this.renderLeftOptions)
@@ -189,6 +175,37 @@ const view = {
     elPriceFromRange.addEventListener('input', this.onChangeInputRange)
     elPriceToRange.addEventListener('input', this.onChangeInputRange)
   },
+
+  async onLoadedCard() {
+    const search = new URLSearchParams(location.search)
+    const id = search.get('id')
+    await controller.handleUpdateProduct(id)
+    await controller.handleSimularProducts(id)
+    controller.handleRenderProduct()
+    controller.renderSimularProductsSection()
+  },
+
+  renderMain(product) {
+    const elMain = document.querySelector('main')
+    const productCard = cardGenerator.generateProductCard(product)
+    const section = cardGenerator.generateSectionSimularProducts()
+    elMain.appendChild(productCard)
+    elMain.appendChild(section)
+  },
+
+  renderSimularProducts(product) {
+    const section = document.querySelector('.simular-products')
+    const simProdWrap = document.querySelector('.simular_products-wrap')
+    const semProd = cardGenerator.generateSimularProduct(product)
+    simProdWrap.appendChild(semProd)
+    section.appendChild(simProdWrap)
+  },
 }
 
-document.addEventListener('DOMContentLoaded', view.onLoaded.bind(view))
+if (location.pathname.toLowerCase().startsWith('/card.html')) {
+  console.log('card')
+  document.addEventListener('DOMContentLoaded', view.onLoadedCard.bind(view))
+} else {
+  console.log('catalog')
+  document.addEventListener('DOMContentLoaded', view.onLoadCatalog.bind(view))
+}

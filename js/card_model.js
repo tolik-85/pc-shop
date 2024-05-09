@@ -7,15 +7,15 @@ const cardModel = {
   },
 
   async updateProduct(id) {
-    const product = await card_api.loadProduct(id)
+    const product = await api.loadProduct(id)
     this.setProduct(product)
   },
   async updateSimularProductsId(id) {
-    this.simularProductsId = await card_api.loadSimilarProducts(id)
+    this.simularProductsId = await api.loadSimilarProducts(id)
   },
   updateSimularProducts() {
     this.simularProductsId.forEach(async prod => {
-      let product = await card_api.loadProduct(prod.relatedProductId)
+      let product = await api.loadProduct(prod.relatedProductId)
       this.simularProducts.push(product)
     })
   },
