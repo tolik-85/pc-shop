@@ -229,7 +229,7 @@ const cardGenerator = {
     return section
   },
   generateCardTopRight(product) {
-    const price = (product.price * cardModel.usdCourse.rate).toFixed()
+    const price = (product.price * model.usdCourse.rate).toFixed()
     const cardInfo = document.createElement('div')
     const cardTopRight = document.createElement('div')
     const cardInfoTitle = document.createElement('h3')
@@ -351,7 +351,7 @@ const cardGenerator = {
     const URL = 'https://web-app.click/pc-shop/photos/products/computers/'
     const img = product.photos[0]
     const image = URL + img
-    const price = (product.price * cardModel.usdCourse.rate).toFixed()
+    const price = (product.price * model.usdCourse.rate).toFixed()
 
     const elWrapProduct = document.createElement('div')
     const elWrapImg = document.createElement('div')

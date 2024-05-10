@@ -105,24 +105,24 @@ const controller = {
   },
 
   async handleUpdateProduct(id) {
-    await cardModel.updateProduct(id)
-    await cardModel.updateCourse()
+    await model.updateProduct(id)
+    await model.updateCourse()
   },
 
   handleRenderProduct() {
-    const product = cardModel.getProduct()
+    const product = model.getProduct()
     cardGenerator.generateProductCard(product)
     view.renderMain(product)
   },
 
   async handleSimularProducts(id) {
-    await cardModel.updateSimularProductsId(id)
+    await model.updateSimularProductsIdList(id)
   },
 
-  renderSimularProductsSection() {
-    cardModel.simularProductsId.forEach(async prod => {
-      let product = await api.loadProduct(prod.relatedProductId)
-      view.renderSimularProducts(product)
+  async handleSimularProductsSection() {
+    await model.updateSimularProducts()
+    model.simularProducts.forEach(similarProduct => {
+      view.renderSimularProducts(similarProduct)
     })
   },
 }

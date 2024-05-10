@@ -182,7 +182,7 @@ const view = {
     await controller.handleUpdateProduct(id)
     await controller.handleSimularProducts(id)
     controller.handleRenderProduct()
-    controller.renderSimularProductsSection()
+    controller.handleSimularProductsSection()
   },
 
   renderMain(product) {

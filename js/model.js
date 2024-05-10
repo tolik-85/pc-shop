@@ -268,4 +268,37 @@ const model = {
       this.sortedProducts.sort((a, b) => b.price - a.price)
     }
   },
+
+  cardProduct: {},
+  simularProductsIdList: [],
+  simularProducts: [],
+
+  async updateProduct(id) {
+    const cardProduct = await api.loadProduct(id)
+    this.setProduct(cardProduct)
+  },
+
+  async updateSimularProductsIdList(id) {
+    this.simularProductsIdList = await api.loadSimilarProducts(id)
+  },
+
+  async updateSimularProducts() {
+    const promises = this.simularProductsIdList.map(async prod => {
+      let similarProduct = await api.loadProduct(prod.relatedProductId)
+      this.simularProducts.push(similarProduct)
+    })
+    await Promise.all(promises)
+  },
+
+  getProduct() {
+    return this.cardProduct
+  },
+
+  setProduct(cardProduct) {
+    this.cardProduct = cardProduct
+  },
+
+  getSimularProducts() {
+    return this.simularProducts
+  },
 }
