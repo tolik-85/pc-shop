@@ -79,6 +79,7 @@ function generateProduct(product) {
   const elCompareBtn = document.createElement('button')
 
   productLink.setAttribute('href', `card.html?id=${product.id}`)
+  productLink.setAttribute('target', '_blank')
   idSpan.innerHTML = product.id
   id.classList.add('id')
   elDivForLabels.classList.add('for-label')

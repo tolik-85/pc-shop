@@ -202,7 +202,7 @@ const view = {
   },
 }
 
-if (location.pathname.toLowerCase().startsWith('/card.html')) {
+if (location.pathname.toLowerCase().includes('/card.html')) {
   console.log('card')
   document.addEventListener('DOMContentLoaded', view.onLoadedCard.bind(view))
 } else {
