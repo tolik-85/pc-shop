@@ -1,5 +1,5 @@
 const model = {
-  usdCourse: '',
+  usdCourse: 0,
   products: [],
   searchedProducts: [],
   filtratedProducts: [],
@@ -7,15 +7,13 @@ const model = {
   sortedProducts: [],
   paginatedProducts: [],
   filter: {},
-  searchedFilter: {},
   checkedFilters: [],
   searchQuery: '',
+  cardProduct: {},
+  similarProductsIdList: [],
+  similarProducts: [],
 
   addCheckedCheckboxes(checkedFilter) {
-    const imagineCheckedFilters = {
-      'Тип ОЗУ': ['8Gb', '16Gb'],
-      Процессор: ['AMD'],
-    }
     this.checkedFilters.push(checkedFilter)
   },
 
@@ -24,120 +22,20 @@ const model = {
     this.checkedFilters.splice(index, 1)
   },
 
-  setProducts(products) {
-    this.products = products
-  },
-  getProductsNames() {
-    const products = this.getProducts()
-    const productsNames = []
-    products.forEach(product => {
-      productsNames.push(product.caption)
-    })
-    return productsNames
-  },
-
-  getProducts() {
-    return this.products
-  },
-  getSearchedProducts() {
-    return this.searchedProducts
-  },
-  getFiltratedProducts() {
-    return this.filtratedProducts
-  },
-  getPricedProducts() {
-    return this.pricedProducts
-  },
-
-  getFilter() {
-    return this.filter
-  },
-  getSearchedFilter() {
-    return this.searchedFilter
-  },
-  getPricedFilter() {
-    return this.pricedFilter
-  },
-
-  getMaxPriceUAH() {
-    const productsPrices = []
-    this.products.forEach(product => {
-      productsPrices.push(product.price)
-    })
-    let maxPriceUsd = Math.max.apply(null, productsPrices)
-    // return maxPriceUsd
-    return (maxPriceUsd * model.usdCourse).toFixed()
-  },
-
-  getMinPriceUAH() {
-    const productsPrices = []
-    this.products.forEach(product => {
-      productsPrices.push(product.price)
-    })
-    let maxPriceUsd = Math.min.apply(null, productsPrices)
-
-    // return maxPriceUsd
-    return (maxPriceUsd * model.usdCourse).toFixed()
-  },
-
-  getMaxPriceSearchedProductsUAH() {
-    const productsPrices = []
-    this.searchedProducts.forEach(product => {
-      productsPrices.push(product.price)
-    })
-    let maxPriceUsd = Math.max.apply(null, productsPrices)
-    // return maxPriceUsd
-    return (maxPriceUsd * model.usdCourse).toFixed()
-  },
-
-  getMinPriceSearchedProductsUAH() {
-    const productsPrices = []
-    this.searchedProducts.forEach(product => {
-      productsPrices.push(product.price)
-    })
-    let maxPriceUsd = Math.min.apply(null, productsPrices)
-
-    // return maxPriceUsd
-    return (maxPriceUsd * model.usdCourse).toFixed()
-  },
-
-  // getPriceFilterFrom() {
-  //   const priceFrom = document.querySelector('#priceFrom')
-  //   return priceFrom.value
-  // },
-
-  // getPriceFilterTo() {
-  //   const priceTo = document.querySelector('#priceTo')
-  //   return priceTo.value
-  // },
-
   async updateProducts() {
     const products = await api.loadProducts()
 
     this.setProducts(products)
-    model.searchProducts('')
-    model.filtrateProducts()
-    model.filtrateProductsByPrice(0, 20000000)
-    model.sortedProducts = model.pricedProducts
-    model.pagination(0)
+    this.searchProducts('')
+    this.filtrateProducts()
+    this.filtrateProductsByPrice(0, 20000000)
+    this.sortedProducts = this.pricedProducts
+    this.pagination(0)
   },
 
   async updateCourse() {
     const course = await api.loadCourse()
     this.setUsdCouse(course)
-  },
-
-  // setUsdCouse(course) {
-  //   course.forEach(item => {
-  //     for (key in item) {
-  //       if (item[key] === 840) {
-  //         this.usdCourse = item.rate
-  //       }
-  //     }
-  //   })
-  // },
-  setUsdCouse(course) {
-    this.usdCourse = course
   },
 
   searchProducts() {
@@ -162,7 +60,7 @@ const model = {
   },
 
   filtrateProductsByPrice(priceFrom, priceTo) {
-    const course = model.usdCourse
+    const course = this.usdCourse
     priceFrom = (priceFrom / course).toFixed()
     priceTo = (priceTo / course).toFixed()
     this.pricedProducts = this.filtratedProducts.filter(product => {
@@ -185,9 +83,7 @@ const model = {
           count += 1
         }
       })
-      // console.log(count)
-      // console.log(this.checkedFilters.length)
-      // console.log(this.checkedFilters.length)
+
       const attrsType = [
         ...new Set(this.checkedFilters.map(item => item.split('_')[0])),
       ]
@@ -196,37 +92,11 @@ const model = {
   },
 
   makeFilter() {
-    this.products.forEach(item => {
-      for (key in item.attributes) {
-        if (!this.filter[key]) {
-          model.filter[key] = []
-        }
-        for (key2 in item.attributes[key]) {
-          if (!this.filter[key].includes(item.attributes[key]))
-            this.filter[key].push(item.attributes[key])
-        }
-      }
-    })
-  },
-
-  makeFilterForSeachProducts() {
+    this.filter = {}
     this.searchedProducts.forEach(item => {
       for (key in item.attributes) {
-        if (!this.searchedFilter[key]) {
-          model.searchedFilter[key] = []
-        }
-        for (key2 in item.attributes[key]) {
-          if (!this.searchedFilter[key].includes(item.attributes[key]))
-            this.searchedFilter[key].push(item.attributes[key])
-        }
-      }
-    })
-  },
-  makeFilterForFiltratedStartArr() {
-    this.filtratedStartArr.forEach(item => {
-      for (key in item.attributes) {
         if (!this.filter[key]) {
-          model.filter[key] = []
+          this.filter[key] = []
         }
         for (key2 in item.attributes[key]) {
           if (!this.filter[key].includes(item.attributes[key]))
@@ -237,6 +107,12 @@ const model = {
   },
 
   sortProducts(elSelectValue) {
+    // !!! this.sortedProducts = this.pricedProducts !!!
+
+    // const this.sortedProducts = [].concat(this.pricedProducts)
+
+    // this.sortedProducts = this.pricedProducts.toSorted((a, b) => {
+
     if (elSelectValue === 'От А до Я') {
       this.sortedProducts.sort((a, b) => {
         if (a.caption < b.caption) {
@@ -267,10 +143,6 @@ const model = {
     }
   },
 
-  cardProduct: {},
-  similarProductsIdList: [],
-  similarProducts: [],
-
   async updateProduct(id) {
     const cardProduct = await api.loadProduct(id)
     this.setProduct(cardProduct)
@@ -288,14 +160,52 @@ const model = {
     await Promise.all(promises)
   },
 
+  getProductsNames() {
+    return this.products.map(product => product.caption)
+  },
+  getProducts() {
+    return this.products
+  },
+  getSearchedProducts() {
+    return this.searchedProducts
+  },
+  getFiltratedProducts() {
+    return this.filtratedProducts
+  },
+  getPricedProducts() {
+    return this.pricedProducts
+  },
+  getFilter() {
+    return this.filter
+  },
+  getPricedFilter() {
+    return this.pricedFilter
+  },
+  getProductPrices() {
+    return this.searchedProducts.map(product => product.price)
+  },
+  getMaxPriceUAH() {
+    const maxPriceUsd = Math.max(...this.getProductPrices())
+    const maxPriceUah = maxPriceUsd * this.usdCourse
+    return maxPriceUah.toFixed()
+  },
+  getMinPriceUAH() {
+    const minPriceUsd = Math.min(...this.getProductPrices())
+    const minPriceUah = minPriceUsd * this.usdCourse
+    return minPriceUah.toFixed()
+  },
+  setUsdCouse(course) {
+    this.usdCourse = course
+  },
+  setProducts(products) {
+    this.products = products
+  },
   getProduct() {
     return this.cardProduct
   },
-
   setProduct(cardProduct) {
     this.cardProduct = cardProduct
   },
-
   getSimilarProducts() {
     return this.similarProducts
   },

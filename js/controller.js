@@ -48,16 +48,8 @@ const controller = {
     model.filtrateProductsByPrice(priceFrom, priceTo)
   },
   handleFilter() {
-    model.filter = {}
     model.makeFilter()
     const filter = model.getFilter()
-    view.renderElWrapCheckboxClear()
-    view.renderWrapFilter(filter)
-  },
-
-  handleSearchFilter() {
-    model.makeFilterForSeachProducts()
-    const filter = model.getSearchedFilter()
     view.renderElWrapCheckboxClear()
     view.renderWrapFilter(filter)
   },
@@ -79,9 +71,20 @@ const controller = {
       view.renderContainerProducts(product)
     })
   },
+
+  handleSearchFilter() {
+    model.makeFilter()
+    const filter = model.getFilter()
+    view.renderElWrapCheckboxClear()
+    view.renderWrapFilter(filter)
+  },
+
+  // ??? 🧨 //
+
   searchHandler(query) {
     model.searchQuery = query
     model.searchProducts()
+    // makeFilter() ???
     model.filtrateProducts()
     model.filtrateProductsByPrice(0, 20000000)
     model.sortedProducts = model.pricedProducts
@@ -90,8 +93,8 @@ const controller = {
       view.renderContainerProducts(product)
     })
     this.handleSearchFilter()
-    const maxPrice = model.getMaxPriceSearchedProductsUAH()
-    const minPrice = model.getMinPriceSearchedProductsUAH()
+    const maxPrice = model.getMaxPriceUAH()
+    const minPrice = model.getMinPriceUAH()
     view.renderRangeWrapOnSearch(maxPrice, minPrice)
     this.rednerPaginationClear()
     this.renderPagination()

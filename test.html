@@ -9,6 +9,11 @@
     <script src="js/api.js"></script>
     <script src="js/model.js"></script>
     <script>
+      const imagineCheckedFilters = {
+        'Тип ОЗУ': ['8Gb', '16Gb'],
+        Процессор: ['AMD'],
+      }
+
       ;(async function (arguments) {
         await model.updateProducts()
         // await model.updateCourse()
