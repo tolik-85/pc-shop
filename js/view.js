@@ -52,10 +52,16 @@ const view = {
     pagination.addEventListener('click', view.onClickPagination)
   },
   onClickPagination(e) {
+    let bold = e.target
+    // bold = bold.querySelector('span')
+    console.log(bold)
     let pagNum = e.target.innerHTML
+    bold.classList.add('bold')
     pagNum = parseInt(pagNum.replace(/[^\d]/g, ''))
-    // console.log(pagNum)
-    controller.onClickPaginationHandler(pagNum)
+
+    if (pagNum.toString().length <= 2) {
+      controller.onClickPaginationHandler(pagNum)
+    }
   },
   renderSortSelect() {
     const elSelect = document.querySelector('#select-products')
@@ -69,6 +75,7 @@ const view = {
   },
   renderContainerProducts(product) {
     let elContainerProducts = document.querySelector('.container-products')
+
     const ElProduct = generateProduct(product)
     elContainerProducts.appendChild(ElProduct)
   },
@@ -180,32 +187,32 @@ const view = {
     const search = new URLSearchParams(location.search)
     const id = search.get('id')
     await controller.handleUpdateProduct(id)
-    await controller.handleSimularProducts(id)
+    await controller.handleSimilarProducts(id)
     controller.handleRenderProduct()
-    controller.handleSimularProductsSection()
+    controller.handleSimilarProductsSection()
   },
 
   renderMain(product) {
     const elMain = document.querySelector('main')
     const productCard = cardGenerator.generateProductCard(product)
-    const section = cardGenerator.generateSectionSimularProducts()
+    const section = cardGenerator.generateSectionSimilarProducts()
     elMain.appendChild(productCard)
     elMain.appendChild(section)
   },
 
-  renderSimularProducts(product) {
-    const section = document.querySelector('.simular-products')
-    const simProdWrap = document.querySelector('.simular_products-wrap')
-    const semProd = cardGenerator.generateSimularProduct(product)
+  renderSimilarProducts(product) {
+    const section = document.querySelector('.similar-products')
+    const simProdWrap = document.querySelector('.similar_products-wrap')
+    const semProd = cardGenerator.generateSimilarProduct(product)
     simProdWrap.appendChild(semProd)
     section.appendChild(simProdWrap)
   },
 }
 
 if (location.pathname.toLowerCase().includes('/card.html')) {
-  console.log('card')
+  // console.log('card')
   document.addEventListener('DOMContentLoaded', view.onLoadedCard.bind(view))
 } else {
-  console.log('catalog')
+  // console.log('catalog')
   document.addEventListener('DOMContentLoaded', view.onLoadCatalog.bind(view))
 }

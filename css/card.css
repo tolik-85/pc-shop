@@ -8,7 +8,7 @@
   --color-gray: #858585;
   --color-tundora: #454545;
 }
-.wrap-simular-product {
+.wrap-similar-product {
   cursor: default;
   width: 260px;
   height: 270px;
@@ -17,24 +17,24 @@
   box-shadow: 0 0 5px 0 #d0d3d5;
   background: white;
 }
-.simular_products-wrap {
+.similar_products-wrap {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
 }
-.simular-products > div > h3 {
+.similar-products > div > h3 {
   margin: 15px;
 }
-.simular_prod_img-wrap {
+.similar_prod_img-wrap {
   height: 70%;
   padding: 5px;
   text-align: center;
 }
-.simular_prod_img-wrap > a > img {
+.similar_prod_img-wrap > a > img {
   width: 55%;
   height: 100%;
 }
-.simular_prod-price {
+.similar_prod-price {
   font-size: 20px;
   margin: 5px;
   text-align: right;

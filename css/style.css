@@ -314,6 +314,9 @@ a {
 .wrap-product .row > div:nth-child(3) > button:hover {
   background: #f0f3f5 url(../img/tocompare-hover.png) center / 70% no-repeat;
 }
+.bold {
+  font-weight: bold;
+}
 
 .paginator {
   text-align: center;
@@ -321,7 +324,7 @@ a {
   font-size: 20px;
 }
 .paginator span {
-  font-weight: bold;
+  font-weight: regular;
 }
 .paginator > a::before {
   content: ' [ ';

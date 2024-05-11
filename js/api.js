@@ -29,6 +29,7 @@ const api = {
     const resp = await fetch(`${API_URL_COURSE}`)
     const json = await resp.json()
     const currency = json.find(o => o.cc === 'USD').rate
+    // console.log(currency)
     return currency
   },
 }

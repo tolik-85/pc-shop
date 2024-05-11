@@ -51,12 +51,10 @@ function generateLabel(text, forLabel) {
 }
 
 function generateProduct(product) {
-  // console.log(product.id)
   const URL = 'https://web-app.click/pc-shop/photos/products/computers/'
   const picture = product.photos[0]
-  // const purpose = product.purpose
   const caption = product.caption
-  const price = (product.price * model.usdCourse.rate).toFixed()
+  const price = (product.price * model.usdCourse).toFixed()
   const image = `${URL}${picture}`
 
   const productLink = document.createElement('a')
@@ -229,7 +227,7 @@ const cardGenerator = {
     return section
   },
   generateCardTopRight(product) {
-    const price = (product.price * model.usdCourse.rate).toFixed()
+    const price = (product.price * model.usdCourse).toFixed()
     const cardInfo = document.createElement('div')
     const cardTopRight = document.createElement('div')
     const cardInfoTitle = document.createElement('h3')
@@ -333,25 +331,25 @@ const cardGenerator = {
     })
   },
 
-  generateSectionSimularProducts() {
+  generateSectionSimilarProducts() {
     const section = document.createElement('section')
     const h3Wrap = document.createElement('div')
     const h3 = document.createElement('h3')
     const semProductsWrap = document.createElement('div')
-    semProductsWrap.classList.add('simular_products-wrap')
+    semProductsWrap.classList.add('similar_products-wrap')
     h3.innerHTML = 'Похожие товары'
-    section.classList.add('simular-products')
+    section.classList.add('similar-products')
     h3Wrap.appendChild(h3)
     section.appendChild(h3Wrap)
     section.appendChild(semProductsWrap)
     return section
   },
 
-  generateSimularProduct(product) {
+  generateSimilarProduct(product) {
     const URL = 'https://web-app.click/pc-shop/photos/products/computers/'
     const img = product.photos[0]
     const image = URL + img
-    const price = (product.price * model.usdCourse.rate).toFixed()
+    const price = (product.price * model.usdCourse).toFixed()
 
     const elWrapProduct = document.createElement('div')
     const elWrapImg = document.createElement('div')
@@ -363,11 +361,11 @@ const cardGenerator = {
     const elH4 = document.createElement('h4')
     elH4.innerHTML = `${product.caption}`
 
-    elWrapProduct.classList.add('wrap-simular-product')
-    elWrapImg.classList.add('simular_prod_img-wrap')
+    elWrapProduct.classList.add('wrap-similar-product')
+    elWrapImg.classList.add('similar_prod_img-wrap')
     elLink.setAttribute('href', `card.html?id=${product.id}`)
     elImg.setAttribute('src', `${image}`)
-    elDivForPrice.classList.add('simular_prod-price')
+    elDivForPrice.classList.add('similar_prod-price')
     elParForPrice.innerHTML = `<b>${price}</b> грн`
     elDivDesc.classList.add('h4-wrap')
     elDivDesc.appendChild(elH4)

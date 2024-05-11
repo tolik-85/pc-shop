@@ -1,7 +1,5 @@
 const model = {
-  usdCourse: {
-    rate: '',
-  },
+  usdCourse: '',
   products: [],
   searchedProducts: [],
   filtratedProducts: [],
@@ -68,7 +66,7 @@ const model = {
     })
     let maxPriceUsd = Math.max.apply(null, productsPrices)
     // return maxPriceUsd
-    return (maxPriceUsd * model.usdCourse.rate).toFixed()
+    return (maxPriceUsd * model.usdCourse).toFixed()
   },
 
   getMinPriceUAH() {
@@ -79,7 +77,7 @@ const model = {
     let maxPriceUsd = Math.min.apply(null, productsPrices)
 
     // return maxPriceUsd
-    return (maxPriceUsd * model.usdCourse.rate).toFixed()
+    return (maxPriceUsd * model.usdCourse).toFixed()
   },
 
   getMaxPriceSearchedProductsUAH() {
@@ -89,7 +87,7 @@ const model = {
     })
     let maxPriceUsd = Math.max.apply(null, productsPrices)
     // return maxPriceUsd
-    return (maxPriceUsd * model.usdCourse.rate).toFixed()
+    return (maxPriceUsd * model.usdCourse).toFixed()
   },
 
   getMinPriceSearchedProductsUAH() {
@@ -100,7 +98,7 @@ const model = {
     let maxPriceUsd = Math.min.apply(null, productsPrices)
 
     // return maxPriceUsd
-    return (maxPriceUsd * model.usdCourse.rate).toFixed()
+    return (maxPriceUsd * model.usdCourse).toFixed()
   },
 
   // getPriceFilterFrom() {
@@ -133,13 +131,13 @@ const model = {
   //   course.forEach(item => {
   //     for (key in item) {
   //       if (item[key] === 840) {
-  //         this.usdCourse.rate = item.rate
+  //         this.usdCourse = item.rate
   //       }
   //     }
   //   })
   // },
   setUsdCouse(course) {
-    this.usdCourse.rate = course
+    this.usdCourse = course
   },
 
   searchProducts() {
@@ -164,7 +162,7 @@ const model = {
   },
 
   filtrateProductsByPrice(priceFrom, priceTo) {
-    const course = model.usdCourse.rate
+    const course = model.usdCourse
     priceFrom = (priceFrom / course).toFixed()
     priceTo = (priceTo / course).toFixed()
     this.pricedProducts = this.filtratedProducts.filter(product => {
@@ -270,22 +268,22 @@ const model = {
   },
 
   cardProduct: {},
-  simularProductsIdList: [],
-  simularProducts: [],
+  similarProductsIdList: [],
+  similarProducts: [],
 
   async updateProduct(id) {
     const cardProduct = await api.loadProduct(id)
     this.setProduct(cardProduct)
   },
 
-  async updateSimularProductsIdList(id) {
-    this.simularProductsIdList = await api.loadSimilarProducts(id)
+  async updateSimilarProductsIdList(id) {
+    this.similarProductsIdList = await api.loadSimilarProducts(id)
   },
 
-  async updateSimularProducts() {
-    const promises = this.simularProductsIdList.map(async prod => {
+  async updateSimilarProducts() {
+    const promises = this.similarProductsIdList.map(async prod => {
       let similarProduct = await api.loadProduct(prod.relatedProductId)
-      this.simularProducts.push(similarProduct)
+      this.similarProducts.push(similarProduct)
     })
     await Promise.all(promises)
   },
@@ -298,7 +296,7 @@ const model = {
     this.cardProduct = cardProduct
   },
 
-  getSimularProducts() {
-    return this.simularProducts
+  getSimilarProducts() {
+    return this.similarProducts
   },
 }

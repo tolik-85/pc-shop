@@ -115,14 +115,14 @@ const controller = {
     view.renderMain(product)
   },
 
-  async handleSimularProducts(id) {
-    await model.updateSimularProductsIdList(id)
+  async handleSimilarProducts(id) {
+    await model.updateSimilarProductsIdList(id)
   },
 
-  async handleSimularProductsSection() {
-    await model.updateSimularProducts()
-    model.simularProducts.forEach(similarProduct => {
-      view.renderSimularProducts(similarProduct)
+  async handleSimilarProductsSection() {
+    await model.updateSimilarProducts()
+    model.similarProducts.forEach(similarProduct => {
+      view.renderSimilarProducts(similarProduct)
     })
   },
 }
