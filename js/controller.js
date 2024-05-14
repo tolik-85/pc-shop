@@ -1,22 +1,21 @@
 const controller = {
-  async handleUpdateProducts(isLoad = true) {
+  async handleUpdateProducts(isLoad) {
     if (isLoad) {
       await Promise.all([model.updateCourse(), model.updateProducts()])
-      model.pagination(0).forEach(product => {
-        view.renderContainerProducts(product)
-      })
-      this.renderPagination()
+      model.pagination(0)
+      view.renderContainerProducts(model.paginatedProducts)
+      view.renderPagination()
       view.paginationBoldfirstElOnload()
     } else {
       model.filtrateProducts()
       this.handlePriceFilter()
       view.renderContainerProductsClear()
       model.sortedProducts = model.pricedProducts
-      model.pagination(0).forEach(product => {
-        view.renderContainerProducts(product)
-      })
-      this.rednerPaginationClear()
-      this.renderPagination()
+      model.pagination(0)
+      view.renderContainerProducts(model.paginatedProducts)
+
+      view.rednerPaginationClear()
+      view.renderPagination()
       view.renderSortSelect()
       view.paginationBoldfirstElOnload()
       if (model.paginatedProducts.length === 0) {
@@ -26,52 +25,28 @@ const controller = {
   },
   onChangeElSelectPaginationHandler(itemsOnPage) {
     if (itemsOnPage > 0) {
-      model.productsOnPage = itemsOnPage
-
+      model.setProductsOnPage(itemsOnPage)
       view.renderContainerProductsClear()
       model.sortedProducts = model.pricedProducts
-      model.pagination(0).forEach(product => {
-        view.renderContainerProducts(product)
-      })
-      this.rednerPaginationClear()
-      this.renderPagination()
+      model.pagination(0)
+      view.renderContainerProducts(model.paginatedProducts)
+      view.rednerPaginationClear()
+      view.renderPagination()
       view.renderSortSelect()
       view.paginationBoldfirstElOnload()
     }
   },
-  rednerPaginationClear() {
-    const paginator = document.querySelector('.paginator')
-    paginator.innerHTML = ''
-  },
-  renderPagination() {
-    const paginator = document.querySelector('.paginator')
-    let itemsCount = model.pricedProducts.length
-    let pagesCount = Math.ceil(itemsCount / model.productsOnPage)
-    // console.log(pagesCount)
-    for (let i = 0; i < pagesCount; i++) {
-      // console.log(i)
-      let page = generatePaginaionPage(i)
-      paginator.appendChild(page)
-    }
-  },
+
   onClickPaginationHandler(pageNum) {
-    console.log(pageNum)
     model.pagination(pageNum)
     view.renderContainerProductsClear()
-    model.pagination(pageNum).forEach(product => {
-      view.renderContainerProducts(product)
-    })
+    view.renderContainerProducts(model.paginatedProducts)
   },
+
   handlePriceFilter() {
     const priceFrom = document.querySelector('#priceFrom').value
     const priceTo = document.querySelector('#priceTo').value
     model.filtrateProductsByPrice(priceFrom, priceTo)
-  },
-  handleFilter() {
-    model.makeFilter()
-    const filter = model.getFilter()
-    view.renderElWrapCheckboxClear()
-    view.renderWrapFilter(filter)
   },
 
   handleFilterCheckbox(id, actionAdd) {
@@ -84,14 +59,13 @@ const controller = {
   },
   handlerElSelect(elSelectValue) {
     model.sortProducts(elSelectValue)
+    model.pagination(0)
     view.renderContainerProductsClear()
-    model.pagination(0).forEach(product => {
-      view.renderContainerProducts(product)
-    })
+    view.renderContainerProducts(model.paginatedProducts)
     view.paginationBoldfirstElOnload()
   },
 
-  handleSearchFilter() {
+  handleFilter() {
     model.makeFilter()
     const filter = model.getFilter()
     view.renderElWrapCheckboxClear()
@@ -101,27 +75,20 @@ const controller = {
   // ??? 🧨 //
 
   searchHandler(query) {
-    model.searchQuery = query
+    model.setSearchQuery(query)
     model.searchProducts()
-    // makeFilter() ???
     model.filtrateProducts()
     model.filtrateProductsByPrice(0, 20000000)
     model.sortedProducts = model.pricedProducts
-    view.renderContainerProductsClear()
-    model.pagination(0).forEach(product => {
-      view.renderContainerProducts(product)
-    })
-    this.handleSearchFilter()
-    let maxPrice = model.getMaxPriceUAH()
-    let minPrice = model.getMinPriceUAH()
+    model.pagination(0)
 
-    if (!isFinite(+maxPrice) || !isFinite(+minPrice)) {
-      maxPrice = 0
-      minPrice = 0
-    }
-    view.renderRangeWrapOnSearch(maxPrice, minPrice)
-    this.rednerPaginationClear()
-    this.renderPagination()
+    view.renderContainerProductsClear()
+    view.renderContainerProducts(model.paginatedProducts)
+
+    this.handleFilter()
+    view.renderRangeWrapOnSearch(model.getMaxPriceUAH(), model.getMinPriceUAH())
+    view.rednerPaginationClear()
+    view.renderPagination()
     view.paginationBoldfirstElOnload()
     view.renderFilterCheckboxes()
     view.renderSortSelect()

@@ -9,10 +9,17 @@ const model = {
   filter: {},
   checkedFilters: [],
   searchQuery: '',
+  sortingType: 'Цена по возростанию',
   cardProduct: {},
   similarProductsIdList: [],
   similarProducts: [],
   productsOnPage: 10,
+  productsTotal: 0,
+  pagesCount: 0,
+  minPrice: 0,
+  maxPrice: 0,
+  priceFrom: 0,
+  priceTo: 0,
 
   addCheckedCheckboxes(checkedFilter) {
     this.checkedFilters.push(checkedFilter)
@@ -25,12 +32,18 @@ const model = {
 
   async updateProducts() {
     const products = await api.loadProducts()
-
     this.setProducts(products)
-    this.searchProducts('')
-    this.filtrateProducts()
+
+    this.searchProducts(this.searchQuery)
+    this.makeFilter()
+
+    this.filtrateProducts(this.checkedFilters)
+
+    this.getMinPriceUAH()
+    this.getMaxPriceUAH()
+
     this.filtrateProductsByPrice(0, 20000000)
-    this.sortedProducts = this.pricedProducts
+    this.sortProducts(this.sortingType)
     this.pagination(0)
   },
 
@@ -47,27 +60,18 @@ const model = {
         return true
       }
     })
-    // makeFilter()
   },
 
   pagination(pageNum) {
-    this.paginatedProducts = this.sortedProducts
     let startIdx = pageNum * this.productsOnPage
     let endIdx = +startIdx + +this.productsOnPage
-    this.paginatedProducts = this.paginatedProducts.slice(startIdx, endIdx)
-    // console.log('>>startIdx', startIdx)
-    // console.log('>>endIdx', endIdx)
-    // console.log('>>productsOnPage', this.productsOnPage)
-    // console.log('>>pageNum', pageNum)
-    // console.log('>>sortedProducts', this.sortedProducts)
-    // console.log('>>paginatedProducts', this.paginatedProducts)
-    return this.paginatedProducts
+    this.paginatedProducts = this.sortedProducts.slice(startIdx, endIdx)
   },
 
   filtrateProductsByPrice(priceFrom, priceTo) {
     const course = this.usdCourse
-    priceFrom = (priceFrom / course).toFixed()
-    priceTo = (priceTo / course).toFixed()
+    priceFrom = +(priceFrom / course).toFixed()
+    priceTo = +(priceTo / course).toFixed()
     // console.log(priceFrom)
     // console.log(priceTo)
     this.pricedProducts = this.filtratedProducts.filter(product => {
@@ -78,7 +82,11 @@ const model = {
     })
   },
 
-  filtrateProducts() {
+  filtrateProducts(checkedFilters) {
+    if (checkedFilters) {
+      this.checkedFilters = checkedFilters
+    }
+
     this.filtratedProducts = this.searchedProducts.filter(product => {
       let count = 0
 
@@ -113,15 +121,13 @@ const model = {
     })
   },
 
-  sortProducts(elSelectValue) {
-    // !!! this.sortedProducts = this.pricedProducts !!!
+  sortProducts(sortingType) {
+    if (sortingType) {
+      this.sortingType = sortingType
+    }
 
-    // const this.sortedProducts = [].concat(this.pricedProducts)
-
-    // this.sortedProducts = this.pricedProducts.toSorted((a, b) => {
-
-    if (elSelectValue === 'От А до Я') {
-      this.sortedProducts.sort((a, b) => {
+    if (this.sortingType === 'От А до Я') {
+      this.sortedProducts = this.pricedProducts.toSorted((a, b) => {
         if (a.caption < b.caption) {
           return -1
         }
@@ -131,8 +137,9 @@ const model = {
         return 0
       })
     }
-    if (elSelectValue === 'От Я до А') {
-      this.sortedProducts.sort((a, b) => {
+
+    if (this.sortingType === 'От Я до А') {
+      this.sortedProducts = this.pricedProducts.toSorted((a, b) => {
         if (a.caption < b.caption) {
           return 1
         }
@@ -142,11 +149,17 @@ const model = {
         return 0
       })
     }
-    if (elSelectValue === 'Цена по возростанию') {
-      this.sortedProducts.sort((a, b) => a.price - b.price)
+
+    if (this.sortingType === 'Цена по возростанию') {
+      this.sortedProducts = this.pricedProducts.toSorted(
+        (a, b) => a.price - b.price
+      )
     }
-    if (elSelectValue === 'Цена по убыванию') {
-      this.sortedProducts.sort((a, b) => b.price - a.price)
+
+    if (this.sortingType === 'Цена по убыванию') {
+      this.sortedProducts = this.pricedProducts.toSorted(
+        (a, b) => b.price - a.price
+      )
     }
   },
 
@@ -194,12 +207,12 @@ const model = {
   getMaxPriceUAH() {
     const maxPriceUsd = Math.max(...this.getProductPrices())
     const maxPriceUah = maxPriceUsd * this.usdCourse
-    return maxPriceUah.toFixed()
+    return isFinite(maxPriceUah) ? +maxPriceUah.toFixed() : 0
   },
   getMinPriceUAH() {
     const minPriceUsd = Math.min(...this.getProductPrices())
     const minPriceUah = minPriceUsd * this.usdCourse
-    return minPriceUah.toFixed()
+    return isFinite(minPriceUah) ? +minPriceUah.toFixed() : 0
   },
   setUsdCouse(course) {
     this.usdCourse = course
@@ -215,5 +228,11 @@ const model = {
   },
   getSimilarProducts() {
     return this.similarProducts
+  },
+  setProductsOnPage(n) {
+    this.productsOnPage = n
+  },
+  setSearchQuery(query) {
+    this.searchQuery = query
   },
 }

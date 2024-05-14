@@ -1,10 +1,27 @@
 const view = {
+  rednerPaginationClear() {
+    const paginator = document.querySelector('.paginator')
+    paginator.innerHTML = ''
+  },
+
+  renderPagination() {
+    const paginator = document.querySelector('.paginator')
+    let itemsCount = model.pricedProducts.length
+    let pagesCount = Math.ceil(itemsCount / model.productsOnPage)
+    // console.log(pagesCount)
+    for (let i = 0; i < pagesCount; i++) {
+      // console.log(i)
+      let page = generatePaginaionPage(i)
+      paginator.appendChild(page)
+    }
+  },
+
   onFiltrateClick() {
     controller.handleUpdateProducts(false)
   },
 
   async onLoadCatalog() {
-    await controller.handleUpdateProducts()
+    await controller.handleUpdateProducts(true)
     controller.handleFilter()
     document.querySelector('#filtrate').onclick =
       this.onFiltrateClick.bind(this)
@@ -87,11 +104,15 @@ const view = {
     elSelectValue = elSelect.value
     controller.handlerElSelect(elSelectValue)
   },
-  renderContainerProducts(product) {
-    let elContainerProducts = document.querySelector('.container-products')
 
-    const ElProduct = generateProduct(product)
-    elContainerProducts.appendChild(ElProduct)
+  renderContainerProducts(products) {
+    products.forEach(this.renderContainerProduct)
+  },
+
+  renderContainerProduct(product) {
+    const elContainerProducts = document.querySelector('.container-products')
+    const elProduct = generateProduct(product)
+    elContainerProducts.appendChild(elProduct)
   },
 
   renderContainerProductsClear() {
