@@ -1,7 +1,3 @@
-// render
-// generate
-// on
-
 const view = {
   onFiltrateClick() {
     controller.handleUpdateProducts(false)
@@ -16,10 +12,23 @@ const view = {
     this.renderFilterCheckboxes()
     this.renderSortSelect()
     this.paginationListener()
+    this.paginationBoldfirstElOnload()
     this.renderRangeWrap()
     this.searchFilter()
     this.renderRangeWrap()
     this.goToProductPageClick()
+    this.onChangeElSelectPaginationListener()
+  },
+  onChangeElSelectPaginationListener() {
+    const elSelectPagination = document.querySelector('#select-pagination')
+    elSelectPagination.addEventListener(
+      'change',
+      this.onChangeElSelectPagination
+    )
+  },
+  onChangeElSelectPagination(e) {
+    const itemsOnPage = e.target.value
+    controller.onChangeElSelectPaginationHandler(itemsOnPage)
   },
   goToProductPageClick() {
     const elsProducts = document.querySelectorAll('.wrap-img>a>img')
@@ -53,14 +62,20 @@ const view = {
   },
   onClickPagination(e) {
     let bold = e.target
-    // bold = bold.querySelector('span')
-    console.log(bold)
+    const boldEl = document.querySelector('.bold')
+    boldEl.classList.remove('bold')
     let pagNum = e.target.innerHTML
     bold.classList.add('bold')
     pagNum = parseInt(pagNum.replace(/[^\d]/g, ''))
 
     if (pagNum.toString().length <= 2) {
       controller.onClickPaginationHandler(pagNum)
+    }
+  },
+  paginationBoldfirstElOnload() {
+    const elPaginator = document.querySelector('.paginator')
+    if (elPaginator.childNodes.length > 0) {
+      elPaginator.childNodes[0].classList.add('bold')
     }
   },
   renderSortSelect() {
@@ -70,7 +85,6 @@ const view = {
   onChangeSelectHandler(e) {
     const elSelect = document.querySelector('#select-products')
     elSelectValue = elSelect.value
-    console.log(elSelectValue)
     controller.handlerElSelect(elSelectValue)
   },
   renderContainerProducts(product) {
@@ -206,6 +220,13 @@ const view = {
     const semProd = cardGenerator.generateSimilarProduct(product)
     simProdWrap.appendChild(semProd)
     section.appendChild(simProdWrap)
+  },
+  renderContainerProductsOnZeroSearch() {
+    const elParagraph = generateParagraphFindNothing()
+    console.log(elParagraph)
+    const elContainerProducts = document.querySelector('.container-products')
+    console.log(elContainerProducts)
+    elContainerProducts.appendChild(elParagraph)
   },
 }
 

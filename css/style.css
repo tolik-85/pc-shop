@@ -314,10 +314,17 @@ a {
 .wrap-product .row > div:nth-child(3) > button:hover {
   background: #f0f3f5 url(../img/tocompare-hover.png) center / 70% no-repeat;
 }
+.zero-search {
+  padding: 80px;
+  font-size: 20px;
+}
 .bold {
   font-weight: bold;
 }
-
+.wrap-select_pagination {
+  padding: 15px;
+  padding-right: 10px;
+}
 .paginator {
   text-align: center;
   padding: 15px;

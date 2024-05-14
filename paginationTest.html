@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script src="js/api.js"></script>
+    <script src="js/model.js"></script>
+    <script>
+      const imagineCheckedFilters = {
+        'Тип ОЗУ': ['8Gb', '16Gb'],
+        Процессор: ['AMD'],
+      }
+
+      ;(async function (arguments) {
+        await model.updateProducts()
+        await model.updateCourse()
+        // await model.updateCourse()
+        // await model.equalizeAllProductArr()
+        model.checkedFilters = ['Тип ОЗУ_DDR4']
+        // model.checkedFilters = ['Процессор_AMD']
+        // model.checkedFilters = ['Тип ОЗУ_DDR4', 'Тип ОЗУ_DDR5', 'Процессор_AMD']
+        // model.checkedFilters = ['Тип ОЗУ_DDR4', 'Процессор_AMD']
+        // model.checkedFilters = ['Тип ОЗУ_DDR5', 'Процессор_AMD']
+        model.searchProducts('')
+        model.filtrateProducts()
+        model.filtrateProductsByPrice(0, 20000000)
+        model.sortedProducts = model.pricedProducts
+        model.pagination(5)
+
+        console.log('products', model.products.length)
+        console.log('searchedProducts', model.searchedProducts.length)
+        console.log('filtratedProducts', model.filtratedProducts.length)
+        console.log('pricedProducts', model.pricedProducts.length)
+        console.log('sortedProducts', model.sortedProducts.length)
+        console.log('paginatedProducts', model.paginatedProducts.length)
+        // console.log('filtratedProducts', model.filtratedProducts.length)
+        // console.log('searchedProducts', model.searchedProducts.length)
+        // console.log('filtratedProducts', model.filtratedProducts.length)
+        // console.log('PricedProducts', model.pricedProducts.length)
+        // console.log('paginatedProducts', model.paginatedProducts.length)
+      })()
+    </script>
+  </body>
+</html>

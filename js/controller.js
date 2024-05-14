@@ -6,6 +6,7 @@ const controller = {
         view.renderContainerProducts(product)
       })
       this.renderPagination()
+      view.paginationBoldfirstElOnload()
     } else {
       model.filtrateProducts()
       this.handlePriceFilter()
@@ -17,9 +18,27 @@ const controller = {
       this.rednerPaginationClear()
       this.renderPagination()
       view.renderSortSelect()
+      view.paginationBoldfirstElOnload()
+      if (model.paginatedProducts.length === 0) {
+        view.renderContainerProductsOnZeroSearch()
+      }
     }
   },
+  onChangeElSelectPaginationHandler(itemsOnPage) {
+    if (itemsOnPage > 0) {
+      model.productsOnPage = itemsOnPage
 
+      view.renderContainerProductsClear()
+      model.sortedProducts = model.pricedProducts
+      model.pagination(0).forEach(product => {
+        view.renderContainerProducts(product)
+      })
+      this.rednerPaginationClear()
+      this.renderPagination()
+      view.renderSortSelect()
+      view.paginationBoldfirstElOnload()
+    }
+  },
   rednerPaginationClear() {
     const paginator = document.querySelector('.paginator')
     paginator.innerHTML = ''
@@ -27,15 +46,16 @@ const controller = {
   renderPagination() {
     const paginator = document.querySelector('.paginator')
     let itemsCount = model.pricedProducts.length
-    let itemsPerPage = 7
-    let pagesCount = itemsCount / itemsPerPage
-    for (let i = 1; i < pagesCount; i++) {
+    let pagesCount = Math.ceil(itemsCount / model.productsOnPage)
+    // console.log(pagesCount)
+    for (let i = 0; i < pagesCount; i++) {
+      // console.log(i)
       let page = generatePaginaionPage(i)
-      // console.log(page)
       paginator.appendChild(page)
     }
   },
   onClickPaginationHandler(pageNum) {
+    console.log(pageNum)
     model.pagination(pageNum)
     view.renderContainerProductsClear()
     model.pagination(pageNum).forEach(product => {
@@ -63,13 +83,12 @@ const controller = {
     console.log(model.checkedFilters)
   },
   handlerElSelect(elSelectValue) {
-    // console.log(elSelectValue)
     model.sortProducts(elSelectValue)
-    // console.log(model.sortedProducts)
     view.renderContainerProductsClear()
     model.pagination(0).forEach(product => {
       view.renderContainerProducts(product)
     })
+    view.paginationBoldfirstElOnload()
   },
 
   handleSearchFilter() {
@@ -93,18 +112,23 @@ const controller = {
       view.renderContainerProducts(product)
     })
     this.handleSearchFilter()
-    const maxPrice = model.getMaxPriceUAH()
-    const minPrice = model.getMinPriceUAH()
+    let maxPrice = model.getMaxPriceUAH()
+    let minPrice = model.getMinPriceUAH()
+
+    if (!isFinite(+maxPrice) || !isFinite(+minPrice)) {
+      maxPrice = 0
+      minPrice = 0
+    }
     view.renderRangeWrapOnSearch(maxPrice, minPrice)
     this.rednerPaginationClear()
     this.renderPagination()
+    view.paginationBoldfirstElOnload()
     view.renderFilterCheckboxes()
     view.renderSortSelect()
-    // console.log('searchedProducts', model.searchedProducts.length)
-    // console.log('filtratedProducts', model.filtratedProducts.length)
-    // console.log('pricedProducts', model.pricedProducts.length)
-    // console.log('sortedProducts', model.sortedProducts.length)
-    // console.log('paginatedProducts', model.paginatedProducts.length)
+
+    if (model.paginatedProducts.length === 0) {
+      view.renderContainerProductsOnZeroSearch()
+    }
   },
 
   async handleUpdateProduct(id) {

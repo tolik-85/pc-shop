@@ -135,10 +135,18 @@ function generateProduct(product) {
 
 function generatePaginaionPage(pageNum) {
   const elPageSpan = document.createElement('span')
+  pageNum = pageNum
   elPageSpan.innerHTML = ` [ ${pageNum} ] `
 
   return elPageSpan
 }
+function generateParagraphFindNothing() {
+  const elParagraph = document.createElement('p')
+  elParagraph.classList.add('zero-search')
+  elParagraph.innerHTML = 'Ничего не найдено, уточните условия поиска'
+  return elParagraph
+}
+
 const cardGenerator = {
   generateProductCard(product) {
     const URL = 'https://web-app.click/pc-shop/photos/products/computers/'
@@ -236,6 +244,7 @@ const cardGenerator = {
     const cardInfoDescr = document.createElement('p')
     const toCartBtn = document.createElement('button')
     const toWishlistBtn = document.createElement('button')
+    const toComparelistBtn = document.createElement('button')
 
     cardInfo.setAttribute('class', 'card-info')
     cardTopRight.setAttribute('class', 'card-top__right')
@@ -255,6 +264,10 @@ const cardGenerator = {
     toWishlistBtn.classList.add('card-info__btn')
     toWishlistBtn.classList.add('card-info__btn--towishlist')
     toWishlistBtn.textContent = 'Добавить в избранное'
+    toComparelistBtn.classList.add('card-info__btn')
+    toComparelistBtn.classList.add('btn-reset')
+    toComparelistBtn.classList.add('card-info__btn--tocomparelist')
+    toComparelistBtn.textContent = 'Добавить в сравнение'
 
     cardInfoPrice.appendChild(infoPriceCurrent)
     cardInfo.appendChild(cardInfoTitle)
@@ -262,6 +275,7 @@ const cardGenerator = {
     cardInfo.appendChild(cardInfoDescr)
     cardInfo.appendChild(toCartBtn)
     cardInfo.appendChild(toWishlistBtn)
+    cardInfo.appendChild(toComparelistBtn)
 
     cardTopRight.appendChild(cardInfo)
 

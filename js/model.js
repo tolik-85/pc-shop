@@ -12,6 +12,7 @@ const model = {
   cardProduct: {},
   similarProductsIdList: [],
   similarProducts: [],
+  productsOnPage: 10,
 
   addCheckedCheckboxes(checkedFilter) {
     this.checkedFilters.push(checkedFilter)
@@ -51,11 +52,15 @@ const model = {
 
   pagination(pageNum) {
     this.paginatedProducts = this.sortedProducts
-    let numPerPage = 7
-    let startIdx = pageNum * numPerPage
-    let endIdx = startIdx + numPerPage
-
+    let startIdx = pageNum * this.productsOnPage
+    let endIdx = +startIdx + +this.productsOnPage
     this.paginatedProducts = this.paginatedProducts.slice(startIdx, endIdx)
+    // console.log('>>startIdx', startIdx)
+    // console.log('>>endIdx', endIdx)
+    // console.log('>>productsOnPage', this.productsOnPage)
+    // console.log('>>pageNum', pageNum)
+    // console.log('>>sortedProducts', this.sortedProducts)
+    // console.log('>>paginatedProducts', this.paginatedProducts)
     return this.paginatedProducts
   },
 
@@ -63,6 +68,8 @@ const model = {
     const course = this.usdCourse
     priceFrom = (priceFrom / course).toFixed()
     priceTo = (priceTo / course).toFixed()
+    // console.log(priceFrom)
+    // console.log(priceTo)
     this.pricedProducts = this.filtratedProducts.filter(product => {
       const price = product.price
       if (priceFrom <= price && price <= priceTo) {
@@ -78,7 +85,7 @@ const model = {
       this.checkedFilters.forEach(cf => {
         let param = cf.split('_')
 
-        console.log(this.checkedFilters)
+        // console.log(this.checkedFilters)
         if (product.attributes[param[0]] === param[1]) {
           count += 1
         }
