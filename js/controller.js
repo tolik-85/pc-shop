@@ -119,4 +119,11 @@ const controller = {
       view.renderSimilarProducts(similarProduct)
     })
   },
+  async handleCardProductSearch(cardSearchQuery) {
+    await Promise.all([model.updateCourse(), model.updateProducts()])
+    model.setCardSearchQuery(cardSearchQuery)
+    model.cardSearchProducts()
+    view.renderCardMainClear()
+    view.renderCardMainOnsearch(model.searchedProducts)
+  },
 }

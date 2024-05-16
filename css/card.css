@@ -8,6 +8,19 @@
   --color-gray: #858585;
   --color-tundora: #454545;
 }
+.wrap-search .search-query {
+  width: calc(100% - 50px);
+}
+.search-btn input[type='submit'] {
+  height: 50px;
+  width: 50px;
+  font-size: 18px;
+  background: #fff url(../img/search.png) center / 70% no-repeat;
+  border: 0px solid #ccc;
+}
+.search-btn {
+  width: 50px;
+}
 .wrap-similar-product {
   cursor: default;
   width: 260px;

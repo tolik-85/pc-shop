@@ -9,6 +9,7 @@ const model = {
   filter: {},
   checkedFilters: [],
   searchQuery: '',
+  cardSearchQuery: '',
   sortingType: 'Цена по возростанию',
   cardProduct: {},
   similarProductsIdList: [],
@@ -57,6 +58,15 @@ const model = {
       const productName = product.caption.toLowerCase()
       this.searchQuery = this.searchQuery.toLowerCase()
       if (productName.includes(this.searchQuery)) {
+        return true
+      }
+    })
+  },
+  cardSearchProducts() {
+    this.searchedProducts = this.products.filter(product => {
+      const productName = product.caption.toLowerCase()
+      this.cardSearchQuery = this.cardSearchQuery.toLowerCase()
+      if (productName.includes(this.cardSearchQuery)) {
         return true
       }
     })
@@ -234,5 +244,8 @@ const model = {
   },
   setSearchQuery(query) {
     this.searchQuery = query
+  },
+  setCardSearchQuery(query) {
+    this.cardSearchQuery = query
   },
 }

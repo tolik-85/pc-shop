@@ -114,6 +114,14 @@ const view = {
     const elProduct = generateProduct(product)
     elContainerProducts.appendChild(elProduct)
   },
+  renderCardMainOnsearch(searchedProducts) {
+    searchedProducts.forEach(this.renderCardProductsOnSearch)
+  },
+  renderCardProductsOnSearch(product) {
+    const elMain = document.querySelector('.main')
+    const elProduct = generateProduct(product)
+    elMain.appendChild(elProduct)
+  },
 
   renderContainerProductsClear() {
     let elContainerProducts = document.querySelector('.container-products')
@@ -225,8 +233,22 @@ const view = {
     await controller.handleSimilarProducts(id)
     controller.handleRenderProduct()
     controller.handleSimilarProductsSection()
+    this.productCardSearchListener()
   },
-
+  renderCardMainClear() {
+    let elMainCont = document.querySelector('.main')
+    console.log(elMainCont)
+    elMainCont.innerHTML = ''
+  },
+  productCardSearchListener() {
+    const elSearchBtn = document.querySelector('.search-btn>input')
+    elSearchBtn.addEventListener('click', this.onProductCardSearchClickHandler)
+  },
+  onProductCardSearchClickHandler(e) {
+    e.preventDefault()
+    const searchQuery = document.querySelector('.search-query>input').value
+    controller.handleCardProductSearch(searchQuery)
+  },
   renderMain(product) {
     const elMain = document.querySelector('main')
     const productCard = cardGenerator.generateProductCard(product)
