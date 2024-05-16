@@ -9,7 +9,6 @@ const model = {
   filter: {},
   checkedFilters: [],
   searchQuery: '',
-  cardSearchQuery: '',
   sortingType: 'Цена по возростанию',
   cardProduct: {},
   similarProductsIdList: [],
@@ -17,76 +16,39 @@ const model = {
   productsOnPage: 10,
   productsTotal: 0,
   pagesCount: 0,
+  curPage: 0,
   minPrice: 0,
   maxPrice: 0,
   priceFrom: 0,
   priceTo: 0,
 
-  addCheckedCheckboxes(checkedFilter) {
-    this.checkedFilters.push(checkedFilter)
-  },
-
-  removeCheckedCheckboxes(checkedFilter) {
-    const index = this.checkedFilters.indexOf(checkedFilter)
-    this.checkedFilters.splice(index, 1)
+  vortex() {
+    this.searchProducts(this.searchQuery)
+    this.makeFilter()
+    this.filtrateProducts(this.checkedFilters)
+    this.getMinPriceUAH()
+    this.getMaxPriceUAH()
   },
 
   async updateProducts() {
     const products = await api.loadProducts()
     this.setProducts(products)
 
-    this.searchProducts(this.searchQuery)
-    this.makeFilter()
-
-    this.filtrateProducts(this.checkedFilters)
-
-    this.getMinPriceUAH()
-    this.getMaxPriceUAH()
+    this.vortex()
 
     this.filtrateProductsByPrice(0, 20000000)
     this.sortProducts(this.sortingType)
     this.pagination(0)
   },
 
-  async updateCourse() {
-    const course = await api.loadCourse()
-    this.setUsdCouse(course)
-  },
-
-  searchProducts() {
+  searchProducts(searchQuery) {
+    if (searchQuery) {
+      this.searchQuery = searchQuery
+    }
     this.searchedProducts = this.products.filter(product => {
       const productName = product.caption.toLowerCase()
       this.searchQuery = this.searchQuery.toLowerCase()
       if (productName.includes(this.searchQuery)) {
-        return true
-      }
-    })
-  },
-  cardSearchProducts() {
-    this.searchedProducts = this.products.filter(product => {
-      const productName = product.caption.toLowerCase()
-      this.cardSearchQuery = this.cardSearchQuery.toLowerCase()
-      if (productName.includes(this.cardSearchQuery)) {
-        return true
-      }
-    })
-  },
-
-  pagination(pageNum) {
-    let startIdx = pageNum * this.productsOnPage
-    let endIdx = +startIdx + +this.productsOnPage
-    this.paginatedProducts = this.sortedProducts.slice(startIdx, endIdx)
-  },
-
-  filtrateProductsByPrice(priceFrom, priceTo) {
-    const course = this.usdCourse
-    priceFrom = +(priceFrom / course).toFixed()
-    priceTo = +(priceTo / course).toFixed()
-    // console.log(priceFrom)
-    // console.log(priceTo)
-    this.pricedProducts = this.filtratedProducts.filter(product => {
-      const price = product.price
-      if (priceFrom <= price && price <= priceTo) {
         return true
       }
     })
@@ -96,24 +58,75 @@ const model = {
     if (checkedFilters) {
       this.checkedFilters = checkedFilters
     }
-
     this.filtratedProducts = this.searchedProducts.filter(product => {
       let count = 0
-
       this.checkedFilters.forEach(cf => {
         let param = cf.split('_')
-
-        // console.log(this.checkedFilters)
         if (product.attributes[param[0]] === param[1]) {
           count += 1
         }
       })
-
       const attrsType = [
         ...new Set(this.checkedFilters.map(item => item.split('_')[0])),
       ]
       return attrsType.length === count
     })
+  },
+
+  filtrateProductsByPrice(priceFrom, priceTo) {
+    const course = this.usdCourse
+    priceFrom = +(priceFrom / course).toFixed()
+    priceTo = +(priceTo / course).toFixed()
+    this.pricedProducts = this.filtratedProducts.filter(product => {
+      const price = product.price
+      if (priceFrom <= price && price <= priceTo) {
+        return true
+      }
+    })
+  },
+
+  sortProducts(sortingType) {
+    if (sortingType) {
+      this.sortingType = sortingType
+    }
+    if (this.sortingType === 'От А до Я') {
+      this.sortedProducts = this.pricedProducts.toSorted((a, b) => {
+        if (a.caption < b.caption) {
+          return -1
+        }
+        if (a.caption > b.caption) {
+          return 1
+        }
+        return 0
+      })
+    }
+    if (this.sortingType === 'От Я до А') {
+      this.sortedProducts = this.pricedProducts.toSorted((a, b) => {
+        if (a.caption < b.caption) {
+          return 1
+        }
+        if (a.caption > b.caption) {
+          return -1
+        }
+        return 0
+      })
+    }
+    if (this.sortingType === 'Цена по возростанию') {
+      this.sortedProducts = this.pricedProducts.toSorted(
+        (a, b) => a.price - b.price
+      )
+    }
+    if (this.sortingType === 'Цена по убыванию') {
+      this.sortedProducts = this.pricedProducts.toSorted(
+        (a, b) => b.price - a.price
+      )
+    }
+  },
+
+  pagination(pageNum) {
+    let startIdx = pageNum * this.productsOnPage
+    let endIdx = +startIdx + +this.productsOnPage
+    this.paginatedProducts = this.sortedProducts.slice(startIdx, endIdx)
   },
 
   makeFilter() {
@@ -131,51 +144,23 @@ const model = {
     })
   },
 
-  sortProducts(sortingType) {
-    if (sortingType) {
-      this.sortingType = sortingType
-    }
-
-    if (this.sortingType === 'От А до Я') {
-      this.sortedProducts = this.pricedProducts.toSorted((a, b) => {
-        if (a.caption < b.caption) {
-          return -1
-        }
-        if (a.caption > b.caption) {
-          return 1
-        }
-        return 0
-      })
-    }
-
-    if (this.sortingType === 'От Я до А') {
-      this.sortedProducts = this.pricedProducts.toSorted((a, b) => {
-        if (a.caption < b.caption) {
-          return 1
-        }
-        if (a.caption > b.caption) {
-          return -1
-        }
-        return 0
-      })
-    }
-
-    if (this.sortingType === 'Цена по возростанию') {
-      this.sortedProducts = this.pricedProducts.toSorted(
-        (a, b) => a.price - b.price
-      )
-    }
-
-    if (this.sortingType === 'Цена по убыванию') {
-      this.sortedProducts = this.pricedProducts.toSorted(
-        (a, b) => b.price - a.price
-      )
-    }
-  },
-
   async updateProduct(id) {
     const cardProduct = await api.loadProduct(id)
     this.setProduct(cardProduct)
+  },
+
+  addCheckedCheckboxes(checkedFilter) {
+    this.checkedFilters.push(checkedFilter)
+  },
+
+  removeCheckedCheckboxes(checkedFilter) {
+    const index = this.checkedFilters.indexOf(checkedFilter)
+    this.checkedFilters.splice(index, 1)
+  },
+
+  async updateCourse() {
+    const course = await api.loadCourse()
+    this.setUsdCouse(course)
   },
 
   async updateSimilarProductsIdList(id) {
@@ -212,17 +197,21 @@ const model = {
     return this.pricedFilter
   },
   getProductPrices() {
-    return this.searchedProducts.map(product => product.price)
-  },
-  getMaxPriceUAH() {
-    const maxPriceUsd = Math.max(...this.getProductPrices())
-    const maxPriceUah = maxPriceUsd * this.usdCourse
-    return isFinite(maxPriceUah) ? +maxPriceUah.toFixed() : 0
+    return this.filtratedProducts.map(product => product.price)
   },
   getMinPriceUAH() {
     const minPriceUsd = Math.min(...this.getProductPrices())
     const minPriceUah = minPriceUsd * this.usdCourse
-    return isFinite(minPriceUah) ? +minPriceUah.toFixed() : 0
+    const minPrice = isFinite(minPriceUah) ? +minPriceUah.toFixed() : 0
+    this.minPrice = minPrice
+    return minPrice
+  },
+  getMaxPriceUAH() {
+    const maxPriceUsd = Math.max(...this.getProductPrices())
+    const maxPriceUah = maxPriceUsd * this.usdCourse
+    const maxPrice = isFinite(maxPriceUah) ? +maxPriceUah.toFixed() : 0
+    this.maxPrice = maxPrice
+    return maxPrice
   },
   setUsdCouse(course) {
     this.usdCourse = course
@@ -244,8 +233,5 @@ const model = {
   },
   setSearchQuery(query) {
     this.searchQuery = query
-  },
-  setCardSearchQuery(query) {
-    this.cardSearchQuery = query
   },
 }

@@ -57,6 +57,7 @@ const controller = {
     }
     console.log(model.checkedFilters)
   },
+
   handlerElSelect(elSelectValue) {
     model.sortProducts(elSelectValue)
     model.pagination(0)
@@ -70,6 +71,16 @@ const controller = {
     const filter = model.getFilter()
     view.renderElWrapCheckboxClear()
     view.renderWrapFilter(filter)
+  },
+
+  // ??? 🧨 //
+
+  async handleCardProductSearch(searchQuery) {
+    await Promise.all([model.updateCourse(), model.updateProducts()])
+    model.setSearchQuery(searchQuery)
+    model.searchProducts()
+    view.renderCardMainClear()
+    view.renderCardMainOnsearch(model.searchedProducts)
   },
 
   // ??? 🧨 //
@@ -118,12 +129,5 @@ const controller = {
     model.similarProducts.forEach(similarProduct => {
       view.renderSimilarProducts(similarProduct)
     })
-  },
-  async handleCardProductSearch(cardSearchQuery) {
-    await Promise.all([model.updateCourse(), model.updateProducts()])
-    model.setCardSearchQuery(cardSearchQuery)
-    model.cardSearchProducts()
-    view.renderCardMainClear()
-    view.renderCardMainOnsearch(model.searchedProducts)
   },
 }
