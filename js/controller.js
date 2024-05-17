@@ -2,7 +2,8 @@ const controller = {
   async handleUpdateProducts(isLoad) {
     if (isLoad) {
       await Promise.all([model.updateCourse(), model.updateProducts()])
-      model.pagination(0)
+      model.addUAHPriceToProducts()
+      model.vortex()
       view.renderContainerProducts(model.paginatedProducts)
       view.renderPagination()
       view.paginationBoldfirstElOnload()

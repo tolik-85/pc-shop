@@ -43,6 +43,13 @@
         // console.log('paginatedProducts', model.paginatedProducts.length)
       })()
       let x = '45385593107843568'
+
+      const fakeBin = x =>
+        x
+          .split('')
+          .map(n => (n > 5 ? 1 : 0))
+          .join('')
+
       function fakeBin(x) {
         let arr = x.split('')
         for (let i = 0; arr.length > i; i++) {

@@ -20,7 +20,13 @@ const model = {
   minPrice: 0,
   maxPrice: 0,
   priceFrom: 0,
-  priceTo: 0,
+  priceTo: Infinity,
+
+  addUAHPriceToProducts() {
+    this.products.forEach(
+      product => (product.priceUAH = product.price * this.usdCourse)
+    )
+  },
 
   vortex() {
     this.searchProducts(this.searchQuery)
@@ -28,17 +34,15 @@ const model = {
     this.filtrateProducts(this.checkedFilters)
     this.getMinPriceUAH()
     this.getMaxPriceUAH()
+    this.filtrateProductsByPrice(this.priceFrom, this.priceTo)
+    this.sortProducts(this.sortingType)
+    this.pagination(this.curPage)
   },
 
   async updateProducts() {
     const products = await api.loadProducts()
     this.setProducts(products)
-
     this.vortex()
-
-    this.filtrateProductsByPrice(0, 20000000)
-    this.sortProducts(this.sortingType)
-    this.pagination(0)
   },
 
   searchProducts(searchQuery) {
@@ -74,15 +78,13 @@ const model = {
   },
 
   filtrateProductsByPrice(priceFrom, priceTo) {
-    const course = this.usdCourse
-    priceFrom = +(priceFrom / course).toFixed()
-    priceTo = +(priceTo / course).toFixed()
-    this.pricedProducts = this.filtratedProducts.filter(product => {
-      const price = product.price
-      if (priceFrom <= price && price <= priceTo) {
-        return true
-      }
-    })
+    if (priceFrom !== undefined && priceTo !== undefined) {
+      this.priceFrom = priceFrom
+      this.priceTo = priceTo
+    }
+    this.pricedProducts = this.filtratedProducts.filter(
+      p => this.priceFrom <= p.priceUAH && p.priceUAH <= this.priceTo
+    )
   },
 
   sortProducts(sortingType) {
@@ -90,26 +92,10 @@ const model = {
       this.sortingType = sortingType
     }
     if (this.sortingType === 'От А до Я') {
-      this.sortedProducts = this.pricedProducts.toSorted((a, b) => {
-        if (a.caption < b.caption) {
-          return -1
-        }
-        if (a.caption > b.caption) {
-          return 1
-        }
-        return 0
-      })
+      this.sortedProducts = this.pricedProducts.toSorted()
     }
     if (this.sortingType === 'От Я до А') {
-      this.sortedProducts = this.pricedProducts.toSorted((a, b) => {
-        if (a.caption < b.caption) {
-          return 1
-        }
-        if (a.caption > b.caption) {
-          return -1
-        }
-        return 0
-      })
+      this.sortedProducts = this.pricedProducts.toSorted().toReversed()
     }
     if (this.sortingType === 'Цена по возростанию') {
       this.sortedProducts = this.pricedProducts.toSorted(
@@ -123,9 +109,12 @@ const model = {
     }
   },
 
-  pagination(pageNum) {
-    let startIdx = pageNum * this.productsOnPage
-    let endIdx = +startIdx + +this.productsOnPage
+  pagination(curPage) {
+    if (curPage) {
+      this.curPage = curPage
+    }
+    let startIdx = this.curPage * this.productsOnPage
+    let endIdx = startIdx + this.productsOnPage
     this.paginatedProducts = this.sortedProducts.slice(startIdx, endIdx)
   },
 
@@ -229,6 +218,7 @@ const model = {
     return this.similarProducts
   },
   setProductsOnPage(n) {
+    console.log(n)
     this.productsOnPage = n
   },
   setSearchQuery(query) {
