@@ -247,7 +247,13 @@ const view = {
   onProductCardSearchClickHandler(e) {
     e.preventDefault()
     const searchQuery = document.querySelector('.search-query>input').value
-    controller.handleCardProductSearch(searchQuery)
+    const elSearchBtn = document.querySelector('.search-btn')
+    const ellink = cardGenerator.generateLinkGoToIndexPageOnSearch(searchQuery)
+    const elRow = document.querySelector('form>.row')
+    ellink.appendChild(elSearchBtn)
+    elRow.appendChild(ellink)
+
+    // controller.handleCardProductSearch(searchQuery)
   },
   renderMain(product) {
     const elMain = document.querySelector('main')

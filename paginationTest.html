@@ -30,18 +30,34 @@
         model.sortedProducts = model.pricedProducts
         model.pagination(5)
 
-        console.log('products', model.products.length)
-        console.log('searchedProducts', model.searchedProducts.length)
-        console.log('filtratedProducts', model.filtratedProducts.length)
-        console.log('pricedProducts', model.pricedProducts.length)
-        console.log('sortedProducts', model.sortedProducts.length)
-        console.log('paginatedProducts', model.paginatedProducts.length)
+        // console.log('products', model.products.length)
+        // console.log('searchedProducts', model.searchedProducts.length)
+        // console.log('filtratedProducts', model.filtratedProducts.length)
+        // console.log('pricedProducts', model.pricedProducts.length)
+        // console.log('sortedProducts', model.sortedProducts.length)
+        // console.log('paginatedProducts', model.paginatedProducts.length)
         // console.log('filtratedProducts', model.filtratedProducts.length)
         // console.log('searchedProducts', model.searchedProducts.length)
         // console.log('filtratedProducts', model.filtratedProducts.length)
         // console.log('PricedProducts', model.pricedProducts.length)
         // console.log('paginatedProducts', model.paginatedProducts.length)
       })()
+      let x = '45385593107843568'
+      function fakeBin(x) {
+        let arr = x.split('')
+        for (let i = 0; arr.length > i; i++) {
+          // console.log(arr[i])
+          if (arr[i] < 5) {
+            arr[i] = 0
+          } else {
+            arr[i] = 1
+          }
+        }
+        console.log(arr.join(','))
+        return arr.join()
+      }
+      console.log('01011110001100111' === '01011110001100111')
+      fakeBin(x)
     </script>
   </body>
 </html>

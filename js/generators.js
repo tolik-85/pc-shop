@@ -392,4 +392,10 @@ const cardGenerator = {
 
     return elWrapProduct
   },
+  generateLinkGoToIndexPageOnSearch(searchQuery) {
+    const link = document.createElement('a')
+    link.setAttribute('href', `index.html?search-query=${searchQuery}`)
+    link.setAttribute('target', '_blank')
+    return link
+  },
 }

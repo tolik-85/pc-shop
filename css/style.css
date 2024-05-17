@@ -123,9 +123,6 @@ a {
   background: #fff url(../img/search.png) center / 70% no-repeat;
   border: 0px solid #ccc;
 }
-.wrap-search input[type='submit']:hover {
-  background: #f0f3f5 url(../img/search-hover.png) center / 70% no-repeat;
-}
 
 .wrap-account {
   height: 100%;

@@ -10,16 +10,20 @@
 }
 .wrap-search .search-query {
   width: calc(100% - 50px);
+  /* margin-top: 50px; */
 }
 .search-btn input[type='submit'] {
   height: 50px;
   width: 50px;
   font-size: 18px;
-  background: #fff url(../img/search.png) center / 70% no-repeat;
+  /* background: #fff url(../img/search.png) center / 70% no-repeat; */
   border: 0px solid #ccc;
 }
 .search-btn {
+  height: 50px;
   width: 50px;
+  font-size: 18px;
+  background: #fff url(../img/search.png) center / 70% no-repeat;
 }
 .wrap-similar-product {
   cursor: default;
