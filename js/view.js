@@ -258,9 +258,9 @@ const view = {
   },
   renderContainerProductsOnZeroSearch() {
     const elParagraph = generateParagraphFindNothing()
-    console.log(elParagraph)
+    // console.log(elParagraph)
     const elContainerProducts = document.querySelector('.container-products')
-    console.log(elContainerProducts)
+    // console.log(elContainerProducts)
     elContainerProducts.appendChild(elParagraph)
   },
 }
