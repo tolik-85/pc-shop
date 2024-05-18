@@ -22,6 +22,7 @@ const view = {
 
   async onLoadCatalog() {
     await controller.handleUpdateProducts(true)
+    // controller.checkAndSetSearchQuery()
     controller.handleFilter()
     document.querySelector('#filtrate').onclick =
       this.onFiltrateClick.bind(this)
@@ -233,28 +234,13 @@ const view = {
     await controller.handleSimilarProducts(id)
     controller.handleRenderProduct()
     controller.handleSimilarProductsSection()
-    this.productCardSearchListener()
   },
   renderCardMainClear() {
     let elMainCont = document.querySelector('.main')
     console.log(elMainCont)
     elMainCont.innerHTML = ''
   },
-  productCardSearchListener() {
-    const elSearchBtn = document.querySelector('.search-btn>input')
-    elSearchBtn.addEventListener('click', this.onProductCardSearchClickHandler)
-  },
-  onProductCardSearchClickHandler(e) {
-    e.preventDefault()
-    const searchQuery = document.querySelector('.search-query>input').value
-    const elSearchBtn = document.querySelector('.search-btn')
-    const ellink = cardGenerator.generateLinkGoToIndexPageOnSearch(searchQuery)
-    const elRow = document.querySelector('form>.row')
-    ellink.appendChild(elSearchBtn)
-    elRow.appendChild(ellink)
 
-    // controller.handleCardProductSearch(searchQuery)
-  },
   renderMain(product) {
     const elMain = document.querySelector('main')
     const productCard = cardGenerator.generateProductCard(product)

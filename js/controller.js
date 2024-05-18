@@ -3,6 +3,7 @@ const controller = {
     if (isLoad) {
       await Promise.all([model.updateCourse(), model.updateProducts()])
       model.addUAHPriceToProducts()
+      this.checkAndSetSearchQuery()
       model.vortex()
       view.renderContainerProducts(model.paginatedProducts)
       view.renderPagination()
@@ -23,6 +24,12 @@ const controller = {
         view.renderContainerProductsOnZeroSearch()
       }
     }
+  },
+  checkAndSetSearchQuery() {
+    const search = new URLSearchParams(location.search)
+    const searchQuery = search.get('search-query')
+    model.setSearchQuery(searchQuery)
+    console.log(model.searchQuery)
   },
   onChangeElSelectPaginationHandler(itemsOnPage) {
     if (itemsOnPage > 0) {
@@ -73,18 +80,6 @@ const controller = {
     view.renderElWrapCheckboxClear()
     view.renderWrapFilter(filter)
   },
-
-  // ??? 🧨 //
-
-  async handleCardProductSearch(searchQuery) {
-    await Promise.all([model.updateCourse(), model.updateProducts()])
-    model.setSearchQuery(searchQuery)
-    model.searchProducts()
-    view.renderCardMainClear()
-    view.renderCardMainOnsearch(model.searchedProducts)
-  },
-
-  // ??? 🧨 //
 
   searchHandler(query) {
     model.setSearchQuery(query)

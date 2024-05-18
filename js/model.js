@@ -222,6 +222,9 @@ const model = {
     this.productsOnPage = n
   },
   setSearchQuery(query) {
+    if (query === null) {
+      query = ''
+    }
     this.searchQuery = query
   },
 }
