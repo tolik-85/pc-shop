@@ -1,42 +1,35 @@
 const controller = {
-  async handleUpdateProducts(isLoad) {
-    if (isLoad) {
-      await Promise.all([model.updateCourse(), model.updateProducts()])
-      model.addUAHPriceToProducts()
-      this.checkAndSetSearchQuery()
-      model.vortex()
-      view.renderContainerProducts(model.paginatedProducts)
-      view.renderPagination()
-      view.paginationBoldfirstElOnload()
-    } else {
-      model.filtrateProducts()
-      this.handlePriceFilter()
-      view.renderContainerProductsClear()
-      model.sortedProducts = model.pricedProducts
-      model.pagination(0)
-      view.renderContainerProducts(model.paginatedProducts)
+  handleFiltrate() {
+    model.filtrateProducts()
+    this.handlePriceFilter()
+    view.renderContainerProductsClear()
+    model.sortedProducts = model.pricedProducts
+    model.paginateProducts(0)
+    view.renderContainerProducts(model.paginatedProducts)
 
-      view.rednerPaginationClear()
-      view.renderPagination()
-      view.renderSortSelect()
-      view.paginationBoldfirstElOnload()
-      if (model.paginatedProducts.length === 0) {
-        view.renderContainerProductsOnZeroSearch()
-      }
+    view.rednerPaginationClear()
+    view.renderPagination()
+    view.renderSortSelect()
+    view.paginationBoldfirstElOnload()
+    if (model.paginatedProducts.length === 0) {
+      view.renderContainerProductsOnZeroSearch()
     }
   },
-  checkAndSetSearchQuery() {
-    const search = new URLSearchParams(location.search)
-    const searchQuery = search.get('search-query')
-    model.setSearchQuery(searchQuery)
-    console.log(model.searchQuery)
+
+  async handleUpdateProducts(isLoad) {
+    await model.updateProductsAndUsdCourse()
+    model.vortex()
+    view.renderContainerProducts(model.paginatedProducts)
+    view.renderPagination()
+    view.paginationBoldfirstElOnload()
   },
+
   onChangeElSelectPaginationHandler(itemsOnPage) {
     if (itemsOnPage > 0) {
       model.setProductsOnPage(itemsOnPage)
       view.renderContainerProductsClear()
       model.sortedProducts = model.pricedProducts
-      model.pagination(0)
+      model.paginateProducts(0)
       view.renderContainerProducts(model.paginatedProducts)
       view.rednerPaginationClear()
       view.renderPagination()
@@ -46,7 +39,7 @@ const controller = {
   },
 
   onClickPaginationHandler(pageNum) {
-    model.pagination(pageNum)
+    model.paginateProducts(pageNum)
     view.renderContainerProductsClear()
     view.renderContainerProducts(model.paginatedProducts)
   },
@@ -57,18 +50,9 @@ const controller = {
     model.filtrateProductsByPrice(priceFrom, priceTo)
   },
 
-  handleFilterCheckbox(id, actionAdd) {
-    if (actionAdd) {
-      model.addCheckedCheckboxes(id)
-    } else {
-      model.removeCheckedCheckboxes(id)
-    }
-    console.log(model.checkedFilters)
-  },
-
   handlerElSelect(elSelectValue) {
     model.sortProducts(elSelectValue)
-    model.pagination(0)
+    model.paginateProducts(0)
     view.renderContainerProductsClear()
     view.renderContainerProducts(model.paginatedProducts)
     view.paginationBoldfirstElOnload()
@@ -87,7 +71,7 @@ const controller = {
     model.filtrateProducts()
     model.filtrateProductsByPrice(0, 20000000)
     model.sortedProducts = model.pricedProducts
-    model.pagination(0)
+    model.paginateProducts(0)
 
     view.renderContainerProductsClear()
     view.renderContainerProducts(model.paginatedProducts)
@@ -107,7 +91,7 @@ const controller = {
 
   async handleUpdateProduct(id) {
     await model.updateProduct(id)
-    await model.updateCourse()
+    await model.updateUsdCourse()
   },
 
   handleRenderProduct() {

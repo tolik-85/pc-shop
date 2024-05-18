@@ -1,32 +1,30 @@
 const model = {
   usdCourse: 0,
+
+  similarProductsIdList: [],
+  similarProducts: [],
+  cardProduct: {},
+
   products: [],
   searchedProducts: [],
   filtratedProducts: [],
   pricedProducts: [],
   sortedProducts: [],
   paginatedProducts: [],
-  filter: {},
-  checkedFilters: [],
+
   searchQuery: '',
-  sortingType: 'Цена по возростанию',
-  cardProduct: {},
-  similarProductsIdList: [],
-  similarProducts: [],
-  productsOnPage: 10,
-  productsTotal: 0,
-  pagesCount: 0,
-  curPage: 0,
-  minPrice: 0,
-  maxPrice: 0,
+  checkedFilters: [],
   priceFrom: 0,
   priceTo: Infinity,
+  sortingType: 'Цена по возростанию',
+  curPage: 0,
+  productsOnPage: 10,
 
-  addUAHPriceToProducts() {
-    this.products.forEach(
-      product => (product.priceUAH = product.price * this.usdCourse)
-    )
-  },
+  filter: {},
+  minPrice: 0,
+  maxPrice: 0,
+  productsTotal: 0,
+  pagesCount: 0,
 
   vortex() {
     this.searchProducts(this.searchQuery)
@@ -36,13 +34,7 @@ const model = {
     this.getMaxPriceUAH()
     this.filtrateProductsByPrice(this.priceFrom, this.priceTo)
     this.sortProducts(this.sortingType)
-    this.pagination(this.curPage)
-  },
-
-  async updateProducts() {
-    const products = await api.loadProducts()
-    this.setProducts(products)
-    this.vortex()
+    this.paginateProducts(this.curPage)
   },
 
   searchProducts(searchQuery) {
@@ -50,9 +42,9 @@ const model = {
       this.searchQuery = searchQuery
     }
     this.searchedProducts = this.products.filter(product => {
-      const productName = product.caption.toLowerCase()
+      const productCaption = product.caption.toLowerCase()
       this.searchQuery = this.searchQuery.toLowerCase()
-      if (productName.includes(this.searchQuery)) {
+      if (productCaption.includes(this.searchQuery)) {
         return true
       }
     })
@@ -109,7 +101,7 @@ const model = {
     }
   },
 
-  pagination(curPage) {
+  paginateProducts(curPage) {
     if (curPage) {
       this.curPage = curPage
     }
@@ -133,21 +125,37 @@ const model = {
     })
   },
 
+  addAllCheckedCheckboxes(checkedIds) {
+    this.checkedFilters = checkedIds
+  },
+
+  removeAllCheckedCheckboxes(checkedFilter) {
+    this.checkedFilters = []
+  },
+
+  addUAHPriceToProducts() {
+    this.products.forEach(
+      product => (product.priceUAH = product.price * this.usdCourse)
+    )
+  },
+
+  async updateProductsAndUsdCourse() {
+    await Promise.all([this.updateUsdCourse(), this.updateProducts()])
+    this.addUAHPriceToProducts()
+  },
+
+  async updateProducts() {
+    const products = await api.loadProducts()
+    this.setProducts(products)
+    this.vortex()
+  },
+
   async updateProduct(id) {
     const cardProduct = await api.loadProduct(id)
     this.setProduct(cardProduct)
   },
 
-  addCheckedCheckboxes(checkedFilter) {
-    this.checkedFilters.push(checkedFilter)
-  },
-
-  removeCheckedCheckboxes(checkedFilter) {
-    const index = this.checkedFilters.indexOf(checkedFilter)
-    this.checkedFilters.splice(index, 1)
-  },
-
-  async updateCourse() {
+  async updateUsdCourse() {
     const course = await api.loadCourse()
     this.setUsdCouse(course)
   },
@@ -164,7 +172,7 @@ const model = {
     await Promise.all(promises)
   },
 
-  getProductsNames() {
+  getProductsCaptions() {
     return this.products.map(product => product.caption)
   },
   getProducts() {

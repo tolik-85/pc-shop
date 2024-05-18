@@ -1,4 +1,17 @@
 const view = {
+  renderInputSearch() {
+    console.log('foobar')
+    const locationParams = new URLSearchParams(location.search)
+    const searchQuery = locationParams.get('search-query')
+    const elInputSearch = document.querySelector('.search')
+    elInputSearch.value = searchQuery
+    console.dir(document.querySelector('.search-submit'))
+    // document.querySelector('.search-submit').click()
+    // setTimeout(() => {
+    //   document.querySelector('.search-submit').click()
+    // }, 1000)
+  },
+
   rednerPaginationClear() {
     const paginator = document.querySelector('.paginator')
     paginator.innerHTML = ''
@@ -17,11 +30,15 @@ const view = {
   },
 
   onFiltrateClick() {
-    controller.handleUpdateProducts(false)
+    controller.handleFiltrate()
   },
 
   async onLoadCatalog() {
+    this.searchFilter()
+
+    this.renderInputSearch()
     await controller.handleUpdateProducts(true)
+    document.querySelector('.search-submit').click()
     // controller.checkAndSetSearchQuery()
     controller.handleFilter()
     document.querySelector('#filtrate').onclick =
@@ -32,7 +49,6 @@ const view = {
     this.paginationListener()
     this.paginationBoldfirstElOnload()
     this.renderRangeWrap()
-    this.searchFilter()
     this.renderRangeWrap()
     this.goToProductPageClick()
     this.onChangeElSelectPaginationListener()
@@ -60,7 +76,7 @@ const view = {
   },
   searchFilter() {
     const searchBtn = document.querySelector('.search-submit')
-    searchBtn.addEventListener('click', this.onSearchSubmitClick)
+    searchBtn.addEventListener('click', this.onClickInputSearch)
   },
   onClickGoToProductPage(e) {
     e.preventDefault
@@ -68,8 +84,8 @@ const view = {
     const id = wrapProduct.querySelector('.id>span').innerHTML
     controller.goToProductPageHandler(id)
   },
-  onSearchSubmitClick(e) {
-    e.preventDefault()
+  onClickInputSearch() {
+    console.log('hello world')
     const searchInput = document.querySelector('.search')
     controller.searchHandler(searchInput.value)
   },
