@@ -1,11 +1,11 @@
 const view = {
   renderInputSearch() {
-    console.log('foobar')
+    // console.log('foobar')
     const locationParams = new URLSearchParams(location.search)
     const searchQuery = locationParams.get('search-query')
     const elInputSearch = document.querySelector('.search')
     elInputSearch.value = searchQuery
-    console.dir(document.querySelector('.search-submit'))
+    // console.dir(document.querySelector('.search-submit'))
     // document.querySelector('.search-submit').click()
     // setTimeout(() => {
     //   document.querySelector('.search-submit').click()
@@ -35,7 +35,6 @@ const view = {
 
   async onLoadCatalog() {
     this.searchFilter()
-
     this.renderInputSearch()
     await controller.handleUpdateProducts(true)
     document.querySelector('.search-submit').click()
@@ -52,6 +51,63 @@ const view = {
     this.renderRangeWrap()
     this.goToProductPageClick()
     this.onChangeElSelectPaginationListener()
+    this.addToFavoritesListener()
+    this.addToCompareListener()
+    this.addToCartListener()
+  },
+  addToCompareListener() {
+    const AddToCompareBtn = document.querySelectorAll('.add-to-compare')
+    AddToCompareBtn.forEach(el => {
+      el.addEventListener('click', this.onClickAddToCompare)
+    })
+  },
+  addToCartListener() {
+    const AddToCartBtn = document.querySelectorAll('.add-to-cart')
+    AddToCartBtn.forEach(el => {
+      el.addEventListener('click', this.onClickAddToCart)
+    })
+  },
+  addToFavoritesListener() {
+    const AddToFavoritesBtn = document.querySelectorAll('.add-to-favorites')
+    AddToFavoritesBtn.forEach(el => {
+      el.addEventListener('click', this.onClickAddToFavorites)
+    })
+  },
+  onClickAddToCompare(e) {
+    const productId =
+      e.target.parentNode.parentNode.parentNode.querySelector(
+        '.id>span'
+      ).innerHTML
+    controller.addToCompareHandler(productId)
+  },
+  onClickAddToCart(e) {
+    const productId =
+      e.target.parentNode.parentNode.parentNode.querySelector(
+        '.id>span'
+      ).innerHTML
+    controller.addToCartHandler(productId)
+  },
+  onClickAddToFavorites(e) {
+    const productId =
+      e.target.parentNode.parentNode.parentNode.querySelector(
+        '.id>span'
+      ).innerHTML
+    controller.addToFavoritesHandler(productId)
+  },
+  renderCompareQty(qty) {
+    const elCompareQty = document.querySelector('.compare-qty')
+    // console.log(elCompareQty)
+    elCompareQty.innerHTML = qty
+  },
+  renderCartQty(qty) {
+    const elCartQty = document.querySelector('.cart-qty')
+    // console.log(elCartQty)
+    elCartQty.innerHTML = qty
+  },
+  renderFavoritesQty(qty) {
+    const elFavoritesQty = document.querySelector('.favorites-qty')
+    // console.log(elFavoritesQty)
+    elFavoritesQty.innerHTML = qty
   },
   onChangeElSelectPaginationListener() {
     const elSelectPagination = document.querySelector('#select-pagination')
@@ -82,10 +138,10 @@ const view = {
     e.preventDefault
     const wrapProduct = e.target.parentNode.parentNode.parentNode
     const id = wrapProduct.querySelector('.id>span').innerHTML
-    controller.goToProductPageHandler(id)
+    // controller.goToProductPageHandler(id)
   },
   onClickInputSearch() {
-    console.log('hello world')
+    // console.log('hello world')
     const searchInput = document.querySelector('.search')
     controller.searchHandler(searchInput.value)
   },
@@ -95,6 +151,8 @@ const view = {
     pagination.addEventListener('click', view.onClickPagination)
   },
   onClickPagination(e) {
+    // e.preventDefault()
+    console.log(e.target.parentNode)
     let bold = e.target
     const boldEl = document.querySelector('.bold')
     boldEl.classList.remove('bold')
@@ -105,6 +163,7 @@ const view = {
     if (pagNum.toString().length <= 2) {
       controller.onClickPaginationHandler(pagNum)
     }
+    // console.log(model.curPage)
   },
   paginationBoldfirstElOnload() {
     const elPaginator = document.querySelector('.paginator')
@@ -279,12 +338,32 @@ const view = {
     // console.log(elContainerProducts)
     elContainerProducts.appendChild(elParagraph)
   },
+  async onLoadCompare() {
+    await controller.handleUpdateProducts(true)
+    console.log('hello')
+    model.compareProductsObj()
+    model.compareProducts.forEach(product => {
+      this.renderCompareTable(product)
+    })
+  },
+  renderCompareTable() {
+    const elMainCompare = document.querySelector('.main-compare')
+    model.compare.forEach(product => {
+      const img = generateCompareTable(product)
+      elMainCompare.appendChild(img)
+    })
+  },
 }
 
 if (location.pathname.toLowerCase().includes('/card.html')) {
   // console.log('card')
   document.addEventListener('DOMContentLoaded', view.onLoadedCard.bind(view))
-} else {
+}
+if (location.pathname.toLowerCase().includes('/index.html')) {
   // console.log('catalog')
   document.addEventListener('DOMContentLoaded', view.onLoadCatalog.bind(view))
+}
+if (location.pathname.toLowerCase().includes('/compare.html')) {
+  // console.log('catalog')
+  document.addEventListener('DOMContentLoaded', view.onLoadCompare.bind(view))
 }

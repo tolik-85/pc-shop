@@ -19,6 +19,13 @@ const model = {
   sortingType: 'Цена по возростанию',
   curPage: 0,
   productsOnPage: 10,
+  favorites: [],
+  // compare: [],
+  compare: ['19', '22', '21', '50', '32', '45'],
+  cart: ['14', '13', '15', '16', '17', '18'],
+
+  compareProducts: [],
+  cartProducts: [],
 
   filter: {},
   minPrice: 0,
@@ -37,6 +44,31 @@ const model = {
     this.paginateProducts(this.curPage)
   },
 
+  makeCompareProductsArr() {
+    this.products.forEach(product => {
+      this.compare.forEach(id => {
+        if (product.id === +id) {
+          this.compareProducts.push(product)
+        }
+      })
+    })
+  },
+  makeCartProductsArr() {
+    this.products.forEach(product => {
+      this.cart.forEach(id => {
+        if (product.id === +id) {
+          this.cartProducts.push(product)
+        }
+      })
+    })
+  },
+  getCartProductsSummPriceUAH() {
+    let summ = 0
+    this.cartProducts.forEach(product => {
+      summ = summ + product.priceUAH
+    })
+    return summ
+  },
   searchProducts(searchQuery) {
     if (searchQuery) {
       this.searchQuery = searchQuery
@@ -102,9 +134,11 @@ const model = {
   },
 
   paginateProducts(curPage) {
+    // console.log(curPage)
     if (curPage) {
       this.curPage = curPage
     }
+    // console.log(model.curPage)
     let startIdx = this.curPage * this.productsOnPage
     let endIdx = startIdx + this.productsOnPage
     this.paginatedProducts = this.sortedProducts.slice(startIdx, endIdx)

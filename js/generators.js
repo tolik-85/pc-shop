@@ -89,6 +89,9 @@ function generateProduct(product) {
   elDivForPrice.classList.add('price')
   elParForPrice.innerHTML = `<b>${price}</b> грн`
   elRow.classList.add('row')
+  elDivForCart.classList.add('add-to-cart')
+  elDivForFavorites.classList.add('add-to-favorites')
+  elDivForCompare.classList.add('add-to-compare')
 
   let i = 0
 
@@ -134,17 +137,140 @@ function generateProduct(product) {
 }
 
 function generatePaginaionPage(pageNum) {
+  const elPaginationLink = document.createElement('a')
   const elPageSpan = document.createElement('span')
-  pageNum = pageNum
-  elPageSpan.innerHTML = ` [ ${pageNum} ] `
+  elPaginationLink.setAttribute('href', `index.html?page=${pageNum}`)
+  // elPaginationLink.setAttribute('target', '_blank')
+  elPageSpan.innerHTML = ` ${pageNum} `
 
-  return elPageSpan
+  elPaginationLink.appendChild(elPageSpan)
+
+  return elPaginationLink
+}
+function setSearchParamAttr(link, pageNum) {
+  link.setAttribute('href', `index.html?page=${pageNum}`)
 }
 function generateParagraphFindNothing() {
   const elParagraph = document.createElement('p')
   elParagraph.classList.add('zero-search')
   elParagraph.innerHTML = 'Ничего не найдено, уточните условия поиска'
   return elParagraph
+}
+
+function generateCompareTable() {
+  const table = document.createElement('table')
+  table.classList.add('main-table')
+
+  return table
+}
+function generateCartTableHead() {
+  const cartTable = document.createElement('table')
+  const cartTableTr = document.createElement('tr')
+
+  const cartTdImage = document.createElement('td')
+  cartTdImage.innerHTML = 'фото'
+  const cartTdCaption = document.createElement('td')
+  cartTdCaption.innerHTML = 'Название'
+  const cartTdQty = document.createElement('td')
+  cartTdQty.innerHTML = 'Колличество'
+  const cartTdPrice = document.createElement('td')
+  cartTdPrice.innerHTML = 'Цена'
+  const cartTdEmpty = document.createElement('td')
+  cartTdEmpty.innerHTML = '&nbsp;'
+
+  cartTableTr.appendChild(cartTdImage)
+  cartTableTr.appendChild(cartTdCaption)
+  cartTableTr.appendChild(cartTdQty)
+  cartTableTr.appendChild(cartTdPrice)
+  cartTableTr.appendChild(cartTdEmpty)
+  cartTable.appendChild(cartTableTr)
+
+  return cartTable
+}
+function generatecartTableRowProduct(product) {
+  const URL = 'https://web-app.click/pc-shop/photos/products/computers/'
+  const picture = product.photos[0]
+  const image = `${URL}${picture}`
+  const img = document.createElement('img')
+  img.setAttribute('src', `${image}`)
+
+  const cartTableTr = document.createElement('tr')
+
+  const tableTdPicture = document.createElement('td')
+  tableTdPicture.classList.add('table-picture')
+
+  const tableTdCaption = document.createElement('td')
+  tableTdCaption.innerHTML = product.caption
+
+  const tableTdQty = document.createElement('td')
+  tableTdQty.innerHTML = '&nbsp;'
+
+  const tableTdPrice = document.createElement('td')
+  const priceUAH = product.priceUAH.toFixed()
+  tableTdPrice.innerHTML = `${priceUAH} грн.`
+
+  const btn = document.createElement('button')
+  btn.innerText = 'Удалить'
+  btn.setAttribute('id', `${product.id}`)
+
+  const tableTdDeleteBtb = document.createElement('td')
+  tableTdDeleteBtb.appendChild(btn)
+
+  tableTdPicture.appendChild(img)
+  cartTableTr.appendChild(tableTdPicture)
+  cartTableTr.appendChild(tableTdCaption)
+  cartTableTr.appendChild(tableTdQty)
+  cartTableTr.appendChild(tableTdPrice)
+  cartTableTr.appendChild(tableTdDeleteBtb)
+
+  console.log(cartTableTr)
+  return cartTableTr
+}
+function generateCartTableBottom() {
+  const summ = model.getCartProductsSummPriceUAH().toFixed()
+  const cartTableTr = document.createElement('tr')
+
+  const tableTdSumm = document.createElement('td')
+  tableTdSumm.innerHTML = 'Итого'
+  const tableTdEmpty = document.createElement('td')
+  tableTdEmpty.innerHTML = '&nbsp;'
+  const tableTdEmpty2 = document.createElement('td')
+  tableTdEmpty2.innerHTML = '&nbsp;'
+  const tableTdSummPrice = document.createElement('td')
+  tableTdSummPrice.innerHTML = `${summ} грн.`
+  const tableTdEmpty3 = document.createElement('td')
+  tableTdEmpty3.innerHTML = '&nbsp;'
+
+  cartTableTr.appendChild(tableTdSumm)
+  cartTableTr.appendChild(tableTdEmpty)
+  cartTableTr.appendChild(tableTdEmpty2)
+  cartTableTr.appendChild(tableTdSummPrice)
+  cartTableTr.appendChild(tableTdEmpty3)
+
+  return cartTableTr
+}
+
+function generateCompareTr() {
+  const tableTrPicture = document.createElement('tr')
+  tableTrPicture.classList.add('table-tr')
+  return tableTrPicture
+}
+function generateCompareTd(param) {
+  const emptyTd = document.createElement('td')
+  emptyTd.innerHTML = param
+
+  return emptyTd
+}
+function generateCompareTdPicture(product) {
+  const URL = 'https://web-app.click/pc-shop/photos/products/computers/'
+  const picture = product.photos[0]
+  const image = `${URL}${picture}`
+  const img = document.createElement('img')
+  img.setAttribute('src', `${image}`)
+  const tableTdPicture = document.createElement('td')
+  tableTdPicture.classList.add('table-picture')
+  tableTdPicture.appendChild(img)
+  return tableTdPicture
 }
 
 const cardGenerator = {

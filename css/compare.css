@@ -1,0 +1,18 @@
+.table-picture > img {
+  height: 160px;
+}
+table {
+  margin: 0 auto;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+
+td,
+th {
+  border: 1px solid black;
+  padding: 10px 20px;
+  text-align: center;
+}
+td > button {
+  padding: 10px 25px;
+}

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="./css/style.css" />
+    <link rel="stylesheet" href="./css/cart.css" />
+    <title>compare</title>
+  </head>
+  <body>
+    <div class="wrapper">
+      <div class="header row">
+        <div class="left">
+          <div class="wrap-img">
+            <a href="./index.html">
+              <img src="img/logo.png" alt="logo" />
+            </a>
+          </div>
+        </div>
+        <div class="center">
+          <div class="wrap-search">
+            <input type="hidden" name="page" value="search" />
+
+            <div class="row">
+              <div class="left">
+                <input
+                  type="text"
+                  class="search"
+                  name="query"
+                  placeholder="Что ищем ?"
+                />
+                <ul class="options"></ul>
+              </div>
+              <div class="right">
+                <input type="submit" value="" class="search-submit" />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="buttons">
+          <a href="?page=favorites">
+            <button class="favorites"></button>
+          </a>
+          <a href="compare.html" target="_blanc">
+            <button class="compare"></button>
+          </a>
+          <a href="?page=basket">
+            <button class="cart"></button>
+          </a>
+        </div>
+        <div class="right">
+          <div class="wrap-account">
+            <div class="top">
+              <span>Нажмите кнопку</span>
+            </div>
+            <div class="middle">
+              <a href="?page=login">
+                <button class="btn">Войти</button>
+              </a>
+            </div>
+            <div class="bottom">
+              <span>Либо</span>
+              <a href="?page=register">зарегистрируйтесь</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="main-cart"></div>
+      <div class="footer">
+        <div class="top row">
+          <div class="wrap-menu">
+            <div><a href="">О нас</a></div>
+            <div><a href="">Контакты</a></div>
+            <div><a href="">Новости</a></div>
+            <div><a href="">Отзывы</a></div>
+            <div><a href="">Акции</a></div>
+          </div>
+          <div class="wrap-links">
+            <div><a href="">Гарантия</a></div>
+            <div><a href="">Возврат товара</a></div>
+            <div><a href="">Кредит</a></div>
+            <div><a href="">Подарочные сертификаты</a></div>
+            <div><a href="">Стать партнером</a></div>
+          </div>
+        </div>
+        <div class="bottom">
+          <div class="wrap-copyrights">
+            <span>Lorem Ipsum &#0169; 2022 Все права защищены</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="js/api.js"></script>
+    <script src="js/model.js"></script>
+    <script src="js/generators.js"></script>
+    <!-- <script src="js/controller.js"></script> -->
+    <!-- <script src="js/view.js"></script> -->
+    <script src="js/viewCart.js"></script>
+  </body>
+</html>

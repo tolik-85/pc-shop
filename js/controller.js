@@ -37,7 +37,30 @@ const controller = {
       view.paginationBoldfirstElOnload()
     }
   },
-
+  addToCartHandler(productId) {
+    model.cart.push(productId)
+    const qty = model.cart.length
+    if (qty > 0) {
+      view.renderCartQty(qty)
+    }
+    // console.log(`>>>model.cart ${model.cart}`)
+  },
+  addToCompareHandler(productId) {
+    model.compare.push(productId)
+    const qty = model.compare.length
+    if (qty > 0) {
+      view.renderCompareQty(qty)
+    }
+    // console.log(`>>>model.compare ${model.compare}`)
+  },
+  addToFavoritesHandler(productId) {
+    model.favorites.push(productId)
+    const qty = model.favorites.length
+    if (model.favorites.length > 0) {
+      view.renderFavoritesQty(qty)
+    }
+    // console.log(`>>>model.favorites ${model.favorites}`)
+  },
   onClickPaginationHandler(pageNum) {
     model.paginateProducts(pageNum)
     view.renderContainerProductsClear()
