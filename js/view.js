@@ -1,4 +1,80 @@
 const view = {
+  async onLoadCompare() {
+    await controller.handleUpdateProducts(true)
+    model.compareProductsObj()
+    model.compareProducts.forEach(product => {
+      this.renderCompareTable(product)
+    })
+  },
+
+  renderCompareTable() {
+    const elMainCompare = document.querySelector('.main-compare')
+    model.compare.forEach(product => {
+      const img = generateCompareTable(product)
+      elMainCompare.appendChild(img)
+    })
+  },
+
+  addToCompareListener() {
+    const AddToCompareBtn = document.querySelectorAll('.add-to-compare')
+    AddToCompareBtn.forEach(el => {
+      el.addEventListener('click', this.onClickAddToCompare)
+    })
+  },
+
+  addToCartListener() {
+    const AddToCartBtn = document.querySelectorAll('.add-to-cart')
+    AddToCartBtn.forEach(el => {
+      el.addEventListener('click', this.onClickAddToCart)
+    })
+  },
+
+  addToFavoritesListener() {
+    const AddToFavoritesBtn = document.querySelectorAll('.add-to-favorites')
+    AddToFavoritesBtn.forEach(el => {
+      el.addEventListener('click', this.onClickAddToFavorites)
+    })
+  },
+
+  onClickAddToCompare(e) {
+    const productId =
+      e.target.parentNode.parentNode.parentNode.querySelector(
+        '.id>span'
+      ).innerHTML
+    controller.addToCompareHandler(productId)
+  },
+
+  onClickAddToCart(e) {
+    const productId =
+      e.target.parentNode.parentNode.parentNode.querySelector(
+        '.id>span'
+      ).innerHTML
+    controller.addToCartHandler(productId)
+  },
+
+  onClickAddToFavorites(e) {
+    const productId =
+      e.target.parentNode.parentNode.parentNode.querySelector(
+        '.id>span'
+      ).innerHTML
+    controller.addToFavoritesHandler(productId)
+  },
+
+  renderCompareQty(qty) {
+    const elCompareQty = document.querySelector('.compare-qty')
+    elCompareQty.innerHTML = qty
+  },
+
+  renderCartQty(qty) {
+    const elCartQty = document.querySelector('.cart-qty')
+    elCartQty.innerHTML = qty
+  },
+
+  renderFavoritesQty(qty) {
+    const elFavoritesQty = document.querySelector('.favorites-qty')
+    elFavoritesQty.innerHTML = qty
+  },
+
   renderInputSearch() {
     // console.log('foobar')
     const locationParams = new URLSearchParams(location.search)
@@ -55,60 +131,7 @@ const view = {
     this.addToCompareListener()
     this.addToCartListener()
   },
-  addToCompareListener() {
-    const AddToCompareBtn = document.querySelectorAll('.add-to-compare')
-    AddToCompareBtn.forEach(el => {
-      el.addEventListener('click', this.onClickAddToCompare)
-    })
-  },
-  addToCartListener() {
-    const AddToCartBtn = document.querySelectorAll('.add-to-cart')
-    AddToCartBtn.forEach(el => {
-      el.addEventListener('click', this.onClickAddToCart)
-    })
-  },
-  addToFavoritesListener() {
-    const AddToFavoritesBtn = document.querySelectorAll('.add-to-favorites')
-    AddToFavoritesBtn.forEach(el => {
-      el.addEventListener('click', this.onClickAddToFavorites)
-    })
-  },
-  onClickAddToCompare(e) {
-    const productId =
-      e.target.parentNode.parentNode.parentNode.querySelector(
-        '.id>span'
-      ).innerHTML
-    controller.addToCompareHandler(productId)
-  },
-  onClickAddToCart(e) {
-    const productId =
-      e.target.parentNode.parentNode.parentNode.querySelector(
-        '.id>span'
-      ).innerHTML
-    controller.addToCartHandler(productId)
-  },
-  onClickAddToFavorites(e) {
-    const productId =
-      e.target.parentNode.parentNode.parentNode.querySelector(
-        '.id>span'
-      ).innerHTML
-    controller.addToFavoritesHandler(productId)
-  },
-  renderCompareQty(qty) {
-    const elCompareQty = document.querySelector('.compare-qty')
-    // console.log(elCompareQty)
-    elCompareQty.innerHTML = qty
-  },
-  renderCartQty(qty) {
-    const elCartQty = document.querySelector('.cart-qty')
-    // console.log(elCartQty)
-    elCartQty.innerHTML = qty
-  },
-  renderFavoritesQty(qty) {
-    const elFavoritesQty = document.querySelector('.favorites-qty')
-    // console.log(elFavoritesQty)
-    elFavoritesQty.innerHTML = qty
-  },
+
   onChangeElSelectPaginationListener() {
     const elSelectPagination = document.querySelector('#select-pagination')
     elSelectPagination.addEventListener(
@@ -337,21 +360,6 @@ const view = {
     const elContainerProducts = document.querySelector('.container-products')
     // console.log(elContainerProducts)
     elContainerProducts.appendChild(elParagraph)
-  },
-  async onLoadCompare() {
-    await controller.handleUpdateProducts(true)
-    console.log('hello')
-    model.compareProductsObj()
-    model.compareProducts.forEach(product => {
-      this.renderCompareTable(product)
-    })
-  },
-  renderCompareTable() {
-    const elMainCompare = document.querySelector('.main-compare')
-    model.compare.forEach(product => {
-      const img = generateCompareTable(product)
-      elMainCompare.appendChild(img)
-    })
   },
 }
 
