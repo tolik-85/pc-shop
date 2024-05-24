@@ -19,13 +19,14 @@ const model = {
   sortingType: 'Цена по возростанию',
   curPage: 0,
   productsOnPage: 10,
-  favorites: [],
+  favorites: ['19', '22', '21', '50', '32', '45'],
   // compare: [],
   compare: ['19', '22', '21', '50', '32', '45'],
   cart: ['14', '13', '15', '16', '17', '18'],
 
   compareProducts: [],
   cartProducts: [],
+  favoritesProducts: [],
 
   filter: {},
   minPrice: 0,
@@ -58,6 +59,15 @@ const model = {
       this.cart.forEach(id => {
         if (product.id === +id) {
           this.cartProducts.push(product)
+        }
+      })
+    })
+  },
+  makefavoritesProductsArr() {
+    this.products.forEach(product => {
+      this.favorites.forEach(id => {
+        if (product.id === +id) {
+          this.favoritesProducts.push(product)
         }
       })
     })
