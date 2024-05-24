@@ -88,25 +88,27 @@ const view = {
     // }, 1000)
   },
 
-  rednerPaginationClear() {
-    const paginator = document.querySelector('.paginator')
-    paginator.innerHTML = ''
-  },
-
-  renderPagination() {
-    const paginator = document.querySelector('.paginator')
-    let itemsCount = model.pricedProducts.length
-    let pagesCount = Math.ceil(itemsCount / model.productsOnPage)
-    // console.log(pagesCount)
+  renderPagination(curPage, productsTotal, pagesCount) {
+    const elPaginator = document.querySelector('.paginator')
+    elPaginator.innerHTML = ''
     for (let i = 0; i < pagesCount; i++) {
-      // console.log(i)
-      let page = generatePaginaionPage(i)
-      paginator.appendChild(page)
+      let elPage = generatePaginaionPage(i)
+      elPaginator.appendChild(elPage)
+      if (i === curPage) {
+        elPage.classList.add('bold')
+      }
     }
   },
 
   onFiltrateClick() {
-    controller.handleFiltrate()
+    const priceFrom = document.querySelector('#priceFrom').value
+    const priceTo = document.querySelector('#priceTo').value
+    const elCheckboxes = document.querySelectorAll(
+      '.wrap-checkboxes [type="checkbox"]:checked'
+    )
+    const checkedIds = Array.from(elCheckboxes).map(el => el.id)
+
+    controller.handleFiltrate(checkedIds, priceFrom, priceTo)
   },
 
   async onLoadCatalog() {
@@ -120,28 +122,16 @@ const view = {
       this.onFiltrateClick.bind(this)
     this.addEventListener()
     this.renderFilterCheckboxes()
-    this.renderSortSelect()
-    this.paginationListener()
-    this.paginationBoldfirstElOnload()
     this.renderRangeWrap()
     this.renderRangeWrap()
     this.goToProductPageClick()
-    this.onChangeElSelectPaginationListener()
     this.addToFavoritesListener()
     this.addToCompareListener()
     this.addToCartListener()
   },
 
-  onChangeElSelectPaginationListener() {
-    const elSelectPagination = document.querySelector('#select-pagination')
-    elSelectPagination.addEventListener(
-      'change',
-      this.onChangeElSelectPagination
-    )
-  },
-  onChangeElSelectPagination(e) {
-    const itemsOnPage = e.target.value
-    controller.onChangeElSelectPaginationHandler(itemsOnPage)
+  onChangeSelectProductsOnPage(e) {
+    controller.handleProductsOnPage(e.target.value)
   },
   goToProductPageClick() {
     const elsProducts = document.querySelectorAll('.wrap-img>a>img')
@@ -169,50 +159,15 @@ const view = {
     controller.searchHandler(searchInput.value)
   },
 
-  paginationListener() {
-    const pagination = document.querySelector('.paginator')
-    pagination.addEventListener('click', view.onClickPagination)
-  },
   onClickPagination(e) {
-    // e.preventDefault()
-    console.log(e.target.parentNode)
-    let bold = e.target
-    const boldEl = document.querySelector('.bold')
-    boldEl.classList.remove('bold')
-    let pagNum = e.target.innerHTML
-    bold.classList.add('bold')
-    pagNum = parseInt(pagNum.replace(/[^\d]/g, ''))
-
-    if (pagNum.toString().length <= 2) {
-      controller.onClickPaginationHandler(pagNum)
-    }
-    // console.log(model.curPage)
-  },
-  paginationBoldfirstElOnload() {
-    const elPaginator = document.querySelector('.paginator')
-    if (elPaginator.childNodes.length > 0) {
-      elPaginator.childNodes[0].classList.add('bold')
-    }
-  },
-  renderSortSelect() {
-    const elSelect = document.querySelector('#select-products')
-    elSelect.addEventListener('change', this.onChangeSelectHandler)
-  },
-  onChangeSelectHandler(e) {
-    const elSelect = document.querySelector('#select-products')
-    elSelectValue = elSelect.value
-    controller.handlerElSelect(elSelectValue)
+    let pageNum = parseInt(e.target.innerHTML.replace(/[^\d]/g, ''))
+    controller.handlePagination(pageNum)
   },
 
-  renderContainerProducts(products) {
-    products.forEach(this.renderContainerProduct)
+  onChangeSelectSorting(e) {
+    controller.handleSorting(e.target.value)
   },
 
-  renderContainerProduct(product) {
-    const elContainerProducts = document.querySelector('.container-products')
-    const elProduct = generateProduct(product)
-    elContainerProducts.appendChild(elProduct)
-  },
   renderCardMainOnsearch(searchedProducts) {
     searchedProducts.forEach(this.renderCardProductsOnSearch)
   },
@@ -222,9 +177,20 @@ const view = {
     elMain.appendChild(elProduct)
   },
 
-  renderContainerProductsClear() {
+  renderContainerProduct(product) {
+    const elContainerProducts = document.querySelector('.container-products')
+    const elProduct = generateProduct(product)
+    elContainerProducts.appendChild(elProduct)
+  },
+
+  renderContainerProducts(products) {
     let elContainerProducts = document.querySelector('.container-products')
     elContainerProducts.innerHTML = ''
+    products.forEach(this.renderContainerProduct)
+    if (products.length === 0) {
+      const elParagraph = generateParagraphFindNothing()
+      elContainerProducts.appendChild(elParagraph)
+    }
   },
 
   renderWrapFilter(filter) {
@@ -292,18 +258,12 @@ const view = {
     }
   },
 
-  renderFilterCheckboxes() {
-    const elCheckboxes = document.querySelectorAll(
-      '.wrap-checkboxes [type="checkbox"]'
-    )
-    elCheckboxes.forEach(chBox => {
-      chBox.addEventListener('change', this.onChangeFilterCheckbox)
-    })
+  onInputInputRangePriceFrom(e) {
+    handleInputPriceFrom(e.target.value, 'from')
   },
 
-  onChangeFilterCheckbox(e) {
-    const id = e.target.getAttribute('id')
-    controller.handleFilterCheckbox(id, e.target.checked)
+  onInputInputRangePriceTo(e) {
+    handleInputPriceFrom(e.target.value, 'to')
   },
 
   getProductsFromSearchForm(word, product) {
@@ -315,11 +275,18 @@ const view = {
 
   addEventListener() {
     const searchInput = document.querySelector('.search')
-    searchInput.addEventListener('change', this.renderLeftOptions)
-    searchInput.addEventListener('keyup', this.renderLeftOptions)
-
     const elPriceFromRange = document.querySelector('#priceFrom')
     const elPriceToRange = document.querySelector('#priceTo')
+    const elSelectSorting = document.querySelector('#select-sorting')
+    const elSelectProductsOnPage = document.querySelector('#products-on-page')
+
+    elSelectProductsOnPage.addEventListener(
+      'change',
+      this.onChangeSelectProductsOnPage
+    )
+    elSelectSorting.addEventListener('change', this.onChangeSelectSorting)
+    searchInput.addEventListener('change', this.renderLeftOptions)
+    searchInput.addEventListener('keyup', this.renderLeftOptions)
 
     elPriceFromRange.addEventListener('input', this.onChangeInputRange)
     elPriceToRange.addEventListener('input', this.onChangeInputRange)
@@ -353,13 +320,6 @@ const view = {
     const semProd = cardGenerator.generateSimilarProduct(product)
     simProdWrap.appendChild(semProd)
     section.appendChild(simProdWrap)
-  },
-  renderContainerProductsOnZeroSearch() {
-    const elParagraph = generateParagraphFindNothing()
-    // console.log(elParagraph)
-    const elContainerProducts = document.querySelector('.container-products')
-    // console.log(elContainerProducts)
-    elContainerProducts.appendChild(elParagraph)
   },
 }
 

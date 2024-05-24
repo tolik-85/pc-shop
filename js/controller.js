@@ -26,21 +26,12 @@ const controller = {
     // console.log(`>>>model.favorites ${model.favorites}`)
   },
 
-  handleFiltrate() {
-    model.filtrateProducts()
-    this.handlePriceFilter()
-    view.renderContainerProductsClear()
-    model.sortedProducts = model.pricedProducts
-    model.paginateProducts(0)
+  handleFiltrate(checkedIds, priceFrom, priceTo) {
+    model.addAllCheckedCheckboxes(checkedIds)
+    model.setPriceFromTo(priceFrom, priceTo)
+    model.vortex()
     view.renderContainerProducts(model.paginatedProducts)
-
-    view.rednerPaginationClear()
     view.renderPagination()
-    view.renderSortSelect()
-    view.paginationBoldfirstElOnload()
-    if (model.paginatedProducts.length === 0) {
-      view.renderContainerProductsOnZeroSearch()
-    }
   },
 
   async handleUpdateProducts(isLoad) {
@@ -48,41 +39,27 @@ const controller = {
     model.vortex()
     view.renderContainerProducts(model.paginatedProducts)
     view.renderPagination()
-    view.paginationBoldfirstElOnload()
   },
 
-  onChangeElSelectPaginationHandler(itemsOnPage) {
-    if (itemsOnPage > 0) {
-      model.setProductsOnPage(itemsOnPage)
-      view.renderContainerProductsClear()
-      model.sortedProducts = model.pricedProducts
-      model.paginateProducts(0)
-      view.renderContainerProducts(model.paginatedProducts)
-      view.rednerPaginationClear()
-      view.renderPagination()
-      view.renderSortSelect()
-      view.paginationBoldfirstElOnload()
-    }
-  },
-
-  onClickPaginationHandler(pageNum) {
-    model.paginateProducts(pageNum)
-    view.renderContainerProductsClear()
+  handleProductsOnPage(itemsOnPage) {
+    model.setProductsOnPage(+itemsOnPage)
+    model.vortex()
     view.renderContainerProducts(model.paginatedProducts)
+    view.renderPagination()
   },
 
-  handlePriceFilter() {
-    const priceFrom = document.querySelector('#priceFrom').value
-    const priceTo = document.querySelector('#priceTo').value
-    model.filtrateProductsByPrice(priceFrom, priceTo)
-  },
-
-  handlerElSelect(elSelectValue) {
-    model.sortProducts(elSelectValue)
-    model.paginateProducts(0)
-    view.renderContainerProductsClear()
+  handlePagination(pageNum) {
+    model.setCurPage(+pageNum)
+    model.vortex()
     view.renderContainerProducts(model.paginatedProducts)
-    view.paginationBoldfirstElOnload()
+    view.renderPagination()
+  },
+
+  handleSorting(sortingType) {
+    model.setSortingType(sortingType)
+    model.vortex()
+    view.renderContainerProducts(model.paginatedProducts)
+    view.renderPagination()
   },
 
   handleFilter() {
@@ -100,15 +77,11 @@ const controller = {
     model.sortedProducts = model.pricedProducts
     model.paginateProducts(0)
 
-    view.renderContainerProductsClear()
     view.renderContainerProducts(model.paginatedProducts)
 
     this.handleFilter()
     view.renderRangeWrapOnSearch(model.getMaxPriceUAH(), model.getMinPriceUAH())
-    view.rednerPaginationClear()
     view.renderPagination()
-    view.paginationBoldfirstElOnload()
-    view.renderFilterCheckboxes()
     view.renderSortSelect()
 
     if (model.paginatedProducts.length === 0) {

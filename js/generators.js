@@ -140,11 +140,9 @@ function generatePaginaionPage(pageNum) {
   const elPaginationLink = document.createElement('a')
   const elPageSpan = document.createElement('span')
   elPaginationLink.setAttribute('href', `index.html?page=${pageNum}`)
-  // elPaginationLink.setAttribute('target', '_blank')
   elPageSpan.innerHTML = ` ${pageNum} `
-
   elPaginationLink.appendChild(elPageSpan)
-
+  elPaginationLink.addEventListener('click', view.onClickPagination)
   return elPaginationLink
 }
 function setSearchParamAttr(link, pageNum) {

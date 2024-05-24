@@ -147,11 +147,9 @@ const model = {
   },
 
   paginateProducts(curPage) {
-    // console.log(curPage)
-    if (curPage) {
+    if (curPage >= 0) {
       this.curPage = curPage
     }
-    // console.log(model.curPage)
     let startIdx = this.curPage * this.productsOnPage
     let endIdx = startIdx + this.productsOnPage
     this.paginatedProducts = this.sortedProducts.slice(startIdx, endIdx)
@@ -273,7 +271,6 @@ const model = {
     return this.similarProducts
   },
   setProductsOnPage(n) {
-    console.log(n)
     this.productsOnPage = n
   },
   setSearchQuery(query) {
@@ -281,5 +278,15 @@ const model = {
       query = ''
     }
     this.searchQuery = query
+  },
+  setPriceFromTo(from, to) {
+    this.priceFrom = from
+    this.priceTo = to
+  },
+  setCurPage(curPage) {
+    this.curPage = curPage
+  },
+  setSortingType(sortingType) {
+    this.sortingType = sortingType
   },
 }
