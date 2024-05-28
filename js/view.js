@@ -1,6 +1,6 @@
 const view = {
   async onLoadCompare() {
-    await controller.handleUpdateProducts(true)
+    await controller.handleLoadCatalog(true)
     model.compareProductsObj()
     model.compareProducts.forEach(product => {
       this.renderCompareTable(product)
@@ -76,19 +76,17 @@ const view = {
   },
 
   renderInputSearch() {
-    // console.log('foobar')
     const locationParams = new URLSearchParams(location.search)
     const searchQuery = locationParams.get('search-query')
     const elInputSearch = document.querySelector('.search')
     elInputSearch.value = searchQuery
-    // console.dir(document.querySelector('.search-submit'))
-    // document.querySelector('.search-submit').click()
-    // setTimeout(() => {
-    //   document.querySelector('.search-submit').click()
-    // }, 1000)
   },
 
   renderPagination(curPage, productsTotal, pagesCount) {
+    console.log('renderPagination')
+    console.log(curPage)
+    console.log(productsTotal)
+    console.log(pagesCount)
     const elPaginator = document.querySelector('.paginator')
     elPaginator.innerHTML = ''
     for (let i = 0; i < pagesCount; i++) {
@@ -112,12 +110,10 @@ const view = {
   },
 
   async onLoadCatalog() {
-    this.searchFilter()
     this.renderInputSearch()
-    await controller.handleUpdateProducts(true)
+    await controller.handleLoadCatalog(true)
     document.querySelector('.search-submit').click()
     // controller.checkAndSetSearchQuery()
-    controller.handleFilter()
     document.querySelector('#filtrate').onclick =
       this.onFiltrateClick.bind(this)
     this.addEventListener()
@@ -138,24 +134,16 @@ const view = {
       el.addEventListener('click', this.onClickGoToProductPage)
     })
   },
-  renderElWrapCheckboxClear() {
-    let elWrapCheckbox = document.querySelector('.wrap-checkboxes')
-    elWrapCheckbox.innerHTML = ''
-  },
-  searchFilter() {
-    const searchBtn = document.querySelector('.search-submit')
-    searchBtn.addEventListener('click', this.onClickInputSearch)
-  },
+
   onClickGoToProductPage(e) {
     e.preventDefault
     const wrapProduct = e.target.parentNode.parentNode.parentNode
     const id = wrapProduct.querySelector('.id>span').innerHTML
-    // controller.goToProductPageHandler(id)
   },
-  onClickInputSearch() {
-    // console.log('hello world')
+
+  onClickSearchSubmit() {
     const searchInput = document.querySelector('.search')
-    controller.searchHandler(searchInput.value)
+    controller.handleSearch(searchInput.value)
   },
 
   onClickPagination(e) {
@@ -170,6 +158,7 @@ const view = {
   renderCardMainOnsearch(searchedProducts) {
     searchedProducts.forEach(this.renderCardProductsOnSearch)
   },
+
   renderCardProductsOnSearch(product) {
     const elMain = document.querySelector('.main')
     const elProduct = generateProduct(product)
@@ -194,6 +183,7 @@ const view = {
 
   renderWrapFilter(filter) {
     const elWrapCheckboxes = document.querySelector('.wrap-checkboxes')
+    elWrapCheckboxes.innerHTML = ''
     for (const key in filter) {
       if (key) {
         const elFilterCategory = generateFilterCategory(key)
@@ -207,11 +197,13 @@ const view = {
       })
     }
   },
-  renderRangeWrapOnSearch(maxPrice, minPrice) {
+
+  renderRangePrice(maxPrice, minPrice) {
     const elPriceFromRange = document.querySelector('#priceFrom')
     const elPriceToRange = document.querySelector('#priceTo')
     const elSpanRangePriceFrom = document.querySelector('.price-from')
     const elSpanRangePriceTo = document.querySelector('.price-to')
+
     elPriceFromRange.min = minPrice
     elPriceFromRange.max = maxPrice
     elPriceFromRange.value = minPrice
@@ -222,13 +214,14 @@ const view = {
     elPriceToRange.value = maxPrice
     elSpanRangePriceTo.innerHTML = maxPrice
   },
+
   renderRangeWrap() {
     const elPriceFromRange = document.querySelector('#priceFrom')
     const elPriceToRange = document.querySelector('#priceTo')
     const elSpanRangePriceFrom = document.querySelector('.price-from')
     const elSpanRangePriceTo = document.querySelector('.price-to')
-    const maxPrice = model.getMaxPriceUAH()
-    const minPrice = model.getMinPriceUAH()
+    const maxPrice = model.calcMaxPriceUAH()
+    const minPrice = model.calcMinPriceUAH()
 
     elPriceFromRange.min = minPrice
     elPriceFromRange.max = maxPrice
@@ -240,18 +233,20 @@ const view = {
     elSpanRangePriceFrom.innerHTML = elPriceFromRange.value
     elSpanRangePriceTo.innerHTML = elPriceToRange.value
   },
+
   onChangeInputRange(e) {
     const elPriceFromRange = document.querySelector('#priceFrom')
     const elPriceToRange = document.querySelector('#priceTo')
-
     const elSpanRangePriceFrom = document.querySelector('.price-from')
     const elSpanRangePriceTo = document.querySelector('.price-to')
+
     elSpanRangePriceFrom.innerHTML = elPriceFromRange.value
     elSpanRangePriceTo.innerHTML = elPriceToRange.value
 
     if (+e.target.value > +elPriceToRange.value) {
       elPriceToRange.value = +e.target.value
     }
+
     if (+e.target.value < +elPriceFromRange.value) {
       elPriceFromRange.value = +e.target.value
     }
@@ -278,17 +273,18 @@ const view = {
     const elPriceToRange = document.querySelector('#priceTo')
     const elSelectSorting = document.querySelector('#products-sorting')
     const elSelectProductsOnPage = document.querySelector('#products-on-page')
+    const elSearchBtn = document.querySelector('.search-submit')
 
+    elSearchBtn.addEventListener('click', this.onClickSearchSubmit)
+    elSelectSorting.addEventListener('change', this.onChangeSelectSorting)
+    searchInput.addEventListener('change', this.renderLeftOptions)
+    searchInput.addEventListener('keyup', this.renderLeftOptions)
+    elPriceFromRange.addEventListener('input', this.onChangeInputRange)
+    elPriceToRange.addEventListener('input', this.onChangeInputRange)
     elSelectProductsOnPage.addEventListener(
       'change',
       this.onChangeSelectProductsOnPage
     )
-    elSelectSorting.addEventListener('change', this.onChangeSelectSorting)
-    searchInput.addEventListener('change', this.renderLeftOptions)
-    searchInput.addEventListener('keyup', this.renderLeftOptions)
-
-    elPriceFromRange.addEventListener('input', this.onChangeInputRange)
-    elPriceToRange.addEventListener('input', this.onChangeInputRange)
   },
 
   async onLoadedCard() {
@@ -299,6 +295,7 @@ const view = {
     controller.handleRenderProduct()
     controller.handleSimilarProductsSection()
   },
+
   renderCardMainClear() {
     let elMainCont = document.querySelector('.main')
     console.log(elMainCont)
@@ -326,10 +323,12 @@ if (location.pathname.toLowerCase().includes('/card.html')) {
   // console.log('card')
   document.addEventListener('DOMContentLoaded', view.onLoadedCard.bind(view))
 }
+
 if (location.pathname.toLowerCase().includes('/index.html')) {
   // console.log('catalog')
   document.addEventListener('DOMContentLoaded', view.onLoadCatalog.bind(view))
 }
+
 if (location.pathname.toLowerCase().includes('/compare.html')) {
   // console.log('catalog')
   document.addEventListener('DOMContentLoaded', view.onLoadCompare.bind(view))

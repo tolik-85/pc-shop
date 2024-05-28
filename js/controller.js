@@ -1,41 +1,15 @@
 const controller = {
-  addToCartHandler(productId) {
-    model.cart.push(productId)
-    const qty = model.cart.length
-    if (qty > 0) {
-      view.renderCartQty(qty)
-    }
-    // console.log(`>>>model.cart ${model.cart}`)
-  },
-
-  addToCompareHandler(productId) {
-    model.compare.push(productId)
-    const qty = model.compare.length
-    if (qty > 0) {
-      view.renderCompareQty(qty)
-    }
-    // console.log(`>>>model.compare ${model.compare}`)
-  },
-
-  addToFavoritesHandler(productId) {
-    model.favorites.push(productId)
-    const qty = model.favorites.length
-    if (model.favorites.length > 0) {
-      view.renderFavoritesQty(qty)
-    }
-    // console.log(`>>>model.favorites ${model.favorites}`)
+  async handleLoadCatalog() {
+    await model.updateProductsAndUsdCourse()
+    model.vortex()
+    view.renderContainerProducts(model.paginatedProducts)
+    view.renderPagination(model.curPage, model.productsTotal, model.pagesCount)
+    view.renderWrapFilter(model.makeFilter())
   },
 
   handleFiltrate(checkedIds, priceFrom, priceTo) {
     model.addAllCheckedCheckboxes(checkedIds)
     model.setPriceFromTo(priceFrom, priceTo)
-    model.vortex()
-    view.renderContainerProducts(model.paginatedProducts)
-    view.renderPagination()
-  },
-
-  async handleUpdateProducts(isLoad) {
-    await model.updateProductsAndUsdCourse()
     model.vortex()
     view.renderContainerProducts(model.paginatedProducts)
     view.renderPagination()
@@ -62,30 +36,41 @@ const controller = {
     view.renderPagination()
   },
 
-  handleFilter() {
-    model.makeFilter()
-    const filter = model.getFilter()
-    view.renderElWrapCheckboxClear()
-    view.renderWrapFilter(filter)
+  handleSearch(query) {
+    model.setSearchQuery(query)
+    model.setCurPage(0)
+    model.vortex()
+    view.renderContainerProducts(model.paginatedProducts)
+    view.renderPagination()
+    view.renderWrapFilter(model.makeFilter())
+    view.renderRangePrice(model.maxPrice, model.minPrice)
   },
 
-  searchHandler(query) {
-    model.setSearchQuery(query)
-    model.searchProducts()
-    model.filtrateProducts()
-    model.filtrateProductsByPrice(0, 20000000)
-    model.sortedProducts = model.pricedProducts
-    model.paginateProducts(0)
-
-    view.renderContainerProducts(model.paginatedProducts)
-
-    this.handleFilter()
-    view.renderRangeWrapOnSearch(model.getMaxPriceUAH(), model.getMinPriceUAH())
-    view.renderPagination()
-
-    if (model.paginatedProducts.length === 0) {
-      view.renderContainerProductsOnZeroSearch()
+  addToCartHandler(productId) {
+    model.cart.push(productId)
+    const qty = model.cart.length
+    if (qty > 0) {
+      view.renderCartQty(qty)
     }
+    // console.log(`>>>model.cart ${model.cart}`)
+  },
+
+  addToCompareHandler(productId) {
+    model.compare.push(productId)
+    const qty = model.compare.length
+    if (qty > 0) {
+      view.renderCompareQty(qty)
+    }
+    // console.log(`>>>model.compare ${model.compare}`)
+  },
+
+  addToFavoritesHandler(productId) {
+    model.favorites.push(productId)
+    const qty = model.favorites.length
+    if (model.favorites.length > 0) {
+      view.renderFavoritesQty(qty)
+    }
+    // console.log(`>>>model.favorites ${model.favorites}`)
   },
 
   async handleUpdateProduct(id) {

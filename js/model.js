@@ -73,13 +73,17 @@ const model = {
 
   vortex() {
     this.searchProducts(this.searchQuery)
-    this.makeFilter()
     this.filtrateProducts(this.checkedFilters)
-    this.getMinPriceUAH()
-    this.getMaxPriceUAH()
+    this.calcMinPriceUAH()
+    this.calcMaxPriceUAH()
     this.filtrateProductsByPrice(this.priceFrom, this.priceTo)
+    console.log('this.minPrice :>> ', this.minPrice)
+    console.log('this.maxPrice :>> ', this.maxPrice)
+    console.log('this.priceFrom :>> ', this.priceFrom)
+    console.log('this.priceTo :>> ', this.priceTo)
     this.sortProducts(this.sortingType)
     this.paginateProducts(this.curPage)
+    this.makeFilter()
   },
 
   searchProducts(searchQuery) {
@@ -168,6 +172,7 @@ const model = {
         }
       }
     })
+    return this.filter
   },
 
   addAllCheckedCheckboxes(checkedIds) {
@@ -192,7 +197,6 @@ const model = {
   async updateProducts() {
     const products = await api.loadProducts()
     this.setProducts(products)
-    this.vortex()
   },
 
   async updateProduct(id) {
@@ -232,23 +236,20 @@ const model = {
   getPricedProducts() {
     return this.pricedProducts
   },
-  getFilter() {
-    return this.filter
-  },
   getPricedFilter() {
     return this.pricedFilter
   },
   getProductPrices() {
     return this.filtratedProducts.map(product => product.price)
   },
-  getMinPriceUAH() {
+  calcMinPriceUAH() {
     const minPriceUsd = Math.min(...this.getProductPrices())
     const minPriceUah = minPriceUsd * this.usdCourse
     const minPrice = isFinite(minPriceUah) ? +minPriceUah.toFixed() : 0
     this.minPrice = minPrice
     return minPrice
   },
-  getMaxPriceUAH() {
+  calcMaxPriceUAH() {
     const maxPriceUsd = Math.max(...this.getProductPrices())
     const maxPriceUah = maxPriceUsd * this.usdCourse
     const maxPrice = isFinite(maxPriceUah) ? +maxPriceUah.toFixed() : 0
