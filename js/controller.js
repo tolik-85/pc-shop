@@ -82,7 +82,6 @@ const controller = {
     this.handleFilter()
     view.renderRangeWrapOnSearch(model.getMaxPriceUAH(), model.getMinPriceUAH())
     view.renderPagination()
-    view.renderSortSelect()
 
     if (model.paginatedProducts.length === 0) {
       view.renderContainerProductsOnZeroSearch()

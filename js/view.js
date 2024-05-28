@@ -121,7 +121,6 @@ const view = {
     document.querySelector('#filtrate').onclick =
       this.onFiltrateClick.bind(this)
     this.addEventListener()
-    this.renderFilterCheckboxes()
     this.renderRangeWrap()
     this.renderRangeWrap()
     this.goToProductPageClick()
@@ -277,7 +276,7 @@ const view = {
     const searchInput = document.querySelector('.search')
     const elPriceFromRange = document.querySelector('#priceFrom')
     const elPriceToRange = document.querySelector('#priceTo')
-    const elSelectSorting = document.querySelector('#select-sorting')
+    const elSelectSorting = document.querySelector('#products-sorting')
     const elSelectProductsOnPage = document.querySelector('#products-on-page')
 
     elSelectProductsOnPage.addEventListener(
