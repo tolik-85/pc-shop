@@ -83,10 +83,6 @@ const view = {
   },
 
   renderPagination(curPage, productsTotal, pagesCount) {
-    console.log('renderPagination')
-    console.log(curPage)
-    console.log(productsTotal)
-    console.log(pagesCount)
     const elPaginator = document.querySelector('.paginator')
     elPaginator.innerHTML = ''
     for (let i = 0; i < pagesCount; i++) {

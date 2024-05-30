@@ -3,6 +3,8 @@ const controller = {
     await model.updateProductsAndUsdCourse()
     model.vortex()
     view.renderContainerProducts(model.paginatedProducts)
+    model.calcProductsTotal()
+    model.calcPagesCount()
     view.renderPagination(model.curPage, model.productsTotal, model.pagesCount)
     view.renderWrapFilter(model.makeFilter())
   },

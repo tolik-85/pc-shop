@@ -33,6 +33,13 @@ const model = {
   productsTotal: 0,
   pagesCount: 0,
 
+  calcProductsTotal() {
+    this.productsTotal = this.sortedProducts
+  },
+  calcPagesCount() {
+    this.pagesCount = Math.ceil(this.productsTotal.length / this.productsOnPage)
+  },
+
   makeCompareProductsArr() {
     this.products.forEach(product => {
       this.compare.forEach(id => {
@@ -77,10 +84,10 @@ const model = {
     this.calcMinPriceUAH()
     this.calcMaxPriceUAH()
     this.filtrateProductsByPrice(this.priceFrom, this.priceTo)
-    console.log('this.minPrice :>> ', this.minPrice)
-    console.log('this.maxPrice :>> ', this.maxPrice)
-    console.log('this.priceFrom :>> ', this.priceFrom)
-    console.log('this.priceTo :>> ', this.priceTo)
+    // console.log('this.minPrice :>> ', this.minPrice)
+    // console.log('this.maxPrice :>> ', this.maxPrice)
+    // console.log('this.priceFrom :>> ', this.priceFrom)
+    // console.log('this.priceTo :>> ', this.priceTo)
     this.sortProducts(this.sortingType)
     this.paginateProducts(this.curPage)
     this.makeFilter()
