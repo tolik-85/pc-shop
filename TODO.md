@@ -33,3 +33,6 @@ model.removeCheckedCheckboxes(id)
 }
 console.log(model.checkedFilters)
 },
+window.history.pushState('null','','?page=1')
+const urlParams = new URLSearchParams(location.search)
+urlParams.set('page', '3')

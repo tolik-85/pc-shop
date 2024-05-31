@@ -123,6 +123,7 @@ const view = {
 
   onChangeSelectProductsOnPage(e) {
     controller.handleProductsOnPage(e.target.value)
+    window.history.pushState('null', '', '?page=0')
   },
   goToProductPageClick() {
     const elsProducts = document.querySelectorAll('.wrap-img>a>img')
@@ -132,7 +133,7 @@ const view = {
   },
 
   onClickGoToProductPage(e) {
-    e.preventDefault
+    e.preventDefault()
     const wrapProduct = e.target.parentNode.parentNode.parentNode
     const id = wrapProduct.querySelector('.id>span').innerHTML
   },
@@ -143,7 +144,9 @@ const view = {
   },
 
   onClickPagination(e) {
+    e.preventDefault()
     let pageNum = parseInt(e.target.innerHTML.replace(/[^\d]/g, ''))
+    window.history.pushState('null', '', `?page=${pageNum}`)
     controller.handlePagination(pageNum)
   },
 
