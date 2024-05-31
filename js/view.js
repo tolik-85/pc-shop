@@ -1,6 +1,24 @@
 const view = {
-  async onLoadCompare() {
+  async onLoadCatalog() {
+    this.renderInputSearch()
     await controller.handleLoadCatalog(true)
+    document.querySelector('.search-submit').click()
+    // controller.checkAndSetSearchQuery()
+    document.querySelector('#filtrate').onclick =
+      this.onFiltrateClick.bind(this)
+    this.addEventListener()
+    this.renderRangeWrap()
+    this.renderRangeWrap()
+    this.goToProductPageClick()
+    this.addToFavoritesListener()
+    this.addToCompareListener()
+    this.addToCartListener()
+  },
+
+  // ===== Конец логики view каталога
+
+  async onLoadCompare() {
+    await controller.handleLoadCatalog()
     model.compareProductsObj()
     model.compareProducts.forEach(product => {
       this.renderCompareTable(product)
@@ -16,22 +34,22 @@ const view = {
   },
 
   addToCompareListener() {
-    const AddToCompareBtn = document.querySelectorAll('.add-to-compare')
-    AddToCompareBtn.forEach(el => {
+    const addToCompareBtn = document.querySelectorAll('.add-to-compare')
+    addToCompareBtn.forEach(el => {
       el.addEventListener('click', this.onClickAddToCompare)
     })
   },
 
   addToCartListener() {
-    const AddToCartBtn = document.querySelectorAll('.add-to-cart')
-    AddToCartBtn.forEach(el => {
+    const addToCartBtn = document.querySelectorAll('.add-to-cart')
+    addToCartBtn.forEach(el => {
       el.addEventListener('click', this.onClickAddToCart)
     })
   },
 
   addToFavoritesListener() {
-    const AddToFavoritesBtn = document.querySelectorAll('.add-to-favorites')
-    AddToFavoritesBtn.forEach(el => {
+    const addToFavoritesBtn = document.querySelectorAll('.add-to-favorites')
+    addToFavoritesBtn.forEach(el => {
       el.addEventListener('click', this.onClickAddToFavorites)
     })
   },
@@ -41,7 +59,7 @@ const view = {
       e.target.parentNode.parentNode.parentNode.querySelector(
         '.id>span'
       ).innerHTML
-    controller.addToCompareHandler(productId)
+    controller.hanldeAddToCompare(productId)
   },
 
   onClickAddToCart(e) {
@@ -49,7 +67,7 @@ const view = {
       e.target.parentNode.parentNode.parentNode.querySelector(
         '.id>span'
       ).innerHTML
-    controller.addToCartHandler(productId)
+    controller.handleAddToCart(productId)
   },
 
   onClickAddToFavorites(e) {
@@ -57,7 +75,7 @@ const view = {
       e.target.parentNode.parentNode.parentNode.querySelector(
         '.id>span'
       ).innerHTML
-    controller.addToFavoritesHandler(productId)
+    controller.handleAddToFavorites(productId)
   },
 
   renderCompareQty(qty) {
@@ -83,6 +101,7 @@ const view = {
   },
 
   renderPagination(curPage, productsTotal, pagesCount) {
+    window.history.pushState(null, '', `?page=${curPage}`)
     const elPaginator = document.querySelector('.paginator')
     elPaginator.innerHTML = ''
     for (let i = 0; i < pagesCount; i++) {
@@ -105,25 +124,8 @@ const view = {
     controller.handleFiltrate(checkedIds, priceFrom, priceTo)
   },
 
-  async onLoadCatalog() {
-    this.renderInputSearch()
-    await controller.handleLoadCatalog(true)
-    document.querySelector('.search-submit').click()
-    // controller.checkAndSetSearchQuery()
-    document.querySelector('#filtrate').onclick =
-      this.onFiltrateClick.bind(this)
-    this.addEventListener()
-    this.renderRangeWrap()
-    this.renderRangeWrap()
-    this.goToProductPageClick()
-    this.addToFavoritesListener()
-    this.addToCompareListener()
-    this.addToCartListener()
-  },
-
   onChangeSelectProductsOnPage(e) {
     controller.handleProductsOnPage(e.target.value)
-    window.history.pushState('null', '', '?page=0')
   },
   goToProductPageClick() {
     const elsProducts = document.querySelectorAll('.wrap-img>a>img')
@@ -146,7 +148,6 @@ const view = {
   onClickPagination(e) {
     e.preventDefault()
     let pageNum = parseInt(e.target.innerHTML.replace(/[^\d]/g, ''))
-    window.history.pushState('null', '', `?page=${pageNum}`)
     controller.handlePagination(pageNum)
   },
 

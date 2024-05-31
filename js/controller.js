@@ -1,66 +1,46 @@
 const controller = {
+  handleVortex(pageNum = 0) {
+    model.setCurPage(pageNum)
+    model.vortex()
+    view.renderContainerProducts(model.paginatedProducts)
+    view.renderPagination(model.curPage, model.productsTotal, model.pagesCount)
+  },
+
   async handleLoadCatalog() {
     await model.updateProductsAndUsdCourse()
-    model.vortex()
-    view.renderContainerProducts(model.paginatedProducts)
-    model.calcProductsTotal()
-    model.calcPagesCount()
-    view.renderPagination(model.curPage, model.productsTotal, model.pagesCount)
+    this.handleVortex()
     view.renderWrapFilter(model.makeFilter())
-  },
-
-  handleFiltrate(checkedIds, priceFrom, priceTo) {
-    model.addAllCheckedCheckboxes(checkedIds)
-    model.setPriceFromTo(priceFrom, priceTo)
-    model.vortex()
-    view.renderContainerProducts(model.paginatedProducts)
-    model.calcProductsTotal()
-    model.calcPagesCount()
-    view.renderPagination(model.curPage, model.productsTotal, model.pagesCount)
-  },
-
-  handleProductsOnPage(itemsOnPage) {
-    model.setProductsOnPage(+itemsOnPage)
-    model.setCurPage(0)
-    model.vortex()
-    view.renderContainerProducts(model.paginatedProducts)
-    model.calcProductsTotal()
-    model.calcPagesCount()
-    view.renderPagination(model.curPage, model.productsTotal, model.pagesCount)
-  },
-
-  handlePagination(pageNum) {
-    model.setCurPage(+pageNum)
-    model.vortex()
-    view.renderContainerProducts(model.paginatedProducts)
-    model.calcProductsTotal()
-    model.calcPagesCount()
-    view.renderPagination(model.curPage, model.productsTotal, model.pagesCount)
-  },
-
-  handleSorting(sortingType) {
-    model.setSortingType(sortingType)
-    model.vortex()
-    view.renderContainerProducts(model.paginatedProducts)
-    model.calcProductsTotal()
-    model.calcPagesCount()
-    model.setCurPage(0)
-    view.renderPagination(model.curPage, model.productsTotal, model.pagesCount)
   },
 
   handleSearch(query) {
     model.setSearchQuery(query)
-    model.setCurPage(0)
-    model.vortex()
-    view.renderContainerProducts(model.paginatedProducts)
-    model.calcProductsTotal()
-    model.calcPagesCount()
-    view.renderPagination(model.curPage, model.productsTotal, model.pagesCount)
+    this.handleVortex()
     view.renderWrapFilter(model.makeFilter())
     view.renderRangePrice(model.maxPrice, model.minPrice)
   },
 
-  addToCartHandler(productId) {
+  handleFiltrate(checkedIds, priceFrom, priceTo) {
+    model.addAllCheckedCheckboxes(checkedIds)
+    model.setPriceFromTo(+priceFrom, +priceTo)
+    this.handleVortex()
+    view.renderRangePrice(model.maxPrice, model.minPrice)
+  },
+
+  handleSorting(sortingType) {
+    model.setSortingType(sortingType)
+    this.handleVortex()
+  },
+
+  handlePagination(pageNum) {
+    this.handleVortex(+pageNum)
+  },
+
+  handleProductsOnPage(itemsOnPage) {
+    model.setProductsOnPage(+itemsOnPage)
+    this.handleVortex()
+  },
+
+  handleAddToCart(productId) {
     model.cart.push(productId)
     const qty = model.cart.length
     if (qty > 0) {
@@ -69,7 +49,7 @@ const controller = {
     // console.log(`>>>model.cart ${model.cart}`)
   },
 
-  addToCompareHandler(productId) {
+  hanldeAddToCompare(productId) {
     model.compare.push(productId)
     const qty = model.compare.length
     if (qty > 0) {
@@ -78,7 +58,7 @@ const controller = {
     // console.log(`>>>model.compare ${model.compare}`)
   },
 
-  addToFavoritesHandler(productId) {
+  handleAddToFavorites(productId) {
     model.favorites.push(productId)
     const qty = model.favorites.length
     if (model.favorites.length > 0) {

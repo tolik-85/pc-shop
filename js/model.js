@@ -33,21 +33,19 @@ const model = {
   productsTotal: 0,
   pagesCount: 0,
 
-  calcProductsTotal() {
-    this.productsTotal = this.sortedProducts
-  },
-  calcPagesCount() {
-    this.pagesCount = Math.ceil(this.productsTotal.length / this.productsOnPage)
-  },
-
   makeCompareProductsArr() {
-    this.products.forEach(product => {
-      this.compare.forEach(id => {
-        if (product.id === +id) {
-          this.compareProducts.push(product)
-        }
-      })
-    })
+    this.compareProducts = this.products.filter(product =>
+      this.compare.includes(product.id + '')
+    )
+
+    // this.compareProducts = []
+    // this.products.forEach(product => {
+    //   this.compare.forEach(id => {
+    //     if (product.id === +id) {
+    //       this.compareProducts.push(product)
+    //     }
+    //   })
+    // })
   },
 
   makeCartProductsArr() {
@@ -84,13 +82,14 @@ const model = {
     this.calcMinPriceUAH()
     this.calcMaxPriceUAH()
     this.filtrateProductsByPrice(this.priceFrom, this.priceTo)
-    // console.log('this.minPrice :>> ', this.minPrice)
-    // console.log('this.maxPrice :>> ', this.maxPrice)
-    // console.log('this.priceFrom :>> ', this.priceFrom)
-    // console.log('this.priceTo :>> ', this.priceTo)
+    this.calcProductsTotal()
+    this.calcPagesCount()
+    console.log('this.minPrice :>> ', this.minPrice)
+    console.log('this.maxPrice :>> ', this.maxPrice)
+    console.log('this.priceFrom :>> ', this.priceFrom)
+    console.log('this.priceTo :>> ', this.priceTo)
     this.sortProducts(this.sortingType)
     this.paginateProducts(this.curPage)
-    this.makeFilter()
   },
 
   searchProducts(searchQuery) {
@@ -130,9 +129,14 @@ const model = {
       this.priceFrom = priceFrom
       this.priceTo = priceTo
     }
-    this.pricedProducts = this.filtratedProducts.filter(
-      p => this.priceFrom <= p.priceUAH && p.priceUAH <= this.priceTo
-    )
+
+    this.pricedProducts = this.filtratedProducts.filter(p => {
+      console.log(this.priceFrom)
+      console.log(this.priceTo)
+      console.log(p.priceUAH)
+
+      return this.priceFrom <= p.priceUAH && p.priceUAH <= this.priceTo
+    })
   },
 
   sortProducts(sortingType) {
@@ -192,7 +196,7 @@ const model = {
 
   addUAHPriceToProducts() {
     this.products.forEach(
-      product => (product.priceUAH = product.price * this.usdCourse)
+      product => (product.priceUAH = Math.round(product.price * this.usdCourse))
     )
   },
 
@@ -248,6 +252,12 @@ const model = {
   },
   getProductPrices() {
     return this.filtratedProducts.map(product => product.price)
+  },
+  calcProductsTotal() {
+    this.productsTotal = this.pricedProducts.length
+  },
+  calcPagesCount() {
+    this.pagesCount = Math.ceil(this.productsTotal / this.productsOnPage)
   },
   calcMinPriceUAH() {
     const minPriceUsd = Math.min(...this.getProductPrices())
