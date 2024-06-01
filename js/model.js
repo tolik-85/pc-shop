@@ -131,9 +131,9 @@ const model = {
     }
 
     this.pricedProducts = this.filtratedProducts.filter(p => {
-      console.log(this.priceFrom)
-      console.log(this.priceTo)
-      console.log(p.priceUAH)
+      // console.log(this.priceFrom)
+      // console.log(this.priceTo)
+      // console.log(p.priceUAH)
 
       return this.priceFrom <= p.priceUAH && p.priceUAH <= this.priceTo
     })

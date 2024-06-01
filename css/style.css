@@ -448,25 +448,21 @@ a {
 .wrap-checkbox > label {
   padding-left: 10px;
 }
-.options {
+.data {
   position: absolute;
   background: lightgray;
-  top: 55px;
+  top: 50px;
   z-index: 40;
-  width: 100%;
+  width: 400px;
   overflow: visible;
 }
-.options > li {
-  list-style-type: none;
-  cursor: pointer;
-  /* position: relative;
-  z-index: 3;
-  top: 0;
-  overflow: visible; */
-}
-.options > li:hover {
+.data > option {
+  width: 400px;
   background-color: orange;
 }
+/* .options > li:hover {
+  background-color: orange;
+} */
 .range-wrap {
   margin: 5px;
 }

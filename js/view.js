@@ -116,6 +116,8 @@ const view = {
   onFiltrateClick() {
     const priceFrom = document.querySelector('#priceFrom').value
     const priceTo = document.querySelector('#priceTo').value
+    console.log('view.priceFrom', priceFrom)
+    console.log('view.priceTo', priceTo)
     const elCheckboxes = document.querySelectorAll(
       '.wrap-checkboxes [type="checkbox"]:checked'
     )
@@ -129,13 +131,14 @@ const view = {
   },
   goToProductPageClick() {
     const elsProducts = document.querySelectorAll('.wrap-img>a>img')
+    // console.log(elsProducts)
     elsProducts.forEach(el => {
       el.addEventListener('click', this.onClickGoToProductPage)
     })
   },
 
   onClickGoToProductPage(e) {
-    e.preventDefault()
+    // e.preventDefault()
     const wrapProduct = e.target.parentNode.parentNode.parentNode
     const id = wrapProduct.querySelector('.id>span').innerHTML
   },
@@ -265,6 +268,19 @@ const view = {
       const regex = new RegExp(word, 'gi')
       return prod.match(regex)
     })
+  },
+  renderLeftOptions() {
+    // const searchInput = document.querySelector('.search')
+    const searchOptions = document.querySelector('.data')
+    const productsNames = model.getProductsCaptions()
+    const options = view.getProductsFromSearchForm(this.value, productsNames)
+
+    const result = options
+      .map(productName => {
+        return `<option value="${productName}"></option>`
+      })
+      .join('')
+    searchOptions.innerHTML = this.value ? result : null
   },
 
   addEventListener() {
