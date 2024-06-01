@@ -10,6 +10,7 @@ const controller = {
     await model.updateProductsAndUsdCourse()
     this.handleVortex()
     view.renderWrapFilter(model.makeFilter())
+    view.renderRangePrice(model.maxPrice, model.minPrice)
   },
 
   handleSearch(query) {

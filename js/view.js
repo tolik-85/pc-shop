@@ -1,18 +1,153 @@
 const view = {
+  getProductsFromSearchForm(word, product) {
+    return product.filter(prod => {
+      const regex = new RegExp(word, 'gi')
+      return prod.match(regex)
+    })
+  },
+  renderLeftOptions() {
+    // const searchInput = document.querySelector('.search')
+    const searchOptions = document.querySelector('.data')
+    const productsNames = model.getProductsCaptions()
+    const options = view.getProductsFromSearchForm(this.value, productsNames)
+
+    const result = options
+      .map(productName => {
+        return `<option value="${productName}"></option>`
+      })
+      .join('')
+    searchOptions.innerHTML = this.value ? result : null
+  },
+
   async onLoadCatalog() {
     this.renderInputSearch()
     await controller.handleLoadCatalog(true)
     document.querySelector('.search-submit').click()
-    // controller.checkAndSetSearchQuery()
-    document.querySelector('#filtrate').onclick =
-      this.onFiltrateClick.bind(this)
     this.addEventListener()
-    this.renderRangeWrap()
-    this.renderRangeWrap()
-    this.goToProductPageClick()
+
     this.addToFavoritesListener()
     this.addToCompareListener()
     this.addToCartListener()
+  },
+
+  onClickSearchSubmit() {
+    const searchInput = document.querySelector('.search')
+    controller.handleSearch(searchInput.value)
+  },
+
+  renderLabelPrice(from, to) {
+    const elSpanRangePriceFrom = document.querySelector('.price-from')
+    const elSpanRangePriceTo = document.querySelector('.price-to')
+    elSpanRangePriceFrom.innerHTML = from
+    elSpanRangePriceTo.innerHTML = to
+  },
+
+  onChangeInputRange(e) {
+    const elPriceFromRange = document.querySelector('#priceFrom')
+    const elPriceToRange = document.querySelector('#priceTo')
+    view.renderLabelPrice(elPriceFromRange.value, elPriceToRange.value)
+    if (+e.target.value > +elPriceToRange.value) {
+      elPriceToRange.value = +e.target.value
+    }
+    if (+e.target.value < +elPriceFromRange.value) {
+      elPriceFromRange.value = +e.target.value
+    }
+  },
+
+  onFiltrateClick() {
+    const priceFrom = document.querySelector('#priceFrom').value
+    const priceTo = document.querySelector('#priceTo').value
+    console.log('view.priceFrom', priceFrom)
+    console.log('view.priceTo', priceTo)
+    const elCheckboxes = document.querySelectorAll(
+      '.wrap-checkboxes [type="checkbox"]:checked'
+    )
+    const checkedIds = Array.from(elCheckboxes).map(el => el.id)
+    controller.handleFiltrate(checkedIds, priceFrom, priceTo)
+  },
+
+  onChangeSelectPerPage(e) {
+    controller.handleProductsOnPage(e.target.value)
+  },
+
+  onChangeSelectSorting(e) {
+    controller.handleSorting(e.target.value)
+  },
+
+  onClickPagination(e) {
+    e.preventDefault()
+    // let pageNum = parseInt(e.target.innerHTML.replace(/[^\d]/g, ''))
+    let pageNum = parseInt(e.target.textContent)
+    controller.handlePagination(pageNum)
+  },
+
+  renderInputSearch() {
+    const locationParams = new URLSearchParams(location.search)
+    const searchQuery = locationParams.get('search-query')
+    const elInputSearch = document.querySelector('.search')
+    elInputSearch.value = searchQuery
+  },
+
+  renderWrapFilter(filter) {
+    const elWrapCheckboxes = document.querySelector('.wrap-checkboxes')
+    elWrapCheckboxes.innerHTML = ''
+    for (const key in filter) {
+      if (key) {
+        const elFilterCategory = generateFilterCategory(key)
+        elWrapCheckboxes.appendChild(elFilterCategory)
+      }
+      const elFilterGroupWrappers = generateFilterGroupWrappers()
+      filter[key].forEach(el => {
+        const chBoxes = generateFilterWrapCheckBox(el, key)
+        elFilterGroupWrappers.appendChild(chBoxes)
+        elWrapCheckboxes.appendChild(elFilterGroupWrappers)
+      })
+    }
+  },
+
+  renderRangePrice(maxPrice, minPrice) {
+    const elPriceFromRange = document.querySelector('#priceFrom')
+    const elPriceToRange = document.querySelector('#priceTo')
+    const elSpanRangePriceFrom = document.querySelector('.price-from')
+    const elSpanRangePriceTo = document.querySelector('.price-to')
+
+    elPriceFromRange.min = minPrice
+    elPriceFromRange.max = maxPrice
+    elPriceFromRange.value = minPrice
+    elPriceToRange.min = minPrice
+    elPriceToRange.max = maxPrice
+    elPriceToRange.value = maxPrice
+    elSpanRangePriceFrom.innerHTML = minPrice
+    elSpanRangePriceTo.innerHTML = maxPrice
+  },
+
+  renderContainerProduct(product) {
+    const elContainerProducts = document.querySelector('.container-products')
+    const elProduct = generateProduct(product)
+    elContainerProducts.appendChild(elProduct)
+  },
+
+  renderContainerProducts(products) {
+    let elContainerProducts = document.querySelector('.container-products')
+    elContainerProducts.innerHTML = ''
+    products.forEach(this.renderContainerProduct)
+    if (products.length === 0) {
+      const elParagraph = generateParagraphFindNothing()
+      elContainerProducts.appendChild(elParagraph)
+    }
+  },
+
+  renderPagination(curPage, productsTotal, pagesCount) {
+    window.history.pushState(null, '', `?page=${curPage}`)
+    const elPaginator = document.querySelector('.paginator')
+    elPaginator.innerHTML = ''
+    for (let i = 0; i < pagesCount; i++) {
+      let elPage = generatePaginaionPage(i)
+      elPaginator.appendChild(elPage)
+      if (i === curPage) {
+        elPage.classList.add('bold')
+      }
+    }
   },
 
   // ===== Конец логики view каталога
@@ -93,71 +228,6 @@ const view = {
     elFavoritesQty.innerHTML = qty
   },
 
-  renderInputSearch() {
-    const locationParams = new URLSearchParams(location.search)
-    const searchQuery = locationParams.get('search-query')
-    const elInputSearch = document.querySelector('.search')
-    elInputSearch.value = searchQuery
-  },
-
-  renderPagination(curPage, productsTotal, pagesCount) {
-    window.history.pushState(null, '', `?page=${curPage}`)
-    const elPaginator = document.querySelector('.paginator')
-    elPaginator.innerHTML = ''
-    for (let i = 0; i < pagesCount; i++) {
-      let elPage = generatePaginaionPage(i)
-      elPaginator.appendChild(elPage)
-      if (i === curPage) {
-        elPage.classList.add('bold')
-      }
-    }
-  },
-
-  onFiltrateClick() {
-    const priceFrom = document.querySelector('#priceFrom').value
-    const priceTo = document.querySelector('#priceTo').value
-    console.log('view.priceFrom', priceFrom)
-    console.log('view.priceTo', priceTo)
-    const elCheckboxes = document.querySelectorAll(
-      '.wrap-checkboxes [type="checkbox"]:checked'
-    )
-    const checkedIds = Array.from(elCheckboxes).map(el => el.id)
-
-    controller.handleFiltrate(checkedIds, priceFrom, priceTo)
-  },
-
-  onChangeSelectProductsOnPage(e) {
-    controller.handleProductsOnPage(e.target.value)
-  },
-  goToProductPageClick() {
-    const elsProducts = document.querySelectorAll('.wrap-img>a>img')
-    // console.log(elsProducts)
-    elsProducts.forEach(el => {
-      el.addEventListener('click', this.onClickGoToProductPage)
-    })
-  },
-
-  onClickGoToProductPage(e) {
-    // e.preventDefault()
-    const wrapProduct = e.target.parentNode.parentNode.parentNode
-    const id = wrapProduct.querySelector('.id>span').innerHTML
-  },
-
-  onClickSearchSubmit() {
-    const searchInput = document.querySelector('.search')
-    controller.handleSearch(searchInput.value)
-  },
-
-  onClickPagination(e) {
-    e.preventDefault()
-    let pageNum = parseInt(e.target.innerHTML.replace(/[^\d]/g, ''))
-    controller.handlePagination(pageNum)
-  },
-
-  onChangeSelectSorting(e) {
-    controller.handleSorting(e.target.value)
-  },
-
   renderCardMainOnsearch(searchedProducts) {
     searchedProducts.forEach(this.renderCardProductsOnSearch)
   },
@@ -168,139 +238,23 @@ const view = {
     elMain.appendChild(elProduct)
   },
 
-  renderContainerProduct(product) {
-    const elContainerProducts = document.querySelector('.container-products')
-    const elProduct = generateProduct(product)
-    elContainerProducts.appendChild(elProduct)
-  },
-
-  renderContainerProducts(products) {
-    let elContainerProducts = document.querySelector('.container-products')
-    elContainerProducts.innerHTML = ''
-    products.forEach(this.renderContainerProduct)
-    if (products.length === 0) {
-      const elParagraph = generateParagraphFindNothing()
-      elContainerProducts.appendChild(elParagraph)
-    }
-  },
-
-  renderWrapFilter(filter) {
-    const elWrapCheckboxes = document.querySelector('.wrap-checkboxes')
-    elWrapCheckboxes.innerHTML = ''
-    for (const key in filter) {
-      if (key) {
-        const elFilterCategory = generateFilterCategory(key)
-        elWrapCheckboxes.appendChild(elFilterCategory)
-      }
-      const elFilterGroupWrappers = generateFilterGroupWrappers()
-      filter[key].forEach(el => {
-        const chBoxes = generateFilterWrapCheckBox(el, key)
-        elFilterGroupWrappers.appendChild(chBoxes)
-        elWrapCheckboxes.appendChild(elFilterGroupWrappers)
-      })
-    }
-  },
-
-  renderRangePrice(maxPrice, minPrice) {
-    const elPriceFromRange = document.querySelector('#priceFrom')
-    const elPriceToRange = document.querySelector('#priceTo')
-    const elSpanRangePriceFrom = document.querySelector('.price-from')
-    const elSpanRangePriceTo = document.querySelector('.price-to')
-
-    elPriceFromRange.min = minPrice
-    elPriceFromRange.max = maxPrice
-    elPriceFromRange.value = minPrice
-    elSpanRangePriceFrom.innerHTML = minPrice
-
-    elPriceToRange.min = minPrice
-    elPriceToRange.max = maxPrice
-    elPriceToRange.value = maxPrice
-    elSpanRangePriceTo.innerHTML = maxPrice
-  },
-
-  renderRangeWrap() {
-    const elPriceFromRange = document.querySelector('#priceFrom')
-    const elPriceToRange = document.querySelector('#priceTo')
-    const elSpanRangePriceFrom = document.querySelector('.price-from')
-    const elSpanRangePriceTo = document.querySelector('.price-to')
-    const maxPrice = model.calcMaxPriceUAH()
-    const minPrice = model.calcMinPriceUAH()
-
-    elPriceFromRange.min = minPrice
-    elPriceFromRange.max = maxPrice
-    elPriceToRange.min = minPrice
-    elPriceToRange.max = maxPrice
-    elPriceToRange.value = maxPrice
-    elPriceFromRange.value = minPrice
-
-    elSpanRangePriceFrom.innerHTML = elPriceFromRange.value
-    elSpanRangePriceTo.innerHTML = elPriceToRange.value
-  },
-
-  onChangeInputRange(e) {
-    const elPriceFromRange = document.querySelector('#priceFrom')
-    const elPriceToRange = document.querySelector('#priceTo')
-    const elSpanRangePriceFrom = document.querySelector('.price-from')
-    const elSpanRangePriceTo = document.querySelector('.price-to')
-
-    elSpanRangePriceFrom.innerHTML = elPriceFromRange.value
-    elSpanRangePriceTo.innerHTML = elPriceToRange.value
-
-    if (+e.target.value > +elPriceToRange.value) {
-      elPriceToRange.value = +e.target.value
-    }
-
-    if (+e.target.value < +elPriceFromRange.value) {
-      elPriceFromRange.value = +e.target.value
-    }
-  },
-
-  onInputInputRangePriceFrom(e) {
-    handleInputPriceFrom(e.target.value, 'from')
-  },
-
-  onInputInputRangePriceTo(e) {
-    handleInputPriceFrom(e.target.value, 'to')
-  },
-
-  getProductsFromSearchForm(word, product) {
-    return product.filter(prod => {
-      const regex = new RegExp(word, 'gi')
-      return prod.match(regex)
-    })
-  },
-  renderLeftOptions() {
-    // const searchInput = document.querySelector('.search')
-    const searchOptions = document.querySelector('.data')
-    const productsNames = model.getProductsCaptions()
-    const options = view.getProductsFromSearchForm(this.value, productsNames)
-
-    const result = options
-      .map(productName => {
-        return `<option value="${productName}"></option>`
-      })
-      .join('')
-    searchOptions.innerHTML = this.value ? result : null
-  },
-
   addEventListener() {
     const searchInput = document.querySelector('.search')
     const elPriceFromRange = document.querySelector('#priceFrom')
     const elPriceToRange = document.querySelector('#priceTo')
     const elSelectSorting = document.querySelector('#products-sorting')
-    const elSelectProductsOnPage = document.querySelector('#products-on-page')
+    const elSelectPerPage = document.querySelector('#products-on-page')
     const elSearchBtn = document.querySelector('.search-submit')
+    const elFiltrateBtn = document.querySelector('#filtrate')
 
+    elFiltrateBtn.addEventListener('click', this.onFiltrateClick)
     elSearchBtn.addEventListener('click', this.onClickSearchSubmit)
     elSelectSorting.addEventListener('change', this.onChangeSelectSorting)
     searchInput.addEventListener('change', this.renderLeftOptions)
     searchInput.addEventListener('keyup', this.renderLeftOptions)
     elPriceFromRange.addEventListener('input', this.onChangeInputRange)
     elPriceToRange.addEventListener('input', this.onChangeInputRange)
-    elSelectProductsOnPage.addEventListener(
-      'change',
-      this.onChangeSelectProductsOnPage
-    )
+    elSelectPerPage.addEventListener('change', this.onChangeSelectPerPage)
   },
 
   async onLoadedCard() {
