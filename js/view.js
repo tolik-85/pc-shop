@@ -70,9 +70,9 @@ const view = {
     // let pageNum = parseInt(e.target.innerHTML.replace(/[^\d]/g, ''))
     let pageNum = parseInt(e.target.textContent)
     controller.handlePagination(pageNum)
-    const urlParams = new URLSearchParams(location.search)
-    urlParams.set('page', `${pageNum}`)
-    window.history.pushState('null', '', '?' + urlParams)
+    // const urlParams = new URLSearchParams(location.search)
+    // urlParams.set('page', `${pageNum}`)
+    // window.history.pushState('null', '', '?' + urlParams)
   },
 
   renderInputSearch() {
@@ -133,7 +133,7 @@ const view = {
   },
 
   renderPagination(curPage, productsTotal, pagesCount) {
-    window.history.pushState(null, '', `?page=${curPage}`)
+    // window.history.pushState(null, '', `?page=${curPage}`)
     const elPaginator = document.querySelector('.paginator')
     elPaginator.innerHTML = ''
     for (let i = 0; i < pagesCount; i++) {
@@ -143,6 +143,9 @@ const view = {
         elPage.classList.add('bold')
       }
     }
+    const urlParams = new URLSearchParams(location.search)
+    urlParams.set('page', `${curPage}`)
+    window.history.pushState('null', '', '?' + urlParams)
   },
 
   // ===== Конец логики view каталога
