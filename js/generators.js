@@ -61,7 +61,7 @@ function generateProduct(product) {
   const URL = 'https://web-app.click/pc-shop/photos/products/computers/'
   const picture = product.photos[0]
   const caption = product.caption
-  const price = (product.price * model.usdCourse).toFixed()
+  const price = product.priceUAH.toFixed()
   const image = `${URL}${picture}`
 
   const productLink = document.createElement('a')
@@ -205,7 +205,7 @@ function generateCartTableHead() {
 
   return cartTable
 }
-function generatecartTableRowProduct(product) {
+function generateCartTableRowProduct(product) {
   const URL = 'https://web-app.click/pc-shop/photos/products/computers/'
   const picture = product.photos[0]
   const image = `${URL}${picture}`

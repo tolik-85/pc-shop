@@ -48,6 +48,8 @@ const controller = {
     this.handleVortex()
   },
 
+  // ===== Конец каталога
+
   handleAddToCart(productId) {
     model.cart.push(productId)
     const qty = model.cart.length

@@ -1,17 +1,9 @@
 const view = {
-  renderDataList(productsNames) {
-    const dataList = document.querySelector('.data')
-    productsNames.forEach(prName => {
-      const option = generateOption(prName)
-      dataList.appendChild(option)
-    })
-  },
-
   async onLoadCatalog() {
     this.renderInputSearch()
     await controller.handleLoadCatalog(true)
-    document.querySelector('.search-submit').click()
     this.addEventListener()
+    document.querySelector('.search-submit').click()
 
     this.addToFavoritesListener()
     this.addToCompareListener()
@@ -75,9 +67,17 @@ const view = {
     // window.history.pushState('null', '', '?' + urlParams)
   },
 
+  renderDataList(productsNames) {
+    const dataList = document.querySelector('.data')
+    productsNames.forEach(prName => {
+      const option = generateOption(prName)
+      dataList.appendChild(option)
+    })
+  },
+
   renderInputSearch() {
     const locationParams = new URLSearchParams(location.search)
-    const searchQuery = locationParams.get('search-query')
+    const searchQuery = locationParams.get('query')
     const elInputSearch = document.querySelector('.search')
     elInputSearch.value = searchQuery
   },
@@ -146,6 +146,23 @@ const view = {
     const urlParams = new URLSearchParams(location.search)
     urlParams.set('page', `${curPage}`)
     window.history.pushState('null', '', '?' + urlParams)
+  },
+
+  addEventListener() {
+    const searchInput = document.querySelector('.search')
+    const elPriceFromRange = document.querySelector('#priceFrom')
+    const elPriceToRange = document.querySelector('#priceTo')
+    const elSelectSorting = document.querySelector('#products-sorting')
+    const elSelectPerPage = document.querySelector('#products-on-page')
+    const elSearchBtn = document.querySelector('.search-submit')
+    const elFiltrateBtn = document.querySelector('#filtrate')
+
+    elFiltrateBtn.addEventListener('click', this.onFiltrateClick)
+    elSearchBtn.addEventListener('click', this.onClickSearchSubmit)
+    elSelectSorting.addEventListener('change', this.onChangeSelectSorting)
+    elPriceFromRange.addEventListener('input', this.onChangeInputRange)
+    elPriceToRange.addEventListener('input', this.onChangeInputRange)
+    elSelectPerPage.addEventListener('change', this.onChangeSelectPerPage)
   },
 
   // ===== Конец логики view каталога
@@ -234,23 +251,6 @@ const view = {
     const elMain = document.querySelector('.main')
     const elProduct = generateProduct(product)
     elMain.appendChild(elProduct)
-  },
-
-  addEventListener() {
-    const searchInput = document.querySelector('.search')
-    const elPriceFromRange = document.querySelector('#priceFrom')
-    const elPriceToRange = document.querySelector('#priceTo')
-    const elSelectSorting = document.querySelector('#products-sorting')
-    const elSelectPerPage = document.querySelector('#products-on-page')
-    const elSearchBtn = document.querySelector('.search-submit')
-    const elFiltrateBtn = document.querySelector('#filtrate')
-
-    elFiltrateBtn.addEventListener('click', this.onFiltrateClick)
-    elSearchBtn.addEventListener('click', this.onClickSearchSubmit)
-    elSelectSorting.addEventListener('change', this.onChangeSelectSorting)
-    elPriceFromRange.addEventListener('input', this.onChangeInputRange)
-    elPriceToRange.addEventListener('input', this.onChangeInputRange)
-    elSelectPerPage.addEventListener('change', this.onChangeSelectPerPage)
   },
 
   //==Начало логики card ===

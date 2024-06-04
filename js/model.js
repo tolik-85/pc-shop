@@ -37,15 +37,6 @@ const model = {
     this.compareProducts = this.products.filter(product =>
       this.compare.includes(product.id + '')
     )
-
-    // this.compareProducts = []
-    // this.products.forEach(product => {
-    //   this.compare.forEach(id => {
-    //     if (product.id === +id) {
-    //       this.compareProducts.push(product)
-    //     }
-    //   })
-    // })
   },
 
   makeCartProductsArr() {
@@ -58,7 +49,7 @@ const model = {
     })
   },
 
-  makefavoritesProductsArr() {
+  makeFavoritesProductsArr() {
     this.products.forEach(product => {
       this.favorites.forEach(id => {
         if (product.id === +id) {
