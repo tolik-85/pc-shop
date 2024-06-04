@@ -1,22 +1,10 @@
 const view = {
-  getProductsFromSearchForm(word, product) {
-    return product.filter(prod => {
-      const regex = new RegExp(word, 'gi')
-      return prod.match(regex)
+  renderDataList(productsNames) {
+    const dataList = document.querySelector('.data')
+    productsNames.forEach(prName => {
+      const option = generateOption(prName)
+      dataList.appendChild(option)
     })
-  },
-  renderLeftOptions() {
-    // const searchInput = document.querySelector('.search')
-    const searchOptions = document.querySelector('.data')
-    const productsNames = model.getProductsCaptions()
-    const options = view.getProductsFromSearchForm(this.value, productsNames)
-
-    const result = options
-      .map(productName => {
-        return `<option value="${productName}"></option>`
-      })
-      .join('')
-    searchOptions.innerHTML = this.value ? result : null
   },
 
   async onLoadCatalog() {
@@ -33,6 +21,9 @@ const view = {
   onClickSearchSubmit() {
     const searchInput = document.querySelector('.search')
     controller.handleSearch(searchInput.value)
+    const urlParams = new URLSearchParams(location.search)
+    urlParams.set('query', `${searchInput.value}`)
+    window.history.pushState('null', '', '?' + urlParams)
   },
 
   renderLabelPrice(from, to) {
@@ -57,8 +48,8 @@ const view = {
   onFiltrateClick() {
     const priceFrom = document.querySelector('#priceFrom').value
     const priceTo = document.querySelector('#priceTo').value
-    console.log('view.priceFrom', priceFrom)
-    console.log('view.priceTo', priceTo)
+    // console.log('view.priceFrom', priceFrom)
+    // console.log('view.priceTo', priceTo)
     const elCheckboxes = document.querySelectorAll(
       '.wrap-checkboxes [type="checkbox"]:checked'
     )
@@ -79,6 +70,9 @@ const view = {
     // let pageNum = parseInt(e.target.innerHTML.replace(/[^\d]/g, ''))
     let pageNum = parseInt(e.target.textContent)
     controller.handlePagination(pageNum)
+    const urlParams = new URLSearchParams(location.search)
+    urlParams.set('page', `${pageNum}`)
+    window.history.pushState('null', '', '?' + urlParams)
   },
 
   renderInputSearch() {
@@ -110,7 +104,8 @@ const view = {
     const elPriceToRange = document.querySelector('#priceTo')
     const elSpanRangePriceFrom = document.querySelector('.price-from')
     const elSpanRangePriceTo = document.querySelector('.price-to')
-
+    console.log('renderPrice-minPrice', minPrice)
+    console.log('renderPrice-maxPrice', maxPrice)
     elPriceFromRange.min = minPrice
     elPriceFromRange.max = maxPrice
     elPriceFromRange.value = minPrice
@@ -250,20 +245,28 @@ const view = {
     elFiltrateBtn.addEventListener('click', this.onFiltrateClick)
     elSearchBtn.addEventListener('click', this.onClickSearchSubmit)
     elSelectSorting.addEventListener('change', this.onChangeSelectSorting)
-    searchInput.addEventListener('change', this.renderLeftOptions)
-    searchInput.addEventListener('keyup', this.renderLeftOptions)
     elPriceFromRange.addEventListener('input', this.onChangeInputRange)
     elPriceToRange.addEventListener('input', this.onChangeInputRange)
     elSelectPerPage.addEventListener('change', this.onChangeSelectPerPage)
   },
 
+  //==Начало логики card ===
+
   async onLoadedCard() {
     const search = new URLSearchParams(location.search)
     const id = search.get('id')
-    await controller.handleUpdateProduct(id)
-    await controller.handleSimilarProducts(id)
-    controller.handleRenderProduct()
-    controller.handleSimilarProductsSection()
+    if (id) {
+      await controller.handleUpdateProduct(id)
+      await controller.handleSimilarProducts(id)
+      controller.handleRenderProduct()
+      controller.handleSimilarProductsSection()
+    } else {
+      this.renderCardMainClear()
+      let elMainCont = document.querySelector('.main')
+      const elParagraph404 = generateParagraph404Page()
+      elMainCont.appendChild(elParagraph404)
+      window.history.pushState('null', '', '?' + 'page=404')
+    }
   },
 
   renderCardMainClear() {

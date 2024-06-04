@@ -95,6 +95,7 @@ const model = {
   searchProducts(searchQuery) {
     if (searchQuery) {
       this.searchQuery = searchQuery
+      // console.log(searchQuery)
     }
     this.searchedProducts = this.products.filter(product => {
       const productCaption = product.caption.toLowerCase()

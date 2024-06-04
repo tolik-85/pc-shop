@@ -19,6 +19,12 @@
   /* background: #fff url(../img/search.png) center / 70% no-repeat; */
   border: 0px solid #ccc;
 }
+.page-wrong {
+  display: flex;
+  justify-content: center;
+  padding: 150px;
+  font-size: 30px;
+}
 .search-btn {
   height: 50px;
   width: 50px;

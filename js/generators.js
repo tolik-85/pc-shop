@@ -1,3 +1,10 @@
+function generateOption(text) {
+  const option = document.createElement('option')
+  option.innerText = text
+
+  return option
+}
+
 function generateFilterCategory(filterCategory) {
   const elWrapProps = document.createElement('div')
   const elH3 = document.createElement('h3')
@@ -153,6 +160,19 @@ function generateParagraphFindNothing() {
   elParagraph.classList.add('zero-search')
   elParagraph.innerHTML = 'Ничего не найдено, уточните условия поиска'
   return elParagraph
+}
+function generateParagraph404Page() {
+  const elCont = document.createElement('div')
+  const elParagraph = document.createElement('p')
+  elParagraph.classList.add('page-wrong')
+  elParagraph.innerHTML = '404 Усп... что то пошло не так'
+  const elImg = document.createElement('img')
+  elImg.setAttribute('src', './img/404.png')
+  elCont.appendChild(elParagraph)
+  elCont.appendChild(elImg)
+  elCont.elParagraph
+  elCont.elImg
+  return elCont
 }
 
 function generateCompareTable() {

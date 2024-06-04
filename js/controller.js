@@ -5,22 +5,29 @@ const controller = {
     view.renderContainerProducts(model.paginatedProducts)
     view.renderPagination(model.curPage, model.productsTotal, model.pagesCount)
   },
-
+  handledataList() {
+    const productsNames = model.getProductsCaptions()
+    view.renderDataList(productsNames)
+  },
   async handleLoadCatalog() {
     await model.updateProductsAndUsdCourse()
     this.handleVortex()
     view.renderWrapFilter(model.makeFilter())
     view.renderRangePrice(model.maxPrice, model.minPrice)
+    this.handledataList()
   },
 
   handleSearch(query) {
     model.setSearchQuery(query)
+    // console.log(query)
     this.handleVortex()
     view.renderWrapFilter(model.makeFilter())
     view.renderRangePrice(model.maxPrice, model.minPrice)
   },
 
   handleFiltrate(checkedIds, priceFrom, priceTo) {
+    console.log('controller.priceFrom ', priceFrom)
+    console.log('controller.priceTo ', priceTo)
     model.addAllCheckedCheckboxes(checkedIds)
     model.setPriceFromTo(+priceFrom, +priceTo)
     this.handleVortex()
