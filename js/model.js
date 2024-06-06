@@ -33,6 +33,26 @@ const model = {
   productsTotal: 0,
   pagesCount: 0,
 
+  async updateUsdCourse() {
+    const course = await api.loadCourse()
+    this.setUsdCouse(course)
+  },
+
+  setUsdCouse(course) {
+    this.usdCourse = course
+  },
+
+  addUAHPriceToProducts() {
+    this.products.forEach(
+      product => (product.priceUAH = Math.round(product.price * this.usdCourse))
+    )
+  },
+
+  async updateProductsAndUsdCourse() {
+    await Promise.all([this.updateUsdCourse(), this.updateProducts()])
+    this.addUAHPriceToProducts()
+  },
+
   //==== Catalog Start=====//
 
   vortex() {
@@ -154,20 +174,9 @@ const model = {
     return this.filter
   },
 
-  async updateProductsAndUsdCourse() {
-    await Promise.all([this.updateUsdCourse(), this.updateProducts()])
-    this.addUAHPriceToProducts()
-  },
-
   async updateProducts() {
     const products = await api.loadProducts()
     this.setProducts(products)
-  },
-
-  addUAHPriceToProducts() {
-    this.products.forEach(
-      product => (product.priceUAH = Math.round(product.price * this.usdCourse))
-    )
   },
 
   getProductsCaptions() {
@@ -228,15 +237,6 @@ const model = {
 
   removeAllCheckedCheckboxes(checkedFilter) {
     this.checkedFilters = []
-  },
-
-  async updateUsdCourse() {
-    const course = await api.loadCourse()
-    this.setUsdCouse(course)
-  },
-
-  setUsdCouse(course) {
-    this.usdCourse = course
   },
 
   setProducts(products) {
