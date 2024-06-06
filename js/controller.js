@@ -17,12 +17,12 @@ const controller = {
     this.handledataList()
   },
 
-  handleSearch(query) {
+  handleSearch(query, priceFrom, priceTo) {
+    model.setPriceFromTo(+priceFrom, +priceTo)
     model.setSearchQuery(query)
-    // console.log(query)
     this.handleVortex()
     view.renderWrapFilter(model.makeFilter())
-    view.renderRangePrice(model.maxPrice, model.minPrice)
+    // view.renderRangePrice(model.maxPrice, model.minPrice)
   },
 
   handleFiltrate(checkedIds, priceFrom, priceTo) {
@@ -31,7 +31,7 @@ const controller = {
     model.addAllCheckedCheckboxes(checkedIds)
     model.setPriceFromTo(+priceFrom, +priceTo)
     this.handleVortex()
-    view.renderRangePrice(model.maxPrice, model.minPrice)
+    // view.renderRangePrice(model.maxPrice, model.minPrice)
   },
 
   handleSorting(sortingType) {

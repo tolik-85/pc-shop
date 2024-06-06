@@ -11,8 +11,10 @@ const view = {
   },
 
   onClickSearchSubmit() {
+    const priceFrom = document.querySelector('#priceFrom').value
+    const priceTo = document.querySelector('#priceTo').value
     const searchInput = document.querySelector('.search')
-    controller.handleSearch(searchInput.value)
+    controller.handleSearch(searchInput.value, priceFrom, priceTo)
     const urlParams = new URLSearchParams(location.search)
     urlParams.set('query', `${searchInput.value}`)
     window.history.pushState('null', '', '?' + urlParams)
@@ -46,6 +48,7 @@ const view = {
       '.wrap-checkboxes [type="checkbox"]:checked'
     )
     const checkedIds = Array.from(elCheckboxes).map(el => el.id)
+    console.log('view priceFrom, priceTo', priceFrom, priceTo)
     controller.handleFiltrate(checkedIds, priceFrom, priceTo)
   },
 
@@ -106,6 +109,7 @@ const view = {
     const elSpanRangePriceTo = document.querySelector('.price-to')
     console.log('renderPrice-minPrice', minPrice)
     console.log('renderPrice-maxPrice', maxPrice)
+    console.log('>>>>>>')
     elPriceFromRange.min = minPrice
     elPriceFromRange.max = maxPrice
     elPriceFromRange.value = minPrice

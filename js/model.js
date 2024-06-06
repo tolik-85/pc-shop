@@ -17,7 +17,6 @@ const model = {
   priceFrom: 0,
   priceTo: Infinity,
   sortingType: 'Цена по возростанию',
-  curPage: 0,
   productsOnPage: 10,
   favorites: ['19', '22', '21', '50', '32', '45'],
   compare: ['19', '22', '21', '50', '32', '45'],
@@ -30,42 +29,11 @@ const model = {
   filter: {},
   minPrice: 0,
   maxPrice: 0,
+  curPage: 0,
   productsTotal: 0,
   pagesCount: 0,
 
-  makeCompareProductsArr() {
-    this.compareProducts = this.products.filter(product =>
-      this.compare.includes(product.id + '')
-    )
-  },
-
-  makeCartProductsArr() {
-    this.products.forEach(product => {
-      this.cart.forEach(id => {
-        if (product.id === +id) {
-          this.cartProducts.push(product)
-        }
-      })
-    })
-  },
-
-  makeFavoritesProductsArr() {
-    this.products.forEach(product => {
-      this.favorites.forEach(id => {
-        if (product.id === +id) {
-          this.favoritesProducts.push(product)
-        }
-      })
-    })
-  },
-
-  getCartProductsSummPriceUAH() {
-    let summ = 0
-    this.cartProducts.forEach(product => {
-      summ = summ + product.priceUAH
-    })
-    return summ
-  },
+  //==== Catalog Start=====//
 
   vortex() {
     this.searchProducts(this.searchQuery)
@@ -75,10 +43,10 @@ const model = {
     this.filtrateProductsByPrice(this.priceFrom, this.priceTo)
     this.calcProductsTotal()
     this.calcPagesCount()
-    console.log('this.minPrice :>> ', this.minPrice)
-    console.log('this.maxPrice :>> ', this.maxPrice)
-    console.log('this.priceFrom :>> ', this.priceFrom)
-    console.log('this.priceTo :>> ', this.priceTo)
+    // console.log('this.minPrice :>> ', this.minPrice)
+    // console.log('this.maxPrice :>> ', this.maxPrice)
+    // console.log('this.priceFrom :>> ', this.priceFrom)
+    // console.log('this.priceTo :>> ', this.priceTo)
     this.sortProducts(this.sortingType)
     this.paginateProducts(this.curPage)
   },
@@ -175,21 +143,15 @@ const model = {
         }
       }
     })
+    this.filter = Object.keys(this.filter)
+      .sort()
+      .reduce((acc, key) => {
+        acc[key] = this.filter[key]
+        return acc
+      }, {})
+    // console.log(Object.keys(this.filter))
+    // console.log(Object.keys(this.filter.sort()))
     return this.filter
-  },
-
-  addAllCheckedCheckboxes(checkedIds) {
-    this.checkedFilters = checkedIds
-  },
-
-  removeAllCheckedCheckboxes(checkedFilter) {
-    this.checkedFilters = []
-  },
-
-  addUAHPriceToProducts() {
-    this.products.forEach(
-      product => (product.priceUAH = Math.round(product.price * this.usdCourse))
-    )
   },
 
   async updateProductsAndUsdCourse() {
@@ -202,14 +164,116 @@ const model = {
     this.setProducts(products)
   },
 
-  async updateProduct(id) {
-    const cardProduct = await api.loadProduct(id)
-    this.setProduct(cardProduct)
+  addUAHPriceToProducts() {
+    this.products.forEach(
+      product => (product.priceUAH = Math.round(product.price * this.usdCourse))
+    )
+  },
+
+  getProductsCaptions() {
+    return this.products.map(product => product.caption)
+  },
+
+  getProducts() {
+    return this.products
+  },
+
+  getSearchedProducts() {
+    return this.searchedProducts
+  },
+
+  getFiltratedProducts() {
+    return this.filtratedProducts
+  },
+
+  getPricedProducts() {
+    return this.pricedProducts
+  },
+
+  getPricedFilter() {
+    return this.pricedFilter
+  },
+
+  getProductPrices() {
+    return this.filtratedProducts.map(product => product.price)
+  },
+
+  calcProductsTotal() {
+    this.productsTotal = this.pricedProducts.length
+  },
+
+  calcPagesCount() {
+    this.pagesCount = Math.ceil(this.productsTotal / this.productsOnPage)
+  },
+
+  calcMinPriceUAH() {
+    const minPriceUsd = Math.min(...this.getProductPrices())
+    const minPriceUah = minPriceUsd * this.usdCourse
+    const minPrice = isFinite(minPriceUah) ? +minPriceUah.toFixed() : 0
+    this.minPrice = minPrice
+    return minPrice
+  },
+
+  calcMaxPriceUAH() {
+    const maxPriceUsd = Math.max(...this.getProductPrices())
+    const maxPriceUah = maxPriceUsd * this.usdCourse
+    const maxPrice = isFinite(maxPriceUah) ? +maxPriceUah.toFixed() : 0
+    this.maxPrice = maxPrice
+    return maxPrice
+  },
+
+  addAllCheckedCheckboxes(checkedIds) {
+    this.checkedFilters = checkedIds
+  },
+
+  removeAllCheckedCheckboxes(checkedFilter) {
+    this.checkedFilters = []
   },
 
   async updateUsdCourse() {
     const course = await api.loadCourse()
     this.setUsdCouse(course)
+  },
+
+  setUsdCouse(course) {
+    this.usdCourse = course
+  },
+
+  setProducts(products) {
+    this.products = products
+  },
+
+  setProductsOnPage(n) {
+    this.productsOnPage = n
+  },
+
+  setSearchQuery(query) {
+    if (query === null) {
+      query = ''
+    }
+    this.searchQuery = query
+  },
+
+  setPriceFromTo(from, to) {
+    this.priceFrom = from
+    this.priceTo = to
+  },
+
+  setCurPage(curPage) {
+    this.curPage = curPage
+  },
+
+  setSortingType(sortingType) {
+    this.sortingType = sortingType
+  },
+
+  ///===Catalog End====///
+
+  //==card start==//
+
+  async updateProduct(id) {
+    const cardProduct = await api.loadProduct(id)
+    this.setProduct(cardProduct)
   },
 
   async updateSimilarProductsIdList(id) {
@@ -224,53 +288,6 @@ const model = {
     await Promise.all(promises)
   },
 
-  getProductsCaptions() {
-    return this.products.map(product => product.caption)
-  },
-  getProducts() {
-    return this.products
-  },
-  getSearchedProducts() {
-    return this.searchedProducts
-  },
-  getFiltratedProducts() {
-    return this.filtratedProducts
-  },
-  getPricedProducts() {
-    return this.pricedProducts
-  },
-  getPricedFilter() {
-    return this.pricedFilter
-  },
-  getProductPrices() {
-    return this.filtratedProducts.map(product => product.price)
-  },
-  calcProductsTotal() {
-    this.productsTotal = this.pricedProducts.length
-  },
-  calcPagesCount() {
-    this.pagesCount = Math.ceil(this.productsTotal / this.productsOnPage)
-  },
-  calcMinPriceUAH() {
-    const minPriceUsd = Math.min(...this.getProductPrices())
-    const minPriceUah = minPriceUsd * this.usdCourse
-    const minPrice = isFinite(minPriceUah) ? +minPriceUah.toFixed() : 0
-    this.minPrice = minPrice
-    return minPrice
-  },
-  calcMaxPriceUAH() {
-    const maxPriceUsd = Math.max(...this.getProductPrices())
-    const maxPriceUah = maxPriceUsd * this.usdCourse
-    const maxPrice = isFinite(maxPriceUah) ? +maxPriceUah.toFixed() : 0
-    this.maxPrice = maxPrice
-    return maxPrice
-  },
-  setUsdCouse(course) {
-    this.usdCourse = course
-  },
-  setProducts(products) {
-    this.products = products
-  },
   getProduct() {
     return this.cardProduct
   },
@@ -280,23 +297,50 @@ const model = {
   getSimilarProducts() {
     return this.similarProducts
   },
-  setProductsOnPage(n) {
-    this.productsOnPage = n
+
+  //==card end==//
+
+  //==compareProducts start===///
+  makeCompareProductsArr() {
+    this.compareProducts = this.products.filter(product =>
+      this.compare.includes(product.id + '')
+    )
   },
-  setSearchQuery(query) {
-    if (query === null) {
-      query = ''
-    }
-    this.searchQuery = query
+  //==compareProducts end===///
+
+  //===CartProducts start===///
+
+  makeCartProductsArr() {
+    this.products.forEach(product => {
+      this.cart.forEach(id => {
+        if (product.id === +id) {
+          this.cartProducts.push(product)
+        }
+      })
+    })
   },
-  setPriceFromTo(from, to) {
-    this.priceFrom = from
-    this.priceTo = to
+
+  getCartProductsSummPriceUAH() {
+    let summ = 0
+    this.cartProducts.forEach(product => {
+      summ = summ + product.priceUAH
+    })
+    return summ
   },
-  setCurPage(curPage) {
-    this.curPage = curPage
+
+  //===CartProducts end===///
+
+  //====FavoritesProducts start===//
+
+  makeFavoritesProductsArr() {
+    this.products.forEach(product => {
+      this.favorites.forEach(id => {
+        if (product.id === +id) {
+          this.favoritesProducts.push(product)
+        }
+      })
+    })
   },
-  setSortingType(sortingType) {
-    this.sortingType = sortingType
-  },
+
+  //====FavoritesProducts end===//
 }
