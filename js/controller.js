@@ -22,7 +22,7 @@ const controller = {
     model.setSearchQuery(query)
     this.handleVortex()
     view.renderWrapFilter(model.makeFilter())
-    // view.renderRangePrice(model.maxPrice, model.minPrice)
+    view.renderRangePrice(model.maxPrice, model.minPrice)
   },
 
   handleFiltrate(checkedIds, priceFrom, priceTo) {
