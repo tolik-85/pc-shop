@@ -206,6 +206,7 @@ function generateCartTableHead() {
   return cartTable
 }
 function generateCartTableRowProduct(product) {
+  console.log(product)
   const URL = 'https://web-app.click/pc-shop/photos/products/computers/'
   const picture = product.photos[0]
   const image = `${URL}${picture}`

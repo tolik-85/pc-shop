@@ -63,10 +63,10 @@ const model = {
     this.filtrateProductsByPrice(this.priceFrom, this.priceTo)
     this.calcProductsTotal()
     this.calcPagesCount()
-    console.log('this.minPrice :>> ', this.minPrice)
-    console.log('this.maxPrice :>> ', this.maxPrice)
-    console.log('this.priceFrom :>> ', this.priceFrom)
-    console.log('this.priceTo :>> ', this.priceTo)
+    // console.log('this.minPrice :>> ', this.minPrice)
+    // console.log('this.maxPrice :>> ', this.maxPrice)
+    // console.log('this.priceFrom :>> ', this.priceFrom)
+    // console.log('this.priceTo :>> ', this.priceTo)
     this.sortProducts(this.sortingType)
     this.paginateProducts(this.curPage)
   },
@@ -142,11 +142,15 @@ const model = {
   },
 
   paginateProducts(curPage) {
-    if (curPage >= 0) {
+    // console.log('model>>>curPage', curPage)
+    // console.log('model>>>curPage', this.curPage)
+    if (curPage >= 1) {
       this.curPage = curPage
     }
-    let startIdx = this.curPage * this.productsOnPage
+    let startIdx = (this.curPage - 1) * this.productsOnPage
+    // console.log(startIdx)
     let endIdx = startIdx + this.productsOnPage
+    // console.log(this.productsOnPage)
     this.paginatedProducts = this.sortedProducts.slice(startIdx, endIdx)
   },
 
@@ -169,8 +173,10 @@ const model = {
         acc[key] = this.filter[key]
         return acc
       }, {})
-    // console.log(Object.keys(this.filter))
-    // console.log(Object.keys(this.filter.sort()))
+    for (el in this.filter) {
+      this.filter[el].sort()
+      // console.log(typeOf this.filter[el])
+    }
     return this.filter
   },
 

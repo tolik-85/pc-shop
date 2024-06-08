@@ -10,7 +10,8 @@ const viewCart = {
     cartMain.appendChild(cartTable)
 
     model.cartProducts.forEach(product => {
-      const cartTableRowProduct = generatecartTableRowProduct(product)
+      console.log(product)
+      const cartTableRowProduct = generateCartTableRowProduct(product)
       cartTable.appendChild(cartTableRowProduct)
     })
     const cartTableBottom = generateCartTableBottom()

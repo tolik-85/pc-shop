@@ -107,9 +107,9 @@ const view = {
     const elPriceToRange = document.querySelector('#priceTo')
     const elSpanRangePriceFrom = document.querySelector('.price-from')
     const elSpanRangePriceTo = document.querySelector('.price-to')
-    console.log('renderPrice-minPrice', minPrice)
-    console.log('renderPrice-maxPrice', maxPrice)
-    console.log('>>>>>>')
+    // console.log('renderPrice-minPrice', minPrice)
+    // console.log('renderPrice-maxPrice', maxPrice)
+    // console.log('>>>>>>')
     elPriceFromRange.min = minPrice
     elPriceFromRange.max = maxPrice
     elPriceFromRange.value = minPrice
@@ -137,12 +137,13 @@ const view = {
   },
 
   renderPagination(curPage, productsTotal, pagesCount) {
-    // window.history.pushState(null, '', `?page=${curPage}`)
+    // console.log(curPage, pagesCount)
     const elPaginator = document.querySelector('.paginator')
     elPaginator.innerHTML = ''
-    for (let i = 0; i < pagesCount; i++) {
+    for (let i = 1; i <= pagesCount; i++) {
       let elPage = generatePaginaionPage(i)
       elPaginator.appendChild(elPage)
+      // console.log(i, curPage)
       if (i === curPage) {
         elPage.classList.add('bold')
       }

@@ -1,5 +1,5 @@
 const controller = {
-  handleVortex(pageNum = 0) {
+  handleVortex(pageNum = 1) {
     model.setCurPage(pageNum)
     model.vortex()
     view.renderContainerProducts(model.paginatedProducts)
